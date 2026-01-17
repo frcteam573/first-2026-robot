@@ -29,5 +29,5 @@ components = [
 # Other pip packages to install
 requires = [
     "phoenix6"
-    "photonlibpy==2026.1.1rc3"
+##    "photonlibpy==2026.1.1rc3"
 ]
