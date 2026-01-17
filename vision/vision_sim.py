@@ -16,7 +16,7 @@ def photonvision_sim_setup():
         # tagLayout = AprilTagFieldLayout(json_path)
 
         #Add field tags to the sim system       
-        tagLayout = AprilTagFieldLayout.loadField(AprilTagField.kDefaultField)
+        tagLayout = AprilTagFieldLayout.loadField(AprilTagField.k2026RebuiltWelded)
         visionSim.addAprilTags(tagLayout)
 
 

@@ -14,7 +14,7 @@ class VisionEstimator:
         # deploy_dir = "C:\\Users\\savag\\OneDrive\\Documents\\GitHub\\Team573CTRESwervewithSIM\\"
         # json_path = os.path.join(deploy_dir, "vision\\2026-rebuilt-welded.json")
         # tagLayout = AprilTagFieldLayout(json_path)
-        tagLayout = AprilTagFieldLayout.loadField(AprilTagField.kDefaultField)
+        tagLayout = AprilTagFieldLayout.loadField(AprilTagField.k2026RebuiltWelded)
         self.cam = PhotonCamera('Camera 1')
         self.camPoseEst = PhotonPoseEstimator(
             tagLayout,
