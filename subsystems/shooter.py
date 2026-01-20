@@ -9,7 +9,8 @@ class Shooter(commands2.SubsystemBase):
     def __init__(self) -> None:
         super().__init__()
         
-        self.m_shooter = rev.SparkMax(58, rev.SparkMax.MotorType.kBrushless)
+        # self.m_shooter = rev.SparkMax(58, rev.SparkMax.MotorType.kBrushless)
+        self.m_shooter = hardware
               
     def setShooterOutSpeed(self, speed: float) -> bool:
         '''Sets the speed of the intake motors.
