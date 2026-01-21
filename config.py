@@ -5,6 +5,12 @@ from utils.utils import inches_to_meters
 from phoenix6 import configs, controls
 from wpimath.geometry import Pose2d, Rotation2d, Transform2d
 
+class Shooter:
+    hoodRotationsToAngle = 6   ## number of rotations per degree in angle of hood ## NEEDS TO BE CHANGED 
+    wheelSpeedShooterTolerance = 10 ##### +- tolerance value in RPS ### change number    
+    hoodAngleTolerance = 12 ## change number
+
+
 # ------------ Elevator Settings -----------------
 class Elevator:
     MinLength = inches_to_meters(30) # Elevator height all the way down.

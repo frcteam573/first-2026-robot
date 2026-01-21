@@ -3,6 +3,9 @@ import math
 from wpimath.geometry import Pose3d, Rotation3d, Transform3d, Pose2d, Translation2d, Rotation2d, Translation3d
 from pathplannerlib.auto import PathConstraints
 
+blueAllianceZoneThreshold = 4.75
+redAllianceZoneThreshold = 11.9
+
 inches_to_meters = 0.0254
 #----------------------------- Camera Locations ---------------------------
 Robot_To_Camera1 = Transform3d(
