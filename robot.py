@@ -21,12 +21,15 @@ from wpimath.geometry import Pose2d, Rotation2d
 import oi.oi
 import subsystems
 import config, constants
+import ntcore
+from questnav.questnav import QuestNav
 
 class MyRobot(commands2.TimedCommandRobot):
     """
     Command v2 robots are encouraged to inherit from TimedCommandRobot, which
     has an implementation of robotPeriodic which runs the scheduler for you
     """
+
 
     autonomousCommand: typing.Optional[commands2.Command] = None
 
@@ -41,6 +44,7 @@ class MyRobot(commands2.TimedCommandRobot):
         self.container = RobotContainer()
         self.container.drivetrain.reset_pose(Pose2d(2,2,Rotation2d(0)))
 
+        self.questnav = QuestNav()  #Initialize QuestNav
         #Initialize the items to SmartDashboard
         wpilib.SmartDashboard.putBoolean("Reef Align", False)
 
@@ -67,6 +71,13 @@ class MyRobot(commands2.TimedCommandRobot):
             self.visionSim.update(self.container.drivetrain.get_state().pose) # type: ignore
             self.cameravis = self.visionSim.getDebugField() # type: ignore
         
+        qpose = self.questnav.get_pose()
+        
+        # Robot pose for field positioning
+        self._inst = ntcore.NetworkTableInstance.getDefault()
+        self._table = self._inst.getTable("QNPose")
+        self._field_pub = self._table.getDoubleArrayTopic("qpose").publish()
+        self._field_type_pub = self._table.getStringTopic(".type").publish()
         #print("Current Angle: ", self.container.drivetrain.get_state().pose.rotation().degrees())
         self.add_vision_to_pose_esimate()
         subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
