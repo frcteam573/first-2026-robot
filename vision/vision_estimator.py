@@ -15,7 +15,7 @@ class VisionEstimator:
         # json_path = os.path.join(deploy_dir, "vision\\2026-rebuilt-welded.json")
         # tagLayout = AprilTagFieldLayout(json_path)
         tagLayout = AprilTagFieldLayout.loadField(AprilTagField.k2026RebuiltWelded)
-        self.cam = PhotonCamera('Camera 1')
+        self.cam = PhotonCamera('camera1')
         self.camPoseEst = PhotonPoseEstimator(
             tagLayout,
             constants.Robot_To_Camera1,
@@ -30,6 +30,8 @@ class VisionEstimator:
         camEstPose = None
         for result in self.cam.getAllUnreadResults():
             camEstPose = self.camPoseEst.estimateCoprocMultiTagPose(result)
+            if camEstPose is not None:
+                print(camEstPose.estimatedPose.toPose2d())
             # if camEstPose is None:
                 # camEstPose = self.camPoseEst.estimateLowestAmbiguityPose(result)
         if camEstPose is not None:

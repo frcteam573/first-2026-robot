@@ -16,7 +16,7 @@ from vision.vision_estimator import VisionEstimator
 from telemetry import Telemetry
 
 from config import Cameras, Elevator
-from wpimath.geometry import Pose2d, Rotation2d
+from wpimath.geometry import Pose2d, Rotation2d, Pose3d
 
 import oi.oi
 import subsystems
@@ -48,12 +48,14 @@ class MyRobot(commands2.TimedCommandRobot):
         #Initialize the items to SmartDashboard
         wpilib.SmartDashboard.putBoolean("Reef Align", False)
 
+        #wpilib.SmartDashboard.putData("qnpose", Pose2d(0,0,Rotation2d(0)))
+
         oi.oi.OI.map_controls()
         # Init Simulation specifics
         if wpilib.RobotBase.isSimulation():
+            pass
             self.visionSim = vision_sim.photonvision_sim_setup() #Setup sim vision system
-
-
+            self.visionReal = VisionEstimator()
     def robotPeriodic(self) -> None:
         """This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
         that you want ran during disabled, autonomous, teleoperated and test.
@@ -69,15 +71,36 @@ class MyRobot(commands2.TimedCommandRobot):
         
         if wpilib.RobotBase.isSimulation():
             self.visionSim.update(self.container.drivetrain.get_state().pose) # type: ignore
-            self.cameravis = self.visionSim.getDebugField() # type: ignore
-        
-        qpose = self.questnav.get_pose()
+            # self.cameravis = self.visionSim.getDebugField() # type: ignore
+            self.container._vision_est.
+
+        ##qpose = self.questnav.get_pose()
+        self.questnav.command_periodic()
+
+        # get new pose frames
+        frames = self.questnav.get_all_unread_pose_frames()
+
+        for frame in frames:
+            qnpose = frame.quest_pose_3d.toPose2d()
+           # wpilib.SmartDashboard.putData("qnpose", qnpose)
+
+        # self._inst = ntcore.NetworkTableInstance.getDefault()
+        # self._table = self._inst.getTable("qnpose")
+        # self._field_pub = self._table.getDoubleArrayTopic("qnpose").publish()
+        #self._field_type_pub = self._table.getStringTopic(".type").publish()
+        #self._field_type_pub.set("Field2d")
+        #self._field_pub.set(qnpose)
+            wpilib.SmartDashboard.putNumber("QNX", qnpose.X())
+            wpilib.SmartDashboard.putNumber("QNY", qnpose.Y())
+            wpilib.SmartDashboard.putNumber("QNR", qnpose.rotation().degrees())
+
+
         
         # Robot pose for field positioning
-        self._inst = ntcore.NetworkTableInstance.getDefault()
-        self._table = self._inst.getTable("QNPose")
-        self._field_pub = self._table.getDoubleArrayTopic("qpose").publish()
-        self._field_type_pub = self._table.getStringTopic(".type").publish()
+        #self._inst = ntcore.NetworkTableInstance.getDefault()
+        #self._table = self._inst.getTable("QNPose")
+        #self._field_pub = self._table.getDoubleArrayTopic("qpose").publish()
+        #self._field_type_pub = self._table.getStringTopic(".type").publish()
         #print("Current Angle: ", self.container.drivetrain.get_state().pose.rotation().degrees())
         self.add_vision_to_pose_esimate()
         subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
@@ -113,6 +136,7 @@ class MyRobot(commands2.TimedCommandRobot):
         config.Alliance.blue_team = wpilib.DriverStation.Alliance.kBlue == self.alliance #Set a config value to this color used in automous selection
         if self.autonomousCommand:
             self.autonomousCommand.cancel()
+        self.resetPoseBasedOnVision()
 
     def teleopPeriodic(self) -> None:
         """This function is called periodically during operator control"""
@@ -144,3 +168,12 @@ class MyRobot(commands2.TimedCommandRobot):
         #                 #print(vision_est[2])
         #                 #print("Odo Pose: ", self.container.drivetrain.get_state().pose, "Vision Est Pose", vision_est[0])
         
+
+    def resetPoseBasedOnVision(self):
+        vision_est = self.container._vision_est.get_estimated_robot_pose()
+        if vision_est is not None:
+            self.container.drivetrain.reset_pose(vision_est[0])
+            self.questnav.set_pose(Pose3d(vision_est[0]))
+
+
+

@@ -57,7 +57,7 @@ class vision_settings:
 
 class Cameras:
     vision_controller = VisionEstimator()
-    camera1 = PhotonCamera('Camera 1')
+    camera1 = PhotonCamera('camera1')
 
 class Alliance:
     blue_team = False  # Set to True if the robot is on the blue team, False for red team
