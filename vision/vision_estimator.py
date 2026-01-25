@@ -1,9 +1,10 @@
 from wpimath.geometry import Pose3d, Pose2d
 from wpilib import Timer
 from photonlibpy import PhotonCamera, PhotonPoseEstimator
-import constants
+import constants, config
 from vision.fieldTagLayout import FieldTagLayout, AprilTagFieldLayout, AprilTagField
 import os
+
 
 class VisionEstimator:
     """
