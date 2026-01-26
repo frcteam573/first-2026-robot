@@ -9,6 +9,7 @@ import wpilib
 import commands2
 import typing
 import wpiutil
+import time
 
 from robotcontainer import RobotContainer, Robot
 from vision import vision_sim
@@ -58,7 +59,7 @@ class MyRobot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData('PhotonVisionField',self.photonvision_field)
 
         oi.oi.OI.map_controls() #Map controls
-
+        self.time_start = time.time()
         if wpilib.RobotBase.isSimulation(): #Only run is in SIM
             self.simulationInit()
 
@@ -161,12 +162,13 @@ class MyRobot(commands2.TimedCommandRobot):
         for frame in frames:
             if self.questnav.is_connected(): #and self.questnav.is_tracking():
                 # Add to pose estimator
-                print("QN Pose:",frame.quest_pose_3d.toPose2d())
+                #print("QN Pose:",frame.quest_pose_3d.toPose2d())
+                
+                #print("Timestamp:", frame.data_timestamp - self.time_start)
                 self.questnav_field.setRobotPose(frame.quest_pose_3d.toPose2d())
                 self.container.drivetrain.add_vision_measurement(
                     frame.quest_pose_3d.toPose2d(),
-                    frame.data_timestamp,
-                    (0.1, 0.1, 0.05)) # Standard deviations
+                    frame.data_timestamp- self.time_start) # Standard deviations
 
         # current_pose = self.container.drivetrain.get_state().pose
         # vision_ests = self.container._vision_est.get_estimated_robot_pose(current_pose)
