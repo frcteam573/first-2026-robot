@@ -150,6 +150,7 @@ class QuestNav:
         current_time = time.time()
         
         for event in events:
+            #print(event)
             try:
                 topic_name = event.data.topic.getName()
                 value = event.data.value
@@ -164,7 +165,6 @@ class QuestNav:
                 # Parse frameData
                 if "frameData" in topic_name:
                     raw_data = value.getRaw() if hasattr(value, 'getRaw') else bytes()
-                    
                     if raw_data:
                         frame_data = data_pb2.ProtobufQuestNavFrameData()
                         frame_data.ParseFromString(raw_data)

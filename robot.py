@@ -33,7 +33,7 @@ class MyRobot(commands2.TimedCommandRobot):
 
     photonVisionMethod = config.PhotonVisionSetting.REAL_CAMERA
 
-    localizationMethod = config.PrimaryLocalization.VISION
+    localizationMethod = config.PrimaryLocalization.QUESTNAV
 
 
     def robotInit(self) -> None:
@@ -45,19 +45,21 @@ class MyRobot(commands2.TimedCommandRobot):
         # Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         # autonomous chooser on the dashboard.
         self.container = RobotContainer()
+
+        #Setting default pose
         self.container.drivetrain.reset_pose(Pose2d(2,2,Rotation2d(0)))
 
         self.questnav = QuestNav()  #Initialize QuestNav
+
+        #Initialize the items to send vision and questnav pose to dashboard
         self.questnav_field = wpilib.Field2d()
         self.photonvision_field = wpilib.Field2d()
-        #Initialize the items to SmartDashboard
-        wpilib.SmartDashboard.putBoolean("Reef Align", False)
         wpilib.SmartDashboard.putData('QuestNavField',self.questnav_field)
         wpilib.SmartDashboard.putData('PhotonVisionField',self.photonvision_field)
 
-        oi.oi.OI.map_controls()
+        oi.oi.OI.map_controls() #Map controls
 
-        if wpilib.RobotBase.isSimulation():
+        if wpilib.RobotBase.isSimulation(): #Only run is in SIM
             self.simulationInit()
 
     def robotPeriodic(self) -> None:
@@ -79,9 +81,10 @@ class MyRobot(commands2.TimedCommandRobot):
         else:
             self.photonvision_pose = None
 
+        #Run QuestNav command every loop
         self.questnav.command_periodic()
 
-        
+        #Only run during SIM
         if wpilib.RobotBase.isSimulation():
             self.simulationPeriodic()
 
@@ -92,6 +95,7 @@ class MyRobot(commands2.TimedCommandRobot):
             self.add_questnav_to_pose_estimate()
         else:
             pass
+
 
         subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
         commands2.CommandScheduler.getInstance().run()
@@ -127,7 +131,7 @@ class MyRobot(commands2.TimedCommandRobot):
         if self.autonomousCommand:
             self.autonomousCommand.cancel()
 
-        self.resetPoseBasedOnVision()
+        self.resetPoseBasedOnVision() # Resets pose of QuestNav and robot based on Vision Only
 
     def teleopPeriodic(self) -> None:
         """This function is called periodically during operator control"""
@@ -155,8 +159,9 @@ class MyRobot(commands2.TimedCommandRobot):
         # get new pose frames
         frames = self.questnav.get_all_unread_pose_frames()
         for frame in frames:
-            if self.questnav.is_connected() and self.questnav.is_tracking():
+            if self.questnav.is_connected(): #and self.questnav.is_tracking():
                 # Add to pose estimator
+                print("QN Pose:",frame.quest_pose_3d.toPose2d())
                 self.questnav_field.setRobotPose(frame.quest_pose_3d.toPose2d())
                 self.container.drivetrain.add_vision_measurement(
                     frame.quest_pose_3d.toPose2d(),
