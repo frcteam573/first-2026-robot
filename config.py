@@ -4,7 +4,18 @@ import constants
 from utils.utils import inches_to_meters
 from phoenix6 import configs, controls
 from wpimath.geometry import Pose2d, Rotation2d, Transform2d
+from enum import Enum
 
+
+class PrimaryLocalization(Enum):
+    ODO_Only = 0
+    VISION = 1
+    QUESTNAV = 2
+
+class PhotonVisionSetting(Enum):
+    REAL_CAMERA = 0
+    SIM = 1
+    
 class Shooter:
     hoodRotationsToAngle = 6   ## number of rotations per degree in angle of hood ## NEEDS TO BE CHANGED 
     wheelSpeedShooterTolerance = 10 ##### +- tolerance value in RPS ### change number    
@@ -57,7 +68,6 @@ class vision_settings:
 
 class Cameras:
     vision_controller = VisionEstimator()
-    camera1 = PhotonCamera('Camera 1')
 
 class Alliance:
     blue_team = False  # Set to True if the robot is on the blue team, False for red team

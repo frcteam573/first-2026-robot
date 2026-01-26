@@ -88,11 +88,6 @@ class RobotContainer:
 
         self._vision_est = config.Cameras.vision_controller
 
-
-       
-
-
-
         # Configure the button bindings
         self.configureButtonBindings()
 

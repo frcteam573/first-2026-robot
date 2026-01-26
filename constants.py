@@ -10,9 +10,9 @@ inches_to_meters = 0.0254
 #----------------------------- Camera Locations ---------------------------
 Robot_To_Camera1 = Transform3d(
     Translation3d(
-       7*inches_to_meters, 9.5*inches_to_meters, 12.5*inches_to_meters  # X  # Y  # Z
+       0*inches_to_meters, 0*inches_to_meters, 12*inches_to_meters  # X  # Y  # Z
     ),
-        Rotation3d(0.0, 0.0, math.radians(-15)),  # Roll  # Pitch  # Yaw
+        Rotation3d(0.0, 0.0, math.radians(0)),  # Roll  # Pitch  # Yaw
     )
 
 Robot_To_Camera2 = Transform3d(
