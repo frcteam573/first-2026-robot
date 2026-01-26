@@ -32,9 +32,9 @@ class MyRobot(commands2.TimedCommandRobot):
     """
     autonomousCommand: typing.Optional[commands2.Command] = None
 
-    photonVisionMethod = config.PhotonVisionSetting.REAL_CAMERA
+    photonVisionMethod = config.PhotonVisionSetting.SIM
 
-    localizationMethod = config.PrimaryLocalization.QUESTNAV
+    localizationMethod = config.PrimaryLocalization.VISION
 
 
     def robotInit(self) -> None:
