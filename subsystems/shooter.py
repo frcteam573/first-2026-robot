@@ -16,6 +16,7 @@ class Shooter(commands2.SubsystemBase):
         self.m_shooter1 = hardware.TalonFX(60)
         self.m_shooter2 = hardware.TalonFX(61)  
         self.m_hoodMotor = hardware.TalonFX(65)
+        ## self.m_hopperMotor = hardware.TalonFX()
         
         # Be able to switch which control request to use based on a button press
         # Start at velocity 0, use slot 0
@@ -107,7 +108,9 @@ class Shooter(commands2.SubsystemBase):
         self.m_shooter1.set_control(self.velocity_voltage.with_velocity(speed))
         #print("Shooter out Speed:", speed)
         return Tyler.max_min_check(self.m_shooter1.get_velocity(), speed, config.Shooter.wheelSpeedShooterTolerance)
-    
+        
+    def shooterMotorOff(self):
+        self.m_shooter1.set(0)
 
     def setHoodAngle(self, angle: float) -> bool:
         '''Sets the angle of hood.
@@ -119,7 +122,10 @@ class Shooter(commands2.SubsystemBase):
         self.m_hoodMotor.set_control(self.position_voltage.with_position(angle * config.Shooter.hoodRotationsToAngle))
         #print("Shooter out Speed:", speed)
         return Tyler.max_min_check(self.m_hoodMotor.get_position()/config.Shooter.hoodRotationsToAngle, angle, config.Shooter.hoodAngleTolerance)
-        
+
+    def hoodMotorOff(self):
+        self.m_hoodMotor.set(0)
+
     def inScoringZone(pose: Pose2d) -> bool:
         '''changes hood angle when not in alliance's zone
         
@@ -160,3 +166,7 @@ class Shooter(commands2.SubsystemBase):
         wheelSpeed = 2 * Distance ### FIX
         Angle = 3 * Distance ### FIX
         return list(wheelSpeed, Angle)
+
+   ### def hopperMotor
+
+
