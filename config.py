@@ -5,6 +5,8 @@ from utils.utils import inches_to_meters
 from phoenix6 import configs, controls
 from wpimath.geometry import Pose2d, Rotation2d, Transform2d
 from enum import Enum
+from wpimath.geometry import Pose2d, Rotation2d, Transform2d, Translation2d
+from wpimath.controller import PIDController
 
 
 class PrimaryLocalization(Enum):
@@ -72,10 +74,16 @@ class Cameras:
 class Alliance:
     blue_team = False  # Set to True if the robot is on the blue team, False for red team
 
-class ReefAlign:
+class DrivebasedAngleAlign:
     allowable_errorX = 0.1  # meters
     allowable_errorY = 0.1
     allowable_errorR = 5  # degrees
+    
+    p = 10
+    i = 0
+    d = 0
+    alignmentPID = PIDController(p, i, d)
+    
 
 class RobotPose:
     pose = Pose2d(0,0,Rotation2d(0))

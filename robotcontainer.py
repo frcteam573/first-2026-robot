@@ -26,6 +26,8 @@ import subsystems
 import commands.elevator
 import commands.drivetrain
 import constants
+import subsystems.command_swerve_drivetrain
+import utils.utils as utilities
 
 
 class Robot:
@@ -123,7 +125,19 @@ class RobotContainer:
         Trigger(DriverStation.isDisabled).whileTrue(
             self.drivetrain.apply_request(lambda: idle).ignoringDisable(True)
         )
-        self._joystick.y().whileTrue(commands.drive_to_nearest_HP_station(self.drivetrain))
+        self._joystick.y().whileTrue(self.drivetrain.apply_request(
+                lambda: (
+                    self._drive.with_velocity_x(
+                        -self._joystick.getLeftY() * self._max_speed
+                    )  # Drive forward with negative Y (forward)
+                    .with_velocity_y(
+                        -self._joystick.getLeftX() * self._max_speed
+                    )  # Drive left with negative X (left)
+                    .with_rotational_rate(
+                        subsystems.CommandSwerveDrivetrain.calculate_relative_angle(config.RobotPose.pose, utilities.getTargetPose(config.RobotPose.pose))
+                    )  # Drive counterclockwise with negative X (left)
+                )
+            ))
         self._joystick.x().whileTrue(commands.drive_to_nearest_reef_pos(self.drivetrain, left=True))
         self._joystick.b().whileTrue(commands.drive_to_nearest_reef_pos(self.drivetrain, left=False))
 
