@@ -16,7 +16,7 @@ class Shooter(commands2.SubsystemBase):
         self.m_shooter1 = hardware.TalonFX(60)
         self.m_shooter2 = hardware.TalonFX(61)  
         self.m_hoodMotor = hardware.TalonFX(65)
-        ## self.m_hopperMotor = hardware.TalonFX()
+        self.m_hopperMotor = hardware.TalonFX(68)
         
         # Be able to switch which control request to use based on a button press
         # Start at velocity 0, use slot 0
@@ -56,7 +56,7 @@ class Shooter(commands2.SubsystemBase):
         if not status.is_ok():
             print(f"Could not apply configs, error code: {status.name}")
 
-        self.m_shooter2.set_control(controls.Follower(self.m_shooter1.device_id, signals.MotorAlignmentValue.ALIGNED))
+        self.m_shooter2.set_control(controls.Follower(self.m_shooter1.device_id,False))
 
         #self.talonfx = hardware.TalonFX(0, self.canbus)
        # self.talonfx_foll
@@ -167,6 +167,13 @@ class Shooter(commands2.SubsystemBase):
         Angle = 3 * Distance ### FIX
         return list(wheelSpeed, Angle)
 
-   ### def hopperMotor
+    def hopperMotorOff(self):
+        self.m_hopperMotor.set(0)
+
+    def hopperMotorOn(self):
+        self.m_hopperMotor.set(1)  
+
+    def hopperMotorReverse(self):
+        self.m_hopperMotor.set(-1)      
 
 

@@ -11,6 +11,9 @@ from commands2 import (
 )
 import commands.elevator
 import commands.drivetrain
+import commands.shooter
+# import commands.intake
+# import commands.climber
 
 import commands
 import config
@@ -37,6 +40,8 @@ class OI:
 # #======================== drivetrain ========================#
     #This can be empty as SwerveDriveCustome command is set to run by default in teleopinit.
 	
-Keymap.Elevator.setLevel3.whileTrue(commands.elevator.setPosition(Robot.elevator,position=10))
-Keymap.Elevator.setLevel1.whileTrue(commands.elevator.setPosition(Robot.elevator,position=0))
+#Keymap.Elevator.setLevel3.whileTrue(commands.elevator.setPosition(Robot.elevator,position=10))
+#Keymap.Elevator.setLevel1.whileTrue(commands.elevator.setPosition(Robot.elevator,position=0))
+
+Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(Robot.shooter))
 

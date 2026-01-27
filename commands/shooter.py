@@ -5,11 +5,9 @@ import utils.utils
 from oi.keymap import Keymap
 import config
 
-
 # from commands.wrist import Wrist
 
 from subsystems.shooter import Shooter 
-
 
 class Shoot(commands2.Command):
     #This command used to run shooter motor
@@ -30,7 +28,15 @@ class Shoot(commands2.Command):
         shooterSettings = self.app.calcTarget(config.RobotPose.pose, utils.utils.getTargetPose(config.RobotPose.pose))
         self.app.setHoodAngle(shooterSettings[1])
         self.app.setShooterSpeed(shooterSettings[0])
+        if Keymap.Shooter.shoot.getAsBoolean():
+            self.app.hopperMotorOn()
+        else:
+            self.app.hopperMotorOff()    
         
     def end(self, interrupted=False) -> None:
         self.app.shooterMotorOff()
         self.app.hoodMotorOff()
+        self.app.hopperMotorOff() 
+
+
+

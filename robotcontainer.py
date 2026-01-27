@@ -31,6 +31,7 @@ import constants
 class Robot:
     # Defines all subsystems used in the robot, these are used to access the subsystems in commands and other files.
     elevator = subsystems.Elevator()
+    shooter = subsystems.Shooter()
 
 
 
