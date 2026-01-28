@@ -15,11 +15,11 @@ class Shooter(commands2.SubsystemBase):
         # self.m_shooter = rev.SparkMax(58, rev.SparkMax.MotorType.kBrushless)
         self.m_shooter1 = hardware.TalonFX(60)
         self.m_shooter2 = hardware.TalonFX(61)  
-        self.m_hoodMotor = hardware.TalonFX(65)
-        ## self.m_hopperMotor = hardware.TalonFX()
+        self.m_hoodMotor1 = hardware.TalonFX(55)
+        self.m_hopperMotor = hardware.TalonFX(68)
         
-        # Be able to switch which control request to use based on a button press
-        # Start at velocity 0, use slot 0
+        # # Be able to switch which control request to use based on a button press
+        # # Start at velocity 0, use slot 0
         self.velocity_voltage = controls.VelocityVoltage(0).with_slot(0)
         # Start at velocity 0, use slot 1
         self.velocity_torque = controls.VelocityTorqueCurrentFOC(0).with_slot(1)
@@ -56,7 +56,7 @@ class Shooter(commands2.SubsystemBase):
         if not status.is_ok():
             print(f"Could not apply configs, error code: {status.name}")
 
-        self.m_shooter2.set_control(controls.Follower(self.m_shooter1.device_id, signals.MotorAlignmentValue.ALIGNED))
+        self.m_shooter2.set_control(controls.Follower(self.m_shooter1.device_id,False))
 
         #self.talonfx = hardware.TalonFX(0, self.canbus)
        # self.talonfx_foll
@@ -89,14 +89,14 @@ class Shooter(commands2.SubsystemBase):
         # Retry config apply up to 5 times, report if failure
         status: StatusCode = StatusCode.STATUS_CODE_NOT_INITIALIZED
         for _ in range(0, 5):
-            status = self.m_hoodMotor.configurator.apply(cfg)
+            status = self.m_hoodMotor1.configurator.apply(cfg)
             if status.is_ok():
                 break
         if not status.is_ok():
             print(f"Could not apply configs, error code: {status.name}")
 
         # Make sure we start at 0
-        self.m_hoodMotor.set_position(0)
+        self.m_hoodMotor1.set_position(0)
 
     def setShooterSpeed(self, speed: float) -> bool:
         '''Sets the speed of the shooter motors based on supplied speed.
@@ -105,9 +105,9 @@ class Shooter(commands2.SubsystemBase):
             speed: The desired speed of the wheels in RPS.
         '''
         
-        self.m_shooter1.set_control(self.velocity_voltage.with_velocity(speed))
+        self.m_shooter1.set(0)
         #print("Shooter out Speed:", speed)
-        return Tyler.max_min_check(self.m_shooter1.get_velocity(), speed, config.Shooter.wheelSpeedShooterTolerance)
+        return Tyler.max_min_check(self.m_shooter1.get_velocity().value_as_double, speed, config.Shooter.wheelSpeedShooterTolerance)
         
     def shooterMotorOff(self):
         self.m_shooter1.set(0)
@@ -118,13 +118,13 @@ class Shooter(commands2.SubsystemBase):
         Args:
             angle: The desired angle of the hood in degrees.
         '''
-        
-        self.m_hoodMotor.set_control(self.position_voltage.with_position(angle * config.Shooter.hoodRotationsToAngle))
+        # self.m_hoodMotor1.set(1)
+        self.m_hoodMotor1.set_control(self.position_voltage.with_position(angle * config.Shooter.hoodRotationsToAngle))
         #print("Shooter out Speed:", speed)
-        return Tyler.max_min_check(self.m_hoodMotor.get_position()/config.Shooter.hoodRotationsToAngle, angle, config.Shooter.hoodAngleTolerance)
+        return Tyler.max_min_check(self.m_hoodMotor1.get_position().value_as_double/config.Shooter.hoodRotationsToAngle, angle, config.Shooter.hoodAngleTolerance)
 
     def hoodMotorOff(self):
-        self.m_hoodMotor.set(0)
+        self.m_hoodMotor1.set(0)
 
     def inScoringZone(pose: Pose2d) -> bool:
         '''changes hood angle when not in alliance's zone
@@ -148,7 +148,7 @@ class Shooter(commands2.SubsystemBase):
             else: ## in zone, shooting mode
                 return True
 
-    def calcTarget(self, pose:Pose2d, goalPose:Pose2d) -> list[float, float]:
+    def calcTarget(self, pose:Pose2d, goalPose:Pose2d):
         '''Calculates target based on pose and goal pose, returns wheel speed and hood angle.
     
         Args:
@@ -163,10 +163,19 @@ class Shooter(commands2.SubsystemBase):
         IntermediatePose = pose.relativeTo(goalPose)
         Distance = (IntermediatePose.X()**2 + IntermediatePose.Y()**2)**.5  #pythagoream theorum
         SmartDashboard.putNumber("Calculated Shooter Distance", Distance)
-        wheelSpeed = 2 * Distance ### FIX
-        Angle = 3 * Distance ### FIX
-        return list(wheelSpeed, Angle)
+        wheelSpeed = 1 * Distance ### FIX
+        Angle = 1 * Distance ### FIX
+        SmartDashboard.putNumber("Calculated Wheel Speed", wheelSpeed)
+        SmartDashboard.putNumber("Calculated Angle", Angle)
+        return wheelSpeed, Angle
 
-   ### def hopperMotor
+    def hopperMotorOff(self):
+        self.m_hopperMotor.set(0)
+
+    def hopperMotorOn(self):
+        self.m_hopperMotor.set(1)  
+
+    def hopperMotorReverse(self):
+        self.m_hopperMotor.set(-1)      
 
 

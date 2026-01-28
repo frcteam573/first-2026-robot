@@ -59,10 +59,11 @@ class HPStations:
 ]
 
 class HubPositions:
-    BlueHubPos = Pose2d(inches_to_meters*(144.00), inches_to_meters*(158.50), Rotation2d(math.radians(0))) #april tag 18
+    BlueHubPos = Pose2d(inches_to_meters*(182.11), inches_to_meters*(158.84), Rotation2d(math.radians(0))) #april tag 18
 
-    RedHubPos = Pose2d(Translation2d(inches_to_meters*(546.87), inches_to_meters*(158.50)), Rotation2d(math.radians(0))) #april tag 7
+    RedHubPos = Pose2d(Translation2d(inches_to_meters*(469.11), inches_to_meters*(158.84)), Rotation2d(math.radians(0))) #april tag 7
 
+##### only hub postiions are current field, all other measurements are from last year
 class PassingPositions:
     BluePassingPos1 = Pose2d(inches_to_meters*(144.00), inches_to_meters*(158.50), Rotation2d(math.radians(0))) #april tag 18
     BluePassingPos2 = Pose2d(inches_to_meters*(144.00), inches_to_meters*(158.50), Rotation2d(math.radians(0))) #april tag 18

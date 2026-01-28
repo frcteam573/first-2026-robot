@@ -18,13 +18,25 @@ class Controllers:
     OPERATOR_CONTROLLER = wpilib.Joystick(1)
 #-- Create keymap class --
 class Keymap:
-    class Elevator:
-        setLevel3 = commands2.button.JoystickButton(Controllers.DRIVER_CONTROLLER, controllerDRIVER.RB)
-        setLevel1 = commands2.button.JoystickButton(Controllers.DRIVER_CONTROLLER, controllerDRIVER.LB)
+    class Shooter:
+        setupShooter = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.RB)
+        shoot = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.Y)
 
     class Drivetrain:
         followPath = commands2.button.JoystickButton(Controllers.DRIVER_CONTROLLER, controllerDRIVER.A)
-        
+
+    #class Intake:
+         
+   # class Climber:        
+
+
+
+       # **in code*
+       # Y- shoot
+       # A- setup shooter
+       # B- intake
+       # X- climb
+
 
 
 

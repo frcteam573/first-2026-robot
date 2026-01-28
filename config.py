@@ -85,6 +85,6 @@ class DrivebasedAngleAlign:
     alignmentPID = PIDController(p, i, d)
     
 
-class RobotPose:
+class RobotPoseConfig:
     pose = Pose2d(0,0,Rotation2d(0))
 
