@@ -135,7 +135,7 @@ class RobotContainer:
                         -self._joystick.getLeftX() * self._max_speed
                     )  # Drive left with negative X (left)
                     .with_rotational_rate(
-                        subsystems.CommandSwerveDrivetrain.calculate_relative_angle(self=self.drivetrain, robotPose=config.RobotPose.pose, targetPose=utilities.getTargetPose(config.RobotPose.pose))
+                        subsystems.CommandSwerveDrivetrain.calculate_relative_angle(self=self.drivetrain, robotPose=config.RobotPoseConfig.pose, targetPose=utilities.getTargetPose(config.RobotPoseConfig.pose))
                     )  # Drive counterclockwise with negative X (left)
                 )
             )) 
