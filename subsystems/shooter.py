@@ -121,7 +121,7 @@ class Shooter(commands2.SubsystemBase):
         # self.m_hoodMotor1.set(1)
         self.m_hoodMotor1.set_control(self.position_voltage.with_position(angle * config.Shooter.hoodRotationsToAngle))
         #print("Shooter out Speed:", speed)
-        return Tyler.max_min_check(self.m_hoodMotor.get_position().value_as_double/config.Shooter.hoodRotationsToAngle, angle, config.Shooter.hoodAngleTolerance)
+        return Tyler.max_min_check(self.m_hoodMotor1.get_position().value_as_double/config.Shooter.hoodRotationsToAngle, angle, config.Shooter.hoodAngleTolerance)
 
     def hoodMotorOff(self):
         self.m_hoodMotor1.set(0)

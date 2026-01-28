@@ -26,10 +26,8 @@ class Shoot(commands2.Command):
 
     def execute(self) -> None:
         wheelSpeed, hoodAngle = self.app.calcTarget(config.RobotPoseConfig.pose, utils.utils.getTargetPose(config.RobotPoseConfig.pose))
-        self.app.hoodMotorOff()
-        self.app.shooterMotorOff()
-        # self.app.setHoodAngle(hoodAngle)
-        # self.app.setShooterSpeed(wheelSpeed)
+        self.app.setHoodAngle(hoodAngle)
+        self.app.setShooterSpeed(wheelSpeed)
         if Keymap.Shooter.shoot.getAsBoolean():
             self.app.hopperMotorOn()
         else:
