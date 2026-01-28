@@ -36,12 +36,12 @@ def getTargetPose(pose: Pose2d) -> Pose2d:
         
         if DriverStation.getAlliance() == DriverStation.Alliance.kBlue:
             if pose.X() > constants.blueAllianceZoneThreshold: ## not in zone, passing mode
-                return pose.nearest(constants.BluePassingPos)
+                return pose.nearest(constants.PassingPositions.BluePassingPos)
             else: ## in zone, shooting mode
                 return constants.HubPositions.BlueHubPos
         else: ##red alliance
             if pose.X() < constants.redAllianceZoneThreshold: ## not in zone, passing mode
-                return pose.nearest(constants.RedPassingPos)
+                return pose.nearest(constants.PassingPositions.RedPassingPos)
             else: ## in zone, shooting mode
                 return constants.HubPositions.RedHubPos
             

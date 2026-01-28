@@ -388,12 +388,11 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
 
         return path
     
-    def calculate_relative_angle(self, robotPose, targetPose) -> float:
-        targetRelative = targetPose.RelativeTo(robotPose)
-        finalRelativeAngle = math.atan((targetRelative.X() / targetRelative.Y()))
-        
-        output = self.TylersPID.calculate(finalRelativeAngle)
-        
-        
-        
-        return output
+    def calculate_relative_angle(self, robotPose:Pose2d, targetPose:Pose2d) -> float:
+        targetRelative = targetPose.relativeTo(robotPose)
+
+        finalRelativeAngle = math.atan2(targetRelative.Y(), targetRelative.X())
+            
+        output = self.TylersPID.calculate(finalRelativeAngle, 0.0)
+
+        return -output
