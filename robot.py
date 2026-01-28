@@ -34,7 +34,7 @@ class MyRobot(commands2.TimedCommandRobot):
 
     photonVisionMethod = config.PhotonVisionSetting.SIM
 
-    localizationMethod = config.PrimaryLocalization.VISION
+    localizationMethod = config.PrimaryLocalization.ODO_Only
 
 
     def robotInit(self) -> None:
@@ -97,7 +97,7 @@ class MyRobot(commands2.TimedCommandRobot):
         else:
             pass
 
-        config.RobotPose.pose = self.container.drivetrain.get_state().pose
+        config.RobotPoseConfig.pose = self.container.drivetrain.get_state().pose
 
         subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
         commands2.CommandScheduler.getInstance().run()

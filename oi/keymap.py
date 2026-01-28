@@ -19,7 +19,7 @@ class Controllers:
 #-- Create keymap class --
 class Keymap:
     class Shooter:
-        setupShooter = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.A)
+        setupShooter = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.RB)
         shoot = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.Y)
 
     class Drivetrain:

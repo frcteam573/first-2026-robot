@@ -21,17 +21,20 @@ class Shoot(commands2.Command):
         self.addRequirements(app)
         
     def initialize(self) -> None:
-        self.finished = False
+        pass
+
 
     def execute(self) -> None:
-        self.finished = False
-        shooterSettings = self.app.calcTarget(config.RobotPose.pose, utils.utils.getTargetPose(config.RobotPose.pose))
-        self.app.setHoodAngle(shooterSettings[1])
-        self.app.setShooterSpeed(shooterSettings[0])
+        wheelSpeed, hoodAngle = self.app.calcTarget(config.RobotPoseConfig.pose, utils.utils.getTargetPose(config.RobotPoseConfig.pose))
+        self.app.hoodMotorOff()
+        self.app.shooterMotorOff()
+        # self.app.setHoodAngle(hoodAngle)
+        # self.app.setShooterSpeed(wheelSpeed)
         if Keymap.Shooter.shoot.getAsBoolean():
             self.app.hopperMotorOn()
         else:
             self.app.hopperMotorOff()    
+        
         
     def end(self, interrupted=False) -> None:
         self.app.shooterMotorOff()

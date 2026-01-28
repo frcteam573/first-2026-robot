@@ -77,6 +77,6 @@ class ReefAlign:
     allowable_errorY = 0.1
     allowable_errorR = 5  # degrees
 
-class RobotPose:
+class RobotPoseConfig:
     pose = Pose2d(0,0,Rotation2d(0))
 
