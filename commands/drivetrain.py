@@ -29,17 +29,12 @@ class GoatedTracking(commands2.Command): #Locking Orientation on the goal pose p
         self.app = app
         self.addRequirements(app)
         self.currentRot = currentRotation
-
-        
+ 
       def initialize(self) -> None:
         pass
         
-        
-        
       def execute(self):
         pass
-        
-
 
       def end(self, interrupted=False) -> None:
         #This is run when the command is finished.
