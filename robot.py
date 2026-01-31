@@ -105,6 +105,7 @@ class MyRobot(commands2.TimedCommandRobot):
         config.RobotPoseConfig.pose = self.container.drivetrain.get_state().pose
 
         subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
+        subsystems.Shooter.getShooterInfo(Robot.shooter)
         commands2.CommandScheduler.getInstance().run()
 
     def disabledInit(self) -> None:

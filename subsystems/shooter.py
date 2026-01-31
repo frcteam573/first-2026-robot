@@ -105,7 +105,7 @@ class Shooter(commands2.SubsystemBase):
             speed: The desired speed of the wheels in RPS.
         '''
         
-        self.m_shooter1.set(0)
+        self.m_shooter1.set_control(self.velocity_voltage.with_velocity(speed))
         #print("Shooter out Speed:", speed)
         return Tyler.max_min_check(self.m_shooter1.get_velocity().value_as_double, speed, config.Shooter.wheelSpeedShooterTolerance)
         
@@ -177,5 +177,17 @@ class Shooter(commands2.SubsystemBase):
 
     def hopperMotorReverse(self):
         self.m_hopperMotor.set(-1)      
+
+    def getShooterInfo(self):
+        '''Gets shooter info.
+
+        Output:
+            A list consisting of shooter wheel speed in RPS and hood angle in degrees.
+
+        '''
+        wheelSpeed = self.m_shooter1.get_velocity().value_as_double
+        hoodAngle = self.m_hoodMotor1.get_position().value_as_double/config.Shooter.hoodRotationsToAngle
+        SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed", wheelSpeed)
+        SmartDashboard.putNumber("Shooter / Actual Hood Angle", hoodAngle)
 
 
