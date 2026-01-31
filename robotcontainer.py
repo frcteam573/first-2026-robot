@@ -25,6 +25,9 @@ from ntcore import NetworkTableInstance
 import subsystems
 import commands.elevator
 import commands.drivetrain
+import commands.shooter
+import commands.intake
+## import commands.climber
 import constants
 import subsystems.command_swerve_drivetrain
 import utils.utils as utilities
@@ -34,8 +37,7 @@ class Robot:
     # Defines all subsystems used in the robot, these are used to access the subsystems in commands and other files.
     elevator = subsystems.Elevator()
     shooter = subsystems.Shooter()
-
-
+    intake = subsystems.Intake()
 
 class RobotContainer:
     """
@@ -84,6 +86,13 @@ class RobotContainer:
 
         NamedCommands.registerCommand("Raise Elevator", commands.elevator.setPosition(self._elevator,position=10))
         NamedCommands.registerCommand("Lower Elevator", commands.elevator.setPosition(self._elevator,position=0))
+        NamedCommands.registerCommand("Intake In", commands.intake.IntakeIn(Robot.intake))
+        NamedCommands.registerCommand("Intake Out", commands.intake.IntakeOut(Robot.intake))
+        NamedCommands.registerCommand("Intake Retract", commands.intake.IntakeRetract(Robot.intake))
+        # NamedCommands.registerCommand("Climber Extend", commands.climber.extendClimber(Robot.climber))
+        NamedCommands.registerCommand("Shoot Prep", commands.shooter.Shoot(Robot.shooter))
+        NamedCommands.registerCommand("Shoot Out", commands.shooter.Shoot(Robot.shooter, shootOut=True))
+        
 
         # Auto builder
         self._auto_chooser = AutoBuilder.buildAutoChooser("Tests")

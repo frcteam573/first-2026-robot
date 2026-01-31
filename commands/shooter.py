@@ -13,12 +13,14 @@ class Shoot(commands2.Command):
     #This command used to run shooter motor
     def __init__(
         self, 
-        app: Shooter,
+        app: Shooter, 
+        shootOut: bool = False,
     ) -> None:
         super().__init__()
 
         self.app = app
         self.addRequirements(app)
+        self.shootOut = shootOut
         
     def initialize(self) -> None:
         pass
@@ -28,7 +30,7 @@ class Shoot(commands2.Command):
         wheelSpeed, hoodAngle = self.app.calcTarget(config.RobotPoseConfig.pose, utils.utils.getTargetPose(config.RobotPoseConfig.pose))
         self.app.setHoodAngle(hoodAngle)
         self.app.setShooterSpeed(wheelSpeed)
-        if Keymap.Shooter.shoot.getAsBoolean():
+        if Keymap.Shooter.shoot.getAsBoolean() or self.shootOut:
             self.app.hopperMotorOn()
         else:
             self.app.hopperMotorOff()    

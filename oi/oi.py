@@ -12,7 +12,7 @@ from commands2 import (
 import commands.elevator
 import commands.drivetrain
 import commands.shooter
-# import commands.intake
+import commands.intake
 # import commands.climber
 
 import commands
@@ -44,4 +44,6 @@ class OI:
 #Keymap.Elevator.setLevel1.whileTrue(commands.elevator.setPosition(Robot.elevator,position=0))
 
 Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(Robot.shooter))
-
+Keymap.Intake.intakeIn.whileTrue(commands.intake.IntakeIn(Robot.intake))
+Keymap.Intake.intakeOut.whileTrue(commands.intake.IntakeOut(Robot.intake))
+Keymap.Intake.intakeRetract.whileTrue(commands.intake.IntakeRetract(Robot.intake))

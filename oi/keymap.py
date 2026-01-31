@@ -25,6 +25,11 @@ class Keymap:
     class Drivetrain:
         followPath = commands2.button.JoystickButton(Controllers.DRIVER_CONTROLLER, controllerDRIVER.A)
 
+    class Intake:
+        intakeIn = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.LB)
+        intakeOut = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.X)
+        intakeRetract = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.B)    
+
     #class Intake:
          
    # class Climber:        
