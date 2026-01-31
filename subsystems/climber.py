@@ -1,5 +1,6 @@
 import commands2
 import config
+
 from phoenix6 import hardware, controls, configs, StatusCode
 from wpilib import DriverStation, SmartDashboard, Mechanism2d, MechanismLigament2d
 from ntcore import NetworkTableInstance
@@ -43,11 +44,16 @@ class Climber(commands2.SubsystemBase):
         self.talonfx.set(0)
 
     def extendClimber(self):
-        self.talonfx.set(1)
+        
+        if config.Climber.climberMode:
+         self.talonfx.set(1.0)
 
     def retractClimber(self):
-        self.talonfx.set(-1)
+        
+        if config.Climber.climberMode:
+         self.talonfx.set(-1.0)
     
+
     def getClimberPosition(self):
         return self.talonfx.get_position().value_as_double
 

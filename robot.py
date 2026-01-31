@@ -22,6 +22,22 @@ import oi.oi
 import subsystems
 import config, constants
 
+
+from utils.oi import (
+    JoystickAxis,
+    XBoxController,
+)
+
+
+controllerDRIVER = XBoxController
+controllerOPERATOR = XBoxController
+class Controllers:
+    DRIVER = 0
+    OPERATOR = 1
+
+    DRIVER_CONTROLLER = wpilib.Joystick(0)
+    OPERATOR_CONTROLLER = wpilib.Joystick(1)
+
 class MyRobot(commands2.TimedCommandRobot):
     """
     Command v2 robots are encouraged to inherit from TimedCommandRobot, which
@@ -91,6 +107,8 @@ class MyRobot(commands2.TimedCommandRobot):
 
     def autonomousPeriodic(self) -> None:
         """This function is called periodically during autonomous"""
+
+
         pass
 
     def teleopInit(self) -> None:
@@ -105,6 +123,10 @@ class MyRobot(commands2.TimedCommandRobot):
 
     def teleopPeriodic(self) -> None:
         """This function is called periodically during operator control"""
+        if commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerDRIVER.START) and commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerDRIVER.SELECT):
+         config.Climber.climberMode = True
+         print("TEST")
+                 
         pass
 
     def testInit(self) -> None:

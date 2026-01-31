@@ -41,9 +41,12 @@ class OI:
 # #======================== drivetrain ========================#
     #This can be empty as SwerveDriveCustome command is set to run by default in teleopinit.
 	
-# Keymap.Elevator.setLevel3.whileTrue(commands.elevator.setPosition(Robot.elevator,position=10))
-# Keymap.Elevator.setLevel1.whileTrue(commands.elevator.setPosition(Robot.elevator,position=0))
 
-Keymap.Climber.climbUp.whileTrue(commands.climber.setPosition(Robot.climber,position=10))
-Keymap.Climber.climbDown.whileTrue(commands.climber.setPosition(Robot.climber,position=0))
+# set pos code
+commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, position = 10))
+commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, position = 0))
+# manual code
+# commands2.button.Trigger(lambda: Keymap.Climber.extendclimber.value > .05).whileTrue(commands.extendclimber(Robot.climber))
+# commands2.button.Trigger(lambda: Keymap.Climber.retractclimber.value > .05).whileTrue(commands.retractclimber(Robot.climber))
+
 

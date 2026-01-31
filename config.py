@@ -54,6 +54,8 @@ class Climber:
     slot0.k_i = 0 # No output for integrated error
     slot0.k_d = 0.5 # A velocity error of 1 rps results in 0.5 V output
 
+    climberMode = False
+
 # ------------ Vision Settings --------------------
 
 class vision_settings:
