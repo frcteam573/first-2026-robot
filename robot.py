@@ -25,6 +25,9 @@ import config, constants
 import ntcore
 from questnav.questnav import QuestNav
 
+from wpilib import DataLogManager, DriverStation
+
+
 class MyRobot(commands2.TimedCommandRobot):
     """
     Command v2 robots are encouraged to inherit from TimedCommandRobot, which
@@ -60,6 +63,8 @@ class MyRobot(commands2.TimedCommandRobot):
 
         oi.oi.OI.map_controls() #Map controls
         self.time_start = time.time()
+        self.wpilogger = DataLogManager.start()
+        DriverStation.startDataLog(DataLogManager.getLog())
         if wpilib.RobotBase.isSimulation(): #Only run is in SIM
             self.simulationInit()
 
