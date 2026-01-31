@@ -95,7 +95,7 @@ class RobotContainer:
         
 
         # Auto builder
-        self._auto_chooser = AutoBuilder.buildAutoChooser("Tests")
+        self._auto_chooser = AutoBuilder.buildAutoChooser("test auton")
         SmartDashboard.putData("Choreo", self._auto_chooser)
 
         self._vision_est = config.Cameras.vision_controller

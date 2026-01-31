@@ -26,11 +26,9 @@ class IntakeIn(commands2.Command):
     def execute(self) -> None:
         self.app.intakeMotorIn()  
         self.app.setIntakePosition(config.Intake.MaxLength)  
-        self.app.getIntakeDSOutput()
         
     def end(self, interrupted=False) -> None:
         self.app.intakeMotorOff()
-        self.app.getIntakeDSOutput()
 
 class IntakeOut(commands2.Command):
     #This command used to run shooter motor
@@ -49,13 +47,9 @@ class IntakeOut(commands2.Command):
     def execute(self) -> None:
         self.app.intakeMotorOut()  
         self.app.setIntakePosition(config.Intake.MaxLength)  
-        self.app.getIntakeDSOutput()
         
     def end(self, interrupted=False) -> None:
         self.app.intakeMotorOff()
-        self.app.getIntakeDSOutput()
-
-
 
 class IntakeRetract(commands2.Command):
     #This command used to run shooter motor
@@ -74,8 +68,6 @@ class IntakeRetract(commands2.Command):
     def execute(self) -> None:
         self.app.intakeMotorOff()  
         self.app.setIntakePosition(config.Intake.MinLength)  
-        self.app.getIntakeDSOutput()
         
     def end(self, interrupted=False) -> None:
-        self.app.intakeMotorOff()        
-        self.app.getIntakeDSOutput()
+        self.app.intakeMotorOff()

@@ -37,8 +37,7 @@ class MyRobot(commands2.TimedCommandRobot):
 
     photonVisionMethod = config.PhotonVisionSetting.SIM
 
-    localizationMethod = config.PrimaryLocalization.ODO_Only
-
+    localizationMethod = config.PrimaryLocalization.VISION
 
     def robotInit(self) -> None:
         """
@@ -106,6 +105,7 @@ class MyRobot(commands2.TimedCommandRobot):
 
         subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
         subsystems.Shooter.getShooterInfo(Robot.shooter)
+        subsystems.Intake.getIntakeInfo(Robot.intake)
         commands2.CommandScheduler.getInstance().run()
 
     def disabledInit(self) -> None:

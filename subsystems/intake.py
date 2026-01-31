@@ -32,25 +32,13 @@ class Intake(commands2.SubsystemBase):
         if not status.is_ok():
             print(f"Could not apply configs, error code: {status.name}")
 
-        #Output for logging
-        self._inst = NetworkTableInstance.getDefault()
-        self._table = self._inst.getTable("Intake")
-        self._field1_pub = self._table.getDoubleTopic("Current Position").publish()
-        self._field2_pub = self._table.getDoubleTopic("Current Setpoint").publish()
-
     def setIntakePosition(self,position:float):
         #print("Set Intake Position")
         self.m_intakeExtension.set_control(self.motion_magic.with_position(position).with_slot(0))
+        SmartDashboard.putNumber("Intake / Commanded Intake Extension Position", position)
 
     def stopIntakeExtension(self):
         self.m_intakeExtension.set(0)    
-
-    def getIntakeDSOutput(self):
-        current_rot = self.m_intakeExtension.get_position().value_as_double
-        self._field1_pub.set(current_rot)
-        self._field2_pub.set(self.motion_magic.position)
-        self.intake.setLength(config.Intake.MinLength + (current_rot * config.Intake.Rot_to_Dist))
-        SmartDashboard.putNumber("Intake Motor Value", self.m_intakeMotor.get())
 
     def intakeMotorOut(self):
         self.m_intakeMotor.set(1)
@@ -62,9 +50,15 @@ class Intake(commands2.SubsystemBase):
 
     def intakeMotorOff(self):
         self.m_intakeMotor.set(0)        
-    
 
+    def getIntakeInfo(self):
+        '''Gets intake info.
 
+        Output:
+            A list consisting of intake motor value and intake extension position.
 
-
-
+        '''
+        intakeWheelSpeed = self.m_intakeMotor.get_velocity().value_as_double
+        intakeExtension = self.m_intakeExtension.get_position().value_as_double/config.Intake.Rot_to_Dist
+        SmartDashboard.putNumber("Intake / Actual Intake Motor Value", intakeWheelSpeed)
+        SmartDashboard.putNumber("Intake / Actual Intake Extension Position", intakeExtension)
