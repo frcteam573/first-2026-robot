@@ -43,18 +43,19 @@ class LED(commands2.SubsystemBase):
     self.blinkin.set(0.93)
    # print('WhiteBlink')
 
-######################### below has not been edited yet - tyler ##############################
+
 
   def ModeManager(self):
     Motor_Error = not wpilib.SmartDashboard.getBoolean("Any Motor Error",False)
     Gyro_Error = wpilib.SmartDashboard.getBoolean("Gyro Error",False)
-    Coral_In = wpilib.SmartDashboard.getBoolean("Coral In",False)
-    Coral_Released = wpilib.SmartDashboard.getBoolean("Coral Released",False)
-    Algae_Released = wpilib.SmartDashboard.getBoolean("Algae Released",False)
-    Alligned_Reef_Level = wpilib.SmartDashboard.getBoolean("Alligned Reef Level",False)
-    Done_Climbing = wpilib.SmartDashboard.getBoolean("Done Climbing",False)
-    TargetSeen = wpilib.SmartDashboard.getBoolean("Target Seen",False)
-    HPTargetSeen = wpilib.SmartDashboard.getBoolean("HP Target Seen",False)
+    Hood_At_Position = wpilib.SmartDashboard.getBoolean("Shooter / Hood at Position",False)
+    Wheel_At_Speed = wpilib.SmartDashboard.getBoolean("Shooter / Wheel at Speed",False)
+    
+    # Algae_Released = wpilib.SmartDashboard.getBoolean("Algae Released",False)
+    # Alligned_Reef_Level = wpilib.SmartDashboard.getBoolean("Alligned Reef Level",False)
+    # Done_Climbing = wpilib.SmartDashboard.getBoolean("Done Climbing",False)
+    # TargetSeen = wpilib.SmartDashboard.getBoolean("Target Seen",False)
+    # HPTargetSeen = wpilib.SmartDashboard.getBoolean("HP Target Seen",False)
     
     error = False
     if Motor_Error or Gyro_Error:

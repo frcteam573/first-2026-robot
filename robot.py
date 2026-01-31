@@ -35,7 +35,7 @@ class MyRobot(commands2.TimedCommandRobot):
     """
     autonomousCommand: typing.Optional[commands2.Command] = None
 
-    photonVisionMethod = config.PhotonVisionSetting.SIM
+    photonVisionMethod = config.PhotonVisionSetting.REAL_CAMERA
 
     localizationMethod = config.PrimaryLocalization.VISION
 
@@ -114,7 +114,7 @@ class MyRobot(commands2.TimedCommandRobot):
 
     def disabledPeriodic(self) -> None:
         """This function is called periodically when disabled"""
-        pass
+        self.resetPoseBasedOnVision() # Resets pose of QuestNav and robot based on Vision Only
 
     def autonomousInit(self) -> None:
         """This autonomous runs the autonomous command selected by your RobotContainer class."""
@@ -138,8 +138,6 @@ class MyRobot(commands2.TimedCommandRobot):
         config.Alliance.blue_team = wpilib.DriverStation.Alliance.kBlue == self.alliance #Set a config value to this color used in automous selection
         if self.autonomousCommand:
             self.autonomousCommand.cancel()
-
-        self.resetPoseBasedOnVision() # Resets pose of QuestNav and robot based on Vision Only
 
     def teleopPeriodic(self) -> None:
         """This function is called periodically during operator control"""
