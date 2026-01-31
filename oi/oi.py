@@ -9,8 +9,12 @@ from commands2 import (
 	WaitCommand,
 	FunctionalCommand,
 )
+import commands.climber
 import commands.elevator
 import commands.drivetrain
+
+
+
 
 import commands
 import config
@@ -37,6 +41,9 @@ class OI:
 # #======================== drivetrain ========================#
     #This can be empty as SwerveDriveCustome command is set to run by default in teleopinit.
 	
-Keymap.Elevator.setLevel3.whileTrue(commands.elevator.setPosition(Robot.elevator,position=10))
-Keymap.Elevator.setLevel1.whileTrue(commands.elevator.setPosition(Robot.elevator,position=0))
+# Keymap.Elevator.setLevel3.whileTrue(commands.elevator.setPosition(Robot.elevator,position=10))
+# Keymap.Elevator.setLevel1.whileTrue(commands.elevator.setPosition(Robot.elevator,position=0))
+
+Keymap.Climber.climbUp.whileTrue(commands.climber.setPosition(Robot.climber,position=10))
+Keymap.Climber.climbDown.whileTrue(commands.climber.setPosition(Robot.climber,position=0))
 

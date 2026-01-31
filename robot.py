@@ -71,7 +71,7 @@ class MyRobot(commands2.TimedCommandRobot):
         self.add_vision_to_pose_esimate()
         subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
         commands2.CommandScheduler.getInstance().run()
-
+        subsystems.Climber.getClimberDSOutput(Robot.climber)
     def disabledInit(self) -> None:
         """This function is called once each time the robot enters Disabled mode."""
         pass
