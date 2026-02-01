@@ -5,12 +5,16 @@ from pathplannerlib.auto import AutoBuilder, RobotConfig
 from pathplannerlib.controller import PIDConstants, PPHolonomicDriveController, PIDController
 from phoenix6 import SignalLogger, swerve, units, utils
 from typing import Callable, overload
-from wpilib import DriverStation, Notifier, RobotController
+from wpilib import DriverStation, Notifier, RobotController, SmartDashboard
 from wpilib.sysid import SysIdRoutineLog
 from wpimath.geometry import Pose2d, Rotation2d
 from pathplannerlib.path import PathPlannerPath, PathConstraints, GoalEndState
+from wpimath.units import rotationsToRadians
 from constants import DrivetrainConstants
 import config
+import utils.utils as utilities
+from generated.tuner_constants import TunerConstants
+from commands2.button import CommandXboxController, Trigger
 
 
 
@@ -394,5 +398,52 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
         finalRelativeAngle = math.atan2(targetRelative.Y(), targetRelative.X())
             
         output = self.TylersPID.calculate(finalRelativeAngle, 0.0)
+        
+        if abs(finalRelativeAngle - targetRelative) <= (config.DrivebasedAngleAlign.angleTolerance):
+            SmartDashboard.putBoolean("Aligned", True)
+        else:
+            SmartDashboard.putBoolean("Aligned", False)
 
         return -output
+    
+    
+    
+    def getMotors(self):
+        self._max_speed = (
+            TunerConstants.speed_at_12_volts
+        )  # speed_at_12_volts desired top speed
+        self._max_angular_rate = rotationsToRadians(
+            0.75
+        )  # 3/4 of a rotation per second max angular velocity
+        
+        
+        motors = []
+        for module in self.modules:
+            motors.append(module.drive_motor)
+            motors.append(module.steer_motor)
+            print(motors)
+        return motors
+    
+    def alignToHoop(self):
+        self._drive = (
+            swerve.requests.FieldCentric()
+            .with_deadband(self._max_speed * 0.1)
+            .with_rotational_deadband(
+                self._max_angular_rate * 0.1
+            )  # Add a 10% deadband
+            .with_drive_request_type(
+                swerve.SwerveModule.DriveRequestType.OPEN_LOOP_VOLTAGE
+            )  # Use open-loop control for drive motors
+        )
+        self._joystick = CommandXboxController(0)
+        lambda: (
+                    self._drive.with_velocity_x(
+                        0
+                    )  # Drive forward with negative Y (forward)
+                    .with_velocity_y(
+                        0
+                    )  # Drive left with negative X (left)
+                    .with_rotational_rate(
+                        self.calculate_relative_angle(self=self, robotPose=config.RobotPoseConfig.pose, targetPose=utilities.getTargetPose(config.RobotPoseConfig.pose))
+                    )  # Drive counterclockwise with negative X (left)
+                )

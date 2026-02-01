@@ -93,3 +93,6 @@ class Intake(commands2.SubsystemBase):
 
         # Make sure we start at 0
         self.m_intakeExtension.set_position(0)  #### intake extension???
+        
+    def getMotors(self):
+        return [self.m_intakeExtension, self.m_intakeMotor]

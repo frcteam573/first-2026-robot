@@ -1,5 +1,6 @@
 import commands2
 import config
+import phoenix6
 from phoenix6 import hardware, controls, configs, StatusCode
 from wpilib import DriverStation, SmartDashboard, Mechanism2d, MechanismLigament2d
 from ntcore import NetworkTableInstance
@@ -54,3 +55,6 @@ class Climber(commands2.SubsystemBase):
         self._field1_pub.set(current_rot)
         self._field2_pub.set(self.motion_magic.position)
         self.climber.setLength(config.Elevator.MinLength + (current_rot * config.climber.Rot_to_Dist))
+        
+    def getMotorOutputStatus(self):
+        return self.talonfx.get_motor_output_status(True)

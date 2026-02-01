@@ -176,6 +176,17 @@ class Shooter(commands2.SubsystemBase):
         self.m_hopperMotor.set(1)  
 
     def hopperMotorReverse(self):
-        self.m_hopperMotor.set(-1)      
+        self.m_hopperMotor.set(-1)
+        
+    def getMotors(self):
+        motors = (self.m_shooter1, self.m_shooter2, self.m_hoodMotor1, self.m_hopperMotor)
+        self.motorTemps = []
+        for motor in motors:
+            signal = motor.get_device_temp().value_as_double
+            self.motorTemps.append(signal)
+            # get the device temperature as a failsafe, this is a status that is always being refreshed and posted.
+        # Because it is always being posted, we can remove any chance of an error occuring since we cant get the status of a dead motor.
+        print(self.motorTemps)
+        
 
 

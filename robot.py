@@ -87,6 +87,7 @@ class MyRobot(commands2.TimedCommandRobot):
 
         #Only run during SIM
         if wpilib.RobotBase.isSimulation():
+            
             self.simulationPeriodic()
 
         #Add measurements to localization based on primary source
@@ -98,8 +99,9 @@ class MyRobot(commands2.TimedCommandRobot):
             pass
 
         config.RobotPoseConfig.pose = self.container.drivetrain.get_state().pose
-
+        
         subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
+        subsystems.Shooter.getMotors(self=Robot.shooter)
         commands2.CommandScheduler.getInstance().run()
 
     def disabledInit(self) -> None:
@@ -150,6 +152,7 @@ class MyRobot(commands2.TimedCommandRobot):
     def simulationPeriodic(self) -> None:
         try:
             self.visionSim.update(self.container.drivetrain.get_state().pose)
+            
         except:
             pass
             
