@@ -11,10 +11,10 @@ class Elevator(commands2.SubsystemBase):
 
         # Elevator Example Section
         #Creat 2d Mechanism for visualization of simulation
-        self.mech = Mechanism2d(3,3)
-        self.root = self.mech.getRoot("Elevator",1.5,0)
-        self.elevator = self.root.appendLigament("elevator", config.Elevator.MinLength,90)
-        SmartDashboard.putData("Mech2d", self.mech)
+        # self.mech = Mechanism2d(3,3)
+        # self.root = self.mech.getRoot("Elevator",1.5,0)
+        # self.elevator = self.root.appendLigament("elevator", config.Elevator.MinLength,90)
+        # SmartDashboard.putData("Mech2d", self.mech)
 
         # Elvator Magic Motion and talon definition
         self.talonfx = self.getTalon()
@@ -50,7 +50,7 @@ class Elevator(commands2.SubsystemBase):
         return self.talonfx
     
     def getElevatorDSOutput(self):
-        current_rot = self.talonfx.get_position().value_as_double
-        self._field1_pub.set(current_rot)
-        self._field2_pub.set(self.motion_magic.position)
-        self.elevator.setLength(config.Elevator.MinLength + (current_rot * config.Elevator.Rot_to_Dist))
+         current_rot = self.talonfx.get_position().value_as_double
+        # self._field1_pub.set(current_rot)
+        # self._field2_pub.set(self.motion_magic.position)
+        # self.elevator.setLength(config.Elevator.MinLength + (current_rot * config.Elevator.Rot_to_Dist))

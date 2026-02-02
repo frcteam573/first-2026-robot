@@ -25,6 +25,25 @@ import config, constants
 import ntcore
 from questnav.questnav import QuestNav
 
+from wpilib import DataLogManager, DriverStation
+
+
+
+from utils.oi import (
+    JoystickAxis,
+    XBoxController,
+)
+
+
+controllerDRIVER = XBoxController
+controllerOPERATOR = XBoxController
+class Controllers:
+    DRIVER = 0
+    OPERATOR = 1
+
+    DRIVER_CONTROLLER = wpilib.Joystick(0)
+    OPERATOR_CONTROLLER = wpilib.Joystick(1)
+
 class MyRobot(commands2.TimedCommandRobot):
     """
     Command v2 robots are encouraged to inherit from TimedCommandRobot, which
@@ -32,10 +51,9 @@ class MyRobot(commands2.TimedCommandRobot):
     """
     autonomousCommand: typing.Optional[commands2.Command] = None
 
-    photonVisionMethod = config.PhotonVisionSetting.SIM
+    photonVisionMethod = config.PhotonVisionSetting.REAL_CAMERA
 
-    localizationMethod = config.PrimaryLocalization.ODO_Only
-
+    localizationMethod = config.PrimaryLocalization.VISION
 
     def robotInit(self) -> None:
         """
@@ -60,6 +78,8 @@ class MyRobot(commands2.TimedCommandRobot):
 
         oi.oi.OI.map_controls() #Map controls
         self.time_start = time.time()
+        self.wpilogger = DataLogManager.start()
+        DriverStation.startDataLog(DataLogManager.getLog())
         if wpilib.RobotBase.isSimulation(): #Only run is in SIM
             self.simulationInit()
 
@@ -102,15 +122,17 @@ class MyRobot(commands2.TimedCommandRobot):
         
         subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
         subsystems.Shooter.getMotors(self=Robot.shooter)
+        subsystems.Shooter.getShooterInfo(Robot.shooter)
+        subsystems.Intake.getIntakeInfo(Robot.intake)
         commands2.CommandScheduler.getInstance().run()
-
+        subsystems.Climber.getClimberDSOutput(Robot.climber)
     def disabledInit(self) -> None:
         """This function is called once each time the robot enters Disabled mode."""
         pass
 
     def disabledPeriodic(self) -> None:
         """This function is called periodically when disabled"""
-        pass
+        self.resetPoseBasedOnVision() # Resets pose of QuestNav and robot based on Vision Only
 
     def autonomousInit(self) -> None:
         """This autonomous runs the autonomous command selected by your RobotContainer class."""
@@ -123,6 +145,8 @@ class MyRobot(commands2.TimedCommandRobot):
 
     def autonomousPeriodic(self) -> None:
         """This function is called periodically during autonomous"""
+
+
         pass
 
     def teleopInit(self) -> None:
@@ -135,10 +159,12 @@ class MyRobot(commands2.TimedCommandRobot):
         if self.autonomousCommand:
             self.autonomousCommand.cancel()
 
-        self.resetPoseBasedOnVision() # Resets pose of QuestNav and robot based on Vision Only
-
     def teleopPeriodic(self) -> None:
         """This function is called periodically during operator control"""
+        if commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerDRIVER.START) and commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerDRIVER.SELECT):
+         config.Climber.climberMode = True
+         print("TEST")
+                 
         pass
 
     def testInit(self) -> None:

@@ -21,6 +21,12 @@
           "data": {
             "pathName": "Path2"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake In"
+          }
         }
       ]
     }

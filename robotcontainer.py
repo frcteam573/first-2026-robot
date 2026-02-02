@@ -24,7 +24,11 @@ import config
 from ntcore import NetworkTableInstance
 import subsystems
 import commands.elevator
+import commands.climber
 import commands.drivetrain
+import commands.shooter
+import commands.intake
+## import commands.climber
 import constants
 import subsystems.command_swerve_drivetrain
 import utils.utils as utilities
@@ -33,10 +37,13 @@ import utils.utils as utilities
 class Robot:
     # Defines all subsystems used in the robot, these are used to access the subsystems in commands and other files.
     elevator = subsystems.Elevator()
+    climber = subsystems.Climber()
+
     shooter = subsystems.Shooter()
     MotorStatus = subsystems.MotorStatus()
 
 
+    intake = subsystems.Intake()
 
 class RobotContainer:
     """
@@ -80,14 +87,25 @@ class RobotContainer:
 
         self.drivetrain = TunerConstants.create_drivetrain()
         self._elevator = subsystems.Elevator()
-
+        self._climber = subsystems.Climber()
+        
         #Name Commands for Autos these must be done before building the autobuilder
 
         NamedCommands.registerCommand("Raise Elevator", commands.elevator.setPosition(self._elevator,position=10))
         NamedCommands.registerCommand("Lower Elevator", commands.elevator.setPosition(self._elevator,position=0))
+        NamedCommands.registerCommand("Intake In", commands.intake.IntakeIn(Robot.intake))
+        NamedCommands.registerCommand("Intake Out", commands.intake.IntakeOut(Robot.intake))
+        NamedCommands.registerCommand("Intake Retract", commands.intake.IntakeRetract(Robot.intake))
+        # NamedCommands.registerCommand("Climber Extend", commands.climber.extendClimber(Robot.climber))
+        NamedCommands.registerCommand("Shoot Prep", commands.shooter.Shoot(Robot.shooter))
+        NamedCommands.registerCommand("Shoot Out", commands.shooter.Shoot(Robot.shooter, shootOut=True))
+        
+
+        NamedCommands.registerCommand("climbUp", commands.elevator.setPosition(self._elevator,position=10))
+        NamedCommands.registerCommand("climbDown", commands.elevator.setPosition(self._elevator,position=0))
 
         # Auto builder
-        self._auto_chooser = AutoBuilder.buildAutoChooser("Tests")
+        self._auto_chooser = AutoBuilder.buildAutoChooser("test auton")
         SmartDashboard.putData("Choreo", self._auto_chooser)
 
         self._vision_est = config.Cameras.vision_controller

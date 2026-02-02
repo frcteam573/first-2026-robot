@@ -23,6 +23,7 @@ class PhysicsEngine:
         self.motor_sim = sim.DCMotorSim(LinearSystemId.DCMotorSystem(gearbox, 0.01, 1.0), gearbox)
         # Keep a reference to the motor sim state so we can update it
         self.talon_sim = subsystems.Elevator.getTalon(self).sim_state
+        self.talon_sim = subsystems.Climber.getTalon(self).sim_state
 
     def update_sim(self, now: float, tm_diff: float) -> None:
         """
