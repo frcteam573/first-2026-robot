@@ -3,13 +3,16 @@ import math
 from wpimath.geometry import Pose3d, Rotation3d, Transform3d, Pose2d, Translation2d, Rotation2d, Translation3d
 from pathplannerlib.auto import PathConstraints
 
+blueAllianceZoneThreshold = 4.75
+redAllianceZoneThreshold = 11.9
+
 inches_to_meters = 0.0254
 #----------------------------- Camera Locations ---------------------------
 Robot_To_Camera1 = Transform3d(
     Translation3d(
-       7*inches_to_meters, 9.5*inches_to_meters, 12.5*inches_to_meters  # X  # Y  # Z
+       0*inches_to_meters, 0*inches_to_meters, 12*inches_to_meters  # X  # Y  # Z
     ),
-        Rotation3d(0.0, 0.0, math.radians(-15)),  # Roll  # Pitch  # Yaw
+        Rotation3d(0.0, 0.0, math.radians(0)),  # Roll  # Pitch  # Yaw
     )
 
 Robot_To_Camera2 = Transform3d(
@@ -55,28 +58,29 @@ class HPStations:
         postOffset_BlueL_HP, postOffset_BlueR_HP, PostOffset_RedR_HP, PostOffset_RedL_HP
 ]
 
-class ReefPositions:
+class HubPositions:
+    BlueHubPos = Pose2d(inches_to_meters*(182.11), inches_to_meters*(158.84), Rotation2d(math.radians(0))) #april tag 18
 
-    class BlueReef:
-        BlueReefPos1 = Pose2d(inches_to_meters*(144.00), inches_to_meters*(158.50), Rotation2d(math.radians(0))) #april tasg 18
-        BlueReefPos2 = Pose2d(inches_to_meters*(160.39), inches_to_meters*(130.17), Rotation2d(math.radians(60))) #april tag 17
-        BlueReefPos3 = Pose2d(inches_to_meters*(193.10), inches_to_meters*(130.17), Rotation2d(math.radians(120)))  #april tag 22
-        BlueReefPos4 = Pose2d(inches_to_meters*(209.49), inches_to_meters*(158.50), Rotation2d(math.radians(180)))  #april tag 21
-        BlueReefPos5 = Pose2d(inches_to_meters*(193.10), inches_to_meters*(186.83), Rotation2d(math.radians(240)))  #arpil tag 20
-        BlueReefPos6 = Pose2d(inches_to_meters*(160.39), inches_to_meters*(186.83), Rotation2d(math.radians(300))) #april tag 19
+    RedHubPos = Pose2d(Translation2d(inches_to_meters*(469.11), inches_to_meters*(158.84)), Rotation2d(math.radians(0))) #april tag 7
 
-        BlueReefList = [
-            BlueReefPos1, BlueReefPos2, BlueReefPos3, BlueReefPos4, BlueReefPos5, BlueReefPos6
-        ]
+##### only hub postiions are current field, all other measurements are from last year
+class PassingPositions:
+    BluePassingPos1 = Pose2d(inches_to_meters*(144.00), inches_to_meters*(158.50), Rotation2d(math.radians(0))) #april tag 18
+    BluePassingPos2 = Pose2d(inches_to_meters*(144.00), inches_to_meters*(158.50), Rotation2d(math.radians(0))) #april tag 18
+    
+    BluePassingPos = [
+        BluePassingPos1, BluePassingPos2
+    ]
 
-    class RedReef:
-        RedReefPos1 = Pose2d(Translation2d(inches_to_meters*(546.87), inches_to_meters*(158.50)), Rotation2d(math.radians(180))) #april tag 7
-        RedReefPos2 = Pose2d(Translation2d(inches_to_meters*(530.49), inches_to_meters*(130.17)), Rotation2d(math.radians(120))) #april tag 6
-        RedReefPos3 = Pose2d(Translation2d(inches_to_meters*(497.77), inches_to_meters*(130.17)), Rotation2d(math.radians(60)))  #april tag 11
-        RedReefPos4 = Pose2d(Translation2d(inches_to_meters*(481.39), inches_to_meters*(158.50)), Rotation2d(math.radians(0))) #april tag 10
-        RedReefPos5 = Pose2d(Translation2d(inches_to_meters*(497.77), inches_to_meters*(186.83)), Rotation2d(math.radians(-60))) #april tag 9
-        RedReefPos6 = Pose2d(Translation2d(inches_to_meters*(530.49), inches_to_meters*(186.83)), Rotation2d(math.radians(-120))) #april tag 8
+    RedPassingPos1 = Pose2d(Translation2d(inches_to_meters*(546.87), inches_to_meters*(158.50)), Rotation2d(math.radians(0))) #april tag 7
+    RedPassingPos2 = Pose2d(Translation2d(inches_to_meters*(546.87), inches_to_meters*(158.50)), Rotation2d(math.radians(0))) #april tag 7
+  
+    RedPassingPos = [
+        RedPassingPos1, RedPassingPos2
+    ]
+    
 
-        RedReefList = [
-            RedReefPos1, RedReefPos2, RedReefPos3, RedReefPos4, RedReefPos5, RedReefPos6
-        ]
+class ClimbingPositions:
+   BlueClimbPos = Pose2d(inches_to_meters*(144.00), inches_to_meters*(158.50), Rotation2d(math.radians(0))) #april tag 18
+        
+   RedClimbPos = Pose2d(Translation2d(inches_to_meters*(546.87), inches_to_meters*(158.50)), Rotation2d(math.radians(0))) #april tag 7

@@ -12,6 +12,9 @@ from commands2 import (
 import commands.climber
 import commands.elevator
 import commands.drivetrain
+import commands.shooter
+import commands.intake
+# import commands.climber
 
 
 
@@ -50,3 +53,7 @@ commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue
 # commands2.button.Trigger(lambda: Keymap.Climber.retractclimber.value > .05).whileTrue(commands.retractclimber(Robot.climber))
 
 
+Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(Robot.shooter))
+Keymap.Intake.intakeIn.whileTrue(commands.intake.IntakeIn(Robot.intake))
+Keymap.Intake.intakeOut.whileTrue(commands.intake.IntakeOut(Robot.intake))
+Keymap.Intake.intakeRetract.whileTrue(commands.intake.IntakeRetract(Robot.intake))
