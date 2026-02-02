@@ -32,29 +32,6 @@ class Keymap:
         # retractclimber = JoystickAxis(Controllers.DRIVER, controllerDRIVER.RT)
       
          
-    class Shooter:
-        setupShooter = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.RB)
-        shoot = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.Y)
-
-    class Intake:
-        intakeIn = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.LB)
-        intakeOut = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.X)
-        intakeRetract = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.B)    
-
-    #class Intake:
-         
-   # class Climber:        
-
-
-
-       # **in code*
-       # Y- shoot
-       # A- setup shooter
-       # B- intake
-       # X- climb
-
-
-
 
 ####################################    Joel rules      #############################
 ###     oi oi baka baka

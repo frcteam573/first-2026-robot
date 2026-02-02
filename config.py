@@ -4,25 +4,6 @@ import constants
 from utils.utils import inches_to_meters
 from phoenix6 import configs, controls
 from wpimath.geometry import Pose2d, Rotation2d, Transform2d
-from enum import Enum
-from wpimath.geometry import Pose2d, Rotation2d, Transform2d, Translation2d
-from wpimath.controller import PIDController
-
-
-class PrimaryLocalization(Enum):
-    ODO_Only = 0
-    VISION = 1
-    QUESTNAV = 2
-
-class PhotonVisionSetting(Enum):
-    REAL_CAMERA = 0
-    SIM = 1
-    
-class Shooter:
-    hoodRotationsToAngle = 6   ## number of rotations per degree in angle of hood ## NEEDS TO BE CHANGED 
-    wheelSpeedShooterTolerance = 10 ##### +- tolerance value in RPS ### change number    
-    hoodAngleTolerance = 12 ## change number
-
 
 # ------------ Elevator Settings -----------------
 class Elevator:
@@ -72,34 +53,8 @@ class Climber:
     slot0.k_p = 10 # A position error of 0.2 rotations results in 12 V output
     slot0.k_i = 0 # No output for integrated error
     slot0.k_d = 0.5 # A velocity error of 1 rps results in 0.5 V output
-    
+
     climberMode = False
-# ------------ Intake Settings -----------------
-class Intake:
-    MinLength = inches_to_meters(0) # Intake height all the way down.
-    MaxLength = inches_to_meters(10) # Intake height all the way up.
-    Rot_to_Dist = 5*0.0254 # Number of Rotations to go 1 m
-    cfg = configs.TalonFXConfiguration()
-     # Configure gear ratio
-    fdb = cfg.feedback
-    fdb.sensor_to_mechanism_ratio = 1 # 12.8 rotor rotations per mechanism rotation
-
-    # Configure Motion Magic
-    mm = cfg.motion_magic
-    mm.motion_magic_cruise_velocity = 2 # 5 (mechanism) rotations per second cruise
-    mm.motion_magic_acceleration = 5 # Take approximately 0.5 seconds to reach max vel
-    # Take apprximately 0.1 seconds to reach max accel
-    mm.motion_magic_jerk = 100
-
-    slot0 = cfg.slot0
-    slot0.k_s = 0.25 # Add 0.25 V output to overcome static friction
-    slot0.k_v = 0.12 # A velocity target of 1 rps results in 0.12 V output
-    slot0.k_a = 0.01 # An acceleration of 1 rps/s requires 0.01 V output
-    slot0.k_p = 10 # A position error of 0.2 rotations results in 12 V output
-    slot0.k_i = 0 # No output for integrated error
-    slot0.k_d = 0.5 # A velocity error of 1 rps results in 0.5 V output
-
-
 
 # ------------ Vision Settings --------------------
 
@@ -122,21 +77,12 @@ class vision_settings:
 
 class Cameras:
     vision_controller = VisionEstimator()
+    camera1 = PhotonCamera('Camera 1')
 
 class Alliance:
     blue_team = False  # Set to True if the robot is on the blue team, False for red team
 
-class DrivebasedAngleAlign:
+class ReefAlign:
     allowable_errorX = 0.1  # meters
     allowable_errorY = 0.1
     allowable_errorR = 5  # degrees
-    
-    p = 10
-    i = 0
-    d = 0
-    alignmentPID = PIDController(p, i, d)
-    
-
-class RobotPoseConfig:
-    pose = Pose2d(0,0,Rotation2d(0))
-
