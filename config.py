@@ -49,6 +49,31 @@ class Elevator:
     slot0.k_d = 0.5 # A velocity error of 1 rps results in 0.5 V output
 
 
+# ------------ Climber Settings --------------------
+class Climber:
+    MinLength = inches_to_meters(30) # Elevator height all the way down.
+    Rot_to_Dist = 5*0.0254 # Number of Rotations to go 1 m
+    cfg = configs.TalonFXConfiguration()
+     # Configure gear ratio
+    fdb = cfg.feedback
+    fdb.sensor_to_mechanism_ratio = 1 # 12.8 rotor rotations per mechanism rotation
+
+    # Configure Motion Magic
+    mm = cfg.motion_magic
+    mm.motion_magic_cruise_velocity = 2 # 5 (mechanism) rotations per second cruise
+    mm.motion_magic_acceleration = 5 # Take approximately 0.5 seconds to reach max vel
+    # Take apprximately 0.1 seconds to reach max accel
+    mm.motion_magic_jerk = 100
+
+    slot0 = cfg.slot0
+    slot0.k_s = 0.25 # Add 0.25 V output to overcome static friction
+    slot0.k_v = 0.12 # A velocity target of 1 rps results in 0.12 V output
+    slot0.k_a = 0.01 # An acceleration of 1 rps/s requires 0.01 V output
+    slot0.k_p = 10 # A position error of 0.2 rotations results in 12 V output
+    slot0.k_i = 0 # No output for integrated error
+    slot0.k_d = 0.5 # A velocity error of 1 rps results in 0.5 V output
+    
+    climberMode = False
 # ------------ Intake Settings -----------------
 class Intake:
     MinLength = inches_to_meters(0) # Intake height all the way down.
@@ -73,7 +98,6 @@ class Intake:
     slot0.k_p = 10 # A position error of 0.2 rotations results in 12 V output
     slot0.k_i = 0 # No output for integrated error
     slot0.k_d = 0.5 # A velocity error of 1 rps results in 0.5 V output
-
 
 
 

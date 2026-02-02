@@ -12,8 +12,8 @@ class Climber(commands2.SubsystemBase):
         # climber Example Section
         #Creat 2d Mechanism for visualization of simulation
         self.mech = Mechanism2d(3,3)
-        self.root = self.mech.getRoot("climber",1.5,0)
-        self.elevator = self.root.appendLigament("climber", config.climber.MinLength,90)
+        self.root = self.mech.getRoot("Climber",1.5,0)
+        self.Climber = self.root.appendLigament("Climber", config.Climber.MinLength,90)
         SmartDashboard.putData("Mech2d", self.mech)
 
         # climber Magic Motion and talon definition
@@ -23,7 +23,7 @@ class Climber(commands2.SubsystemBase):
         # Retry config apply up to 5 times, report if failure
         status: StatusCode = StatusCode.STATUS_CODE_NOT_INITIALIZED
         for _ in range(0, 5):
-            status = self.talonfx.configurator.apply(config.climber.cfg)
+            status = self.talonfx.configurator.apply(config.Climber.cfg)
             if status.is_ok():
                 break
         if not status.is_ok():
@@ -31,26 +31,37 @@ class Climber(commands2.SubsystemBase):
 
         #Output for logging
         self._inst = NetworkTableInstance.getDefault()
-        self._table = self._inst.getTable("climber")
+        self._table = self._inst.getTable("Climber")
         self._field1_pub = self._table.getDoubleTopic("Current Position").publish()
         self._field2_pub = self._table.getDoubleTopic("Current Setpoint").publish()
 
-    def setclimberPosition(self,position:float):
-        #print("Set climber Position")
+    def setClimberPosition(self,position:float):
+        print("Set climber Position")
         self.talonfx.set_control(self.motion_magic.with_position(position).with_slot(0))
 
-    def stopclimber(self):
+    def stopClimber(self):
         self.talonfx.set(0)
+
+    def extendClimber(self):
+        
+        if config.Climber.climberMode:
+         self.talonfx.set(1.0)
+
+    def retractClimber(self):
+        
+        if config.Climber.climberMode:
+         self.talonfx.set(-1.0)
     
-    def getclimberPosition(self):
+
+    def getClimberPosition(self):
         return self.talonfx.get_position().value_as_double
 
     def getTalon(self) -> hardware.TalonFX:
         self.talonfx = hardware.TalonFX(10, "canivore")
         return self.talonfx
     
-    def getclimberDSOutput(self):
+    def getClimberDSOutput(self):
         current_rot = self.talonfx.get_position().value_as_double
         self._field1_pub.set(current_rot)
         self._field2_pub.set(self.motion_magic.position)
-        self.climber.setLength(config.Elevator.MinLength + (current_rot * config.climber.Rot_to_Dist))
+        self.Climber.setLength(config.Climber.MinLength + (current_rot * config.Climber.Rot_to_Dist))

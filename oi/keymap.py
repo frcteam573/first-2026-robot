@@ -1,6 +1,7 @@
 """ This creates buttons map for the controllers"""
 import commands2
 import wpilib
+import config
 from utils.oi import (
     JoystickAxis,
     XBoxController,
@@ -18,12 +19,22 @@ class Controllers:
     OPERATOR_CONTROLLER = wpilib.Joystick(1)
 #-- Create keymap class --
 class Keymap:
+    
+    class Drivetrain:
+        followPath = commands2.button.JoystickButton(Controllers.DRIVER_CONTROLLER, controllerDRIVER.A)
+        
+    class Climber:
+        # set pos code
+        climbUp =  JoystickAxis(Controllers.DRIVER, controllerDRIVER.LT)
+        climbDown = JoystickAxis(Controllers.DRIVER, controllerDRIVER.RT)
+        # manual code
+        # extendclimber = JoystickAxis(Controllers.DRIVER, controllerDRIVER.LT)
+        # retractclimber = JoystickAxis(Controllers.DRIVER, controllerDRIVER.RT)
+      
+         
     class Shooter:
         setupShooter = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.RB)
         shoot = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.Y)
-
-    class Drivetrain:
-        followPath = commands2.button.JoystickButton(Controllers.DRIVER_CONTROLLER, controllerDRIVER.A)
 
     class Intake:
         intakeIn = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.LB)

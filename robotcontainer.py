@@ -24,6 +24,7 @@ import config
 from ntcore import NetworkTableInstance
 import subsystems
 import commands.elevator
+import commands.climber
 import commands.drivetrain
 import commands.shooter
 import commands.intake
@@ -36,6 +37,8 @@ import utils.utils as utilities
 class Robot:
     # Defines all subsystems used in the robot, these are used to access the subsystems in commands and other files.
     elevator = subsystems.Elevator()
+    climber = subsystems.Climber()
+
     shooter = subsystems.Shooter()
     intake = subsystems.Intake()
 
@@ -81,7 +84,8 @@ class RobotContainer:
 
         self.drivetrain = TunerConstants.create_drivetrain()
         self._elevator = subsystems.Elevator()
-
+        self._climber = subsystems.Climber()
+        
         #Name Commands for Autos these must be done before building the autobuilder
 
         NamedCommands.registerCommand("Raise Elevator", commands.elevator.setPosition(self._elevator,position=10))
@@ -93,6 +97,9 @@ class RobotContainer:
         NamedCommands.registerCommand("Shoot Prep", commands.shooter.Shoot(Robot.shooter))
         NamedCommands.registerCommand("Shoot Out", commands.shooter.Shoot(Robot.shooter, shootOut=True))
         
+
+        NamedCommands.registerCommand("climbUp", commands.elevator.setPosition(self._elevator,position=10))
+        NamedCommands.registerCommand("climbDown", commands.elevator.setPosition(self._elevator,position=0))
 
         # Auto builder
         self._auto_chooser = AutoBuilder.buildAutoChooser("test auton")
