@@ -3,7 +3,6 @@ from robotpy_apriltag import AprilTagField, AprilTagFieldLayout
 from wpimath.geometry import Rotation2d 
 from config import Cameras
 import constants
-from photonlibpy import PhotonCamera
 import wpilib
 import os
 
@@ -17,8 +16,9 @@ def photonvision_sim_setup():
         # tagLayout = AprilTagFieldLayout(json_path)
 
         #Add field tags to the sim system       
-        tagLayout = AprilTagFieldLayout.loadField(AprilTagField.k2026RebuiltWelded)
+        tagLayout = AprilTagFieldLayout.loadField(AprilTagField.kDefaultField)
         visionSim.addAprilTags(tagLayout)
+
 
         #setup sim camera properties
         camera_prop = pv_sim.SimCameraProperties()
@@ -30,8 +30,8 @@ def photonvision_sim_setup():
 
         #Setup all cameras in the sim system
     
-        print("camera1")
-        camera_sim = pv_sim.PhotonCameraSim(PhotonCamera('camera1'),camera_prop)
+        print("Camera 1")
+        camera_sim = pv_sim.PhotonCameraSim(Cameras.camera1,camera_prop)
         #camera_sim.enableRawStream(True)
         #camera_sim.enableProcessedStream(True)
         #camera_sim.enableDrawWireframe(True)

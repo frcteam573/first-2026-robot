@@ -2,15 +2,13 @@ from commands2 import Command, Subsystem
 from commands2.sysid import SysIdRoutine
 import math
 from pathplannerlib.auto import AutoBuilder, RobotConfig
-from pathplannerlib.controller import PIDConstants, PPHolonomicDriveController, PIDController
+from pathplannerlib.controller import PIDConstants, PPHolonomicDriveController
 from phoenix6 import SignalLogger, swerve, units, utils
 from typing import Callable, overload
 from wpilib import DriverStation, Notifier, RobotController
 from wpilib.sysid import SysIdRoutineLog
 from wpimath.geometry import Pose2d, Rotation2d
 from pathplannerlib.path import PathPlannerPath, PathConstraints, GoalEndState
-from constants import DrivetrainConstants
-import config
 
 
 
@@ -165,10 +163,7 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
         self._translation_characterization = swerve.requests.SysIdSwerveTranslation()
         self._steer_characterization = swerve.requests.SysIdSwerveSteerGains()
         self._rotation_characterization = swerve.requests.SysIdSwerveRotation()
-        
-        self.TylersPID = PIDController(config.DrivebasedAngleAlign.p, config.DrivebasedAngleAlign.i, config.DrivebasedAngleAlign.d)
-        self.TylersPID.setSetpoint(0)
-        
+
         self._sys_id_routine_translation = SysIdRoutine(
             SysIdRoutine.Config(
                 # Use default ramp rate (1 V/s) and timeout (10 s)
@@ -207,7 +202,6 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
                 self,
             ),
         )
-        
         """SysId routine for characterizing steer. This is used to find PID gains for the steer motors."""
 
         self._sys_id_routine_rotation = SysIdRoutine(
@@ -247,7 +241,6 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
         if utils.is_simulation():
             self._start_sim_thread()
         self._configure_auto_builder()
-        
 
     def _configure_auto_builder(self):
         config = RobotConfig.fromGUISettings()
@@ -387,12 +380,3 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
         print(path)
 
         return path
-    
-    def calculate_relative_angle(self, robotPose:Pose2d, targetPose:Pose2d) -> float:
-        targetRelative = targetPose.relativeTo(robotPose)
-
-        finalRelativeAngle = math.atan2(targetRelative.Y(), targetRelative.X())
-            
-        output = self.TylersPID.calculate(finalRelativeAngle, 0.0)
-
-        return -output
