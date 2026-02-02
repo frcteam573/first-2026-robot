@@ -26,7 +26,12 @@ import subsystems
 import commands.elevator
 import commands.climber
 import commands.drivetrain
+import commands.shooter
+import commands.intake
+## import commands.climber
 import constants
+import subsystems.command_swerve_drivetrain
+import utils.utils as utilities
 
 
 class Robot:
@@ -34,6 +39,8 @@ class Robot:
     elevator = subsystems.Elevator()
     climber = subsystems.Climber()
 
+    shooter = subsystems.Shooter()
+    intake = subsystems.Intake()
 
 class RobotContainer:
     """
@@ -83,20 +90,22 @@ class RobotContainer:
 
         NamedCommands.registerCommand("Raise Elevator", commands.elevator.setPosition(self._elevator,position=10))
         NamedCommands.registerCommand("Lower Elevator", commands.elevator.setPosition(self._elevator,position=0))
+        NamedCommands.registerCommand("Intake In", commands.intake.IntakeIn(Robot.intake))
+        NamedCommands.registerCommand("Intake Out", commands.intake.IntakeOut(Robot.intake))
+        NamedCommands.registerCommand("Intake Retract", commands.intake.IntakeRetract(Robot.intake))
+        # NamedCommands.registerCommand("Climber Extend", commands.climber.extendClimber(Robot.climber))
+        NamedCommands.registerCommand("Shoot Prep", commands.shooter.Shoot(Robot.shooter))
+        NamedCommands.registerCommand("Shoot Out", commands.shooter.Shoot(Robot.shooter, shootOut=True))
+        
 
         NamedCommands.registerCommand("climbUp", commands.elevator.setPosition(self._elevator,position=10))
         NamedCommands.registerCommand("climbDown", commands.elevator.setPosition(self._elevator,position=0))
 
         # Auto builder
-        self._auto_chooser = AutoBuilder.buildAutoChooser("Tests")
+        self._auto_chooser = AutoBuilder.buildAutoChooser("test auton")
         SmartDashboard.putData("Choreo", self._auto_chooser)
 
         self._vision_est = config.Cameras.vision_controller
-
-
-       
-
-
 
         # Configure the button bindings
         self.configureButtonBindings()
@@ -115,13 +124,13 @@ class RobotContainer:
             self.drivetrain.apply_request(
                 lambda: (
                     self._drive.with_velocity_x(
-                        -self._joystick.getLeftY() * self._max_speed
+                        -self._joystick.getLeftY() * self._max_speed * .7
                     )  # Drive forward with negative Y (forward)
                     .with_velocity_y(
-                        -self._joystick.getLeftX() * self._max_speed
+                        -self._joystick.getLeftX() * self._max_speed * .7
                     )  # Drive left with negative X (left)
                     .with_rotational_rate(
-                        -self._joystick.getRightX() * self._max_angular_rate
+                        -self._joystick.getRightX() * self._max_angular_rate 
                     )  # Drive counterclockwise with negative X (left)
                 )
             )
@@ -133,9 +142,34 @@ class RobotContainer:
         Trigger(DriverStation.isDisabled).whileTrue(
             self.drivetrain.apply_request(lambda: idle).ignoringDisable(True)
         )
-        self._joystick.y().whileTrue(commands.drive_to_nearest_HP_station(self.drivetrain))
-        self._joystick.x().whileTrue(commands.drive_to_nearest_reef_pos(self.drivetrain, left=True))
-        self._joystick.b().whileTrue(commands.drive_to_nearest_reef_pos(self.drivetrain, left=False))
+        self._joystick.y().whileTrue(self.drivetrain.apply_request(
+                lambda: (
+                    self._drive.with_velocity_x(
+                        -self._joystick.getLeftY() * self._max_speed
+                    )  # Drive forward with negative Y (forward)
+                    .with_velocity_y(
+                        -self._joystick.getLeftX() * self._max_speed
+                    )  # Drive left with negative X (left)
+                    .with_rotational_rate(
+                        subsystems.CommandSwerveDrivetrain.calculate_relative_angle(self=self.drivetrain, robotPose=config.RobotPoseConfig.pose, targetPose=utilities.getTargetPose(config.RobotPoseConfig.pose))
+                    )  # Drive counterclockwise with negative X (left)
+                )
+            )) 
+        self._joystick.x().whileTrue(self.drivetrain.apply_request(
+                lambda: (
+                    self._drive.with_velocity_x(
+                        -self._joystick.getLeftY() * self._max_speed
+                    )  # Drive forward with negative Y (forward)
+                    .with_velocity_y(
+                        -self._joystick.getLeftX() * self._max_speed
+                    )  # Drive left with negative X (left)
+                    .with_rotational_rate(
+                        -self._joystick.getRightX() * self._max_angular_rate
+                    )  # Drive counterclockwise with negative X (left)
+                )
+            )) 
+        # self._joystick.x().whileTrue(commands.drive_to_nearest_reef_pos(self.drivetrain, left=True))
+        # self._joystick.b().whileTrue(commands.drive_to_nearest_reef_pos(self.drivetrain, left=False))
 
         self._joystick.pov(0).whileTrue(
             self.drivetrain.apply_request(
