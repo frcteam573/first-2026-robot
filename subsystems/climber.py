@@ -37,8 +37,9 @@ class Climber(commands2.SubsystemBase):
         self._field2_pub = self._table.getDoubleTopic("Current Setpoint").publish()
 
     def setClimberPosition(self,position:float):
-        print("Set climber Position")
-        self.talonfx.set_control(self.motion_magic.with_position(position).with_slot(0))
+        if config.Climber.climberMode:
+         print("Set climber Position")
+         self.talonfx.set_control(self.motion_magic.with_position(position).with_slot(0))
 
     def stopClimber(self):
         self.talonfx.set(0)
