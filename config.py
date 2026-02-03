@@ -9,6 +9,8 @@ from wpimath.geometry import Pose2d, Rotation2d, Transform2d, Translation2d
 from wpimath.controller import PIDController
 import math
 
+LedCounter = 0
+
 class PrimaryLocalization(Enum):
     ODO_Only = 0
     VISION = 1
