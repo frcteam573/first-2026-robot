@@ -56,7 +56,7 @@ class Shooter(commands2.SubsystemBase):
         if not status.is_ok():
             print(f"Could not apply configs, error code: {status.name}")
 
-        # self.m_shooter2.set_control(controls.Follower(self.m_shooter1.device_id,False))
+        self.m_shooter2.set_control(controls.Follower(self.m_shooter1.device_id,signals.MotorAlignmentValue.ALIGNED))
 
         #self.talonfx = hardware.TalonFX(0, self.canbus)
        # self.talonfx_foll
