@@ -57,8 +57,15 @@ class Intake(commands2.SubsystemBase):
         Output:
             A list consisting of intake motor value and intake extension position.
 
+        # Make sure we start at 0
+        self.m_intakeExtension.set_position(0)  #### intake extension???
+        
+
         '''
         intakeWheelSpeed = self.m_intakeMotor.get_velocity().value_as_double
         intakeExtension = self.m_intakeExtension.get_position().value_as_double/config.Intake.Rot_to_Dist
         SmartDashboard.putNumber("Intake / Actual Intake Motor Value", intakeWheelSpeed)
         SmartDashboard.putNumber("Intake / Actual Intake Extension Position", intakeExtension)
+
+    def getMotors(self):
+        return [self.m_intakeExtension, self.m_intakeMotor]

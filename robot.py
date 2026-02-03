@@ -26,6 +26,7 @@ import ntcore
 from questnav.questnav import QuestNav
 
 from wpilib import DataLogManager, DriverStation
+import utils.utils as utilities
 
 
 
@@ -96,6 +97,9 @@ class MyRobot(commands2.TimedCommandRobot):
         # block in order for anything in the Command-based framework to work.
 
         #Run camera update and questNav update every loop
+
+        utilities.calculate_alignment(robotPose=config.RobotPoseConfig.pose, targetPose=utilities.getTargetPose(config.RobotPoseConfig.pose))
+
         self.vision_est = self.container._vision_est.get_estimated_robot_pose()
         if self.vision_est:
             self.photonvision_field.setRobotPose(self.vision_est[0])
@@ -107,6 +111,7 @@ class MyRobot(commands2.TimedCommandRobot):
 
         #Only run during SIM
         if wpilib.RobotBase.isSimulation():
+            
             self.simulationPeriodic()
 
         #Add measurements to localization based on primary source
@@ -118,8 +123,9 @@ class MyRobot(commands2.TimedCommandRobot):
             pass
 
         config.RobotPoseConfig.pose = self.container.drivetrain.get_state().pose
-
+        
         subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
+        subsystems.Shooter.getMotors(self=Robot.shooter)
         subsystems.Shooter.getShooterInfo(Robot.shooter)
         subsystems.Intake.getIntakeInfo(Robot.intake)
         commands2.CommandScheduler.getInstance().run()
@@ -176,6 +182,7 @@ class MyRobot(commands2.TimedCommandRobot):
     def simulationPeriodic(self) -> None:
         try:
             self.visionSim.update(self.container.drivetrain.get_state().pose)
+            
         except:
             pass
             
