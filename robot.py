@@ -26,6 +26,7 @@ import ntcore
 from questnav.questnav import QuestNav
 
 from wpilib import DataLogManager, DriverStation
+import utils.utils as utilities
 
 
 
@@ -96,6 +97,9 @@ class MyRobot(commands2.TimedCommandRobot):
         # block in order for anything in the Command-based framework to work.
 
         #Run camera update and questNav update every loop
+
+        utilities.calculate_alignment(robotPose=config.RobotPoseConfig.pose, targetPose=utilities.getTargetPose(config.RobotPoseConfig.pose))
+
         self.vision_est = self.container._vision_est.get_estimated_robot_pose()
         if self.vision_est:
             self.photonvision_field.setRobotPose(self.vision_est[0])

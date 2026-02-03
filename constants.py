@@ -65,16 +65,21 @@ class HubPositions:
 
 ##### only hub postiions are current field, all other measurements are from last year
 class PassingPositions:
-    BluePassingPos1 = Pose2d(inches_to_meters*(144.00), inches_to_meters*(158.50), Rotation2d(math.radians(0))) #april tag 18
-    BluePassingPos2 = Pose2d(inches_to_meters*(144.00), inches_to_meters*(158.50), Rotation2d(math.radians(0))) #april tag 18
+    BluePassingPos1 = Pose2d(2.6, 5.4, Rotation2d(math.radians(0))) #april tag 18
+    BluePassingPos2 = Pose2d(2.5, 2, Rotation2d(math.radians(0))) #april tag 18
     
     BluePassingPos = [
         BluePassingPos1, BluePassingPos2
     ]
 
-    RedPassingPos1 = Pose2d(Translation2d(inches_to_meters*(546.87), inches_to_meters*(158.50)), Rotation2d(math.radians(0))) #april tag 7
-    RedPassingPos2 = Pose2d(Translation2d(inches_to_meters*(546.87), inches_to_meters*(158.50)), Rotation2d(math.radians(0))) #april tag 7
-  
+    RedPassingPos1 = Pose2d(14.2, 2.3, Rotation2d(math.radians(0))) #april tag 7
+    RedPassingPos2 = Pose2d(14.2, 6, Rotation2d(math.radians(0))) #april tag 7
+
+    #blue1: 2.6, 5.4
+    #blue2: 2.5, 2
+    #red1: 14.2, 2.3
+    #red2: 14.2, 6
+
     RedPassingPos = [
         RedPassingPos1, RedPassingPos2
     ]

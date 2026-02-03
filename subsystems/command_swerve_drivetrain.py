@@ -13,7 +13,7 @@ from wpimath.units import rotationsToRadians
 from constants import DrivetrainConstants
 import config
 import utils.utils as utilities
-from generated.tuner_constants import TunerConstants
+# from generated.tuner_constants import TunerConstants
 from commands2.button import CommandXboxController, Trigger
 
 
@@ -399,24 +399,15 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
             
         output = self.TylersPID.calculate(finalRelativeAngle, 0.0)
         
-        if abs(finalRelativeAngle - targetRelative) <= (config.DrivebasedAngleAlign.angleTolerance):
-            SmartDashboard.putBoolean("Aligned", True)
-        else:
-            SmartDashboard.putBoolean("Aligned", False)
+        # if abs(finalRelativeAngle) <= (config.DrivebasedAngleAlign.angleTolerance):
+        #     SmartDashboard.putBoolean("Aligned", True)
+        # else:
+        #     SmartDashboard.putBoolean("Aligned", False)
 
         return -output
-    
-    
+
     
     def getMotors(self):
-        self._max_speed = (
-            TunerConstants.speed_at_12_volts
-        )  # speed_at_12_volts desired top speed
-        self._max_angular_rate = rotationsToRadians(
-            0.75
-        )  # 3/4 of a rotation per second max angular velocity
-        
-        
         motors = []
         for module in self.modules:
             motors.append(module.drive_motor)
@@ -425,12 +416,21 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
         return motors
     
     def alignToHoop(self):
+        self._max_speed = (
+            1
+            # TunerConstants.speed_at_12_volts
+        )  # speed_at_12_volts desired top speed
+        self._max_angular_rate = rotationsToRadians(
+            0.75
+        )  # 3/4 of a rotation per second max angular velocity
+        
+
         self._drive = (
             swerve.requests.FieldCentric()
-            .with_deadband(self._max_speed * 0.1)
-            .with_rotational_deadband(
-                self._max_angular_rate * 0.1
-            )  # Add a 10% deadband
+            # .with_deadband(self._max_speed * 0.1)
+            # .with_rotational_deadband(
+            #     self._max_angular_rate * 0.1
+            # )  # Add a 10% deadband
             .with_drive_request_type(
                 swerve.SwerveModule.DriveRequestType.OPEN_LOOP_VOLTAGE
             )  # Use open-loop control for drive motors

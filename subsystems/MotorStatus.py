@@ -39,4 +39,4 @@ class MotorStatus(commands2.SubsystemBase):
         self.motorTemps.append(signal)
         # get the device temperature as a failsafe, this is a status that is always being refreshed and posted.
       # Because it is always being posted, we can remove any chance of an error occuring since we cant get the status of a dead motor.
-    print(self.motorTemps)
+    # print(self.motorTemps)

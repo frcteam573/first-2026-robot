@@ -40,8 +40,7 @@ class Robot:
     climber = subsystems.Climber()
 
     shooter = subsystems.Shooter()
-    MotorStatus = subsystems.MotorStatus()
-
+    # MotorStatus = subsystems.MotorStatus()
 
     intake = subsystems.Intake()
 

@@ -7,7 +7,7 @@ from wpimath.geometry import Pose2d, Rotation2d, Transform2d
 from enum import Enum
 from wpimath.geometry import Pose2d, Rotation2d, Transform2d, Translation2d
 from wpimath.controller import PIDController
-
+import math
 
 class PrimaryLocalization(Enum):
     ODO_Only = 0
@@ -135,8 +135,8 @@ class DrivebasedAngleAlign:
     i = 0
     d = 0
     alignmentPID = PIDController(p, i, d)
-    angleTolerance = 10
-    
+    angleTolerance = math.radians(10)
+    distanceTolerance = 10 # meters
 
 class RobotPoseConfig:
     pose = Pose2d(0,0,Rotation2d(0))

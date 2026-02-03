@@ -1,7 +1,8 @@
 import math
-from wpilib import DriverStation
+from wpilib import DriverStation, SmartDashboard
 import constants
 from wpimath.geometry import Pose2d
+import config
 
 def inches_to_meters(input:float) -> float:
     """ Input in inches returns meters """
@@ -46,4 +47,15 @@ def getTargetPose(pose: Pose2d) -> Pose2d:
                 return constants.HubPositions.RedHubPos
             
 
+def calculate_alignment(robotPose:Pose2d, targetPose:Pose2d) -> float:
+        targetRelative = targetPose.relativeTo(robotPose)
+        angleTolerance = config.DrivebasedAngleAlign.angleTolerance
+        if ((targetRelative.X()**2 + targetRelative.Y()**2)**0.5) > config.DrivebasedAngleAlign.distanceTolerance:
+            angleTolerance = angleTolerance / 2
 
+        finalRelativeAngle = math.atan2(targetRelative.Y(), targetRelative.X())
+        
+        if abs(finalRelativeAngle) <= angleTolerance:
+            SmartDashboard.putBoolean("Drivetrain / Aligned", True)
+        else:
+            SmartDashboard.putBoolean("Drivetrain / Aligned", False)

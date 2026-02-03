@@ -56,7 +56,7 @@ class Shooter(commands2.SubsystemBase):
         if not status.is_ok():
             print(f"Could not apply configs, error code: {status.name}")
 
-        self.m_shooter2.set_control(controls.Follower(self.m_shooter1.device_id,False))
+        # self.m_shooter2.set_control(controls.Follower(self.m_shooter1.device_id,False))
 
         #self.talonfx = hardware.TalonFX(0, self.canbus)
        # self.talonfx_foll
@@ -186,7 +186,7 @@ class Shooter(commands2.SubsystemBase):
             self.motorTemps.append(signal)
             # get the device temperature as a failsafe, this is a status that is always being refreshed and posted.
         # Because it is always being posted, we can remove any chance of an error occuring since we cant get the status of a dead motor.
-        print(self.motorTemps)
+        # print(self.motorTemps)
         
 
     def getShooterInfo(self):
