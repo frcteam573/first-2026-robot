@@ -31,10 +31,10 @@ class Climber(commands2.SubsystemBase):
             print(f"Could not apply configs, error code: {status.name}")
 
         #Output for logging
-        #self._inst = NetworkTableInstance.getDefault()
-        #self._table = self._inst.getTable("Climber")
-        #self._field1_pub = self._table.getDoubleTopic("Current Position").publish()
-        #self._field2_pub = self._table.getDoubleTopic("Current Setpoint").publish()
+        self._inst = NetworkTableInstance.getDefault()
+        self._table = self._inst.getTable("Climber")
+        self._field1_pub = self._table.getDoubleTopic("Current Position").publish()
+        self._field2_pub = self._table.getDoubleTopic("Current Setpoint").publish()
 
     def setClimberPosition(self,position:float):
         if config.Climber.climberMode:
@@ -65,17 +65,16 @@ class Climber(commands2.SubsystemBase):
         return self.talonfx
     
     def getClimberDSOutput(self):
-<<<<<<< Updated upstream
         current_rot = self.talonfx.get_position().value_as_double
         self._field1_pub.set(current_rot)
         self._field2_pub.set(self.motion_magic.position)
-        self.Climber.setLength(config.Elevator.MinLength + (current_rot * config.Climber.Rot_to_Dist))
+        self.Climber.setLength(config.Climber.MinLength + (current_rot * config.Climber.Rot_to_Dist))
         
     def getMotorOutputStatus(self):
-        return self.talonfx.get_motor_output_status(True)
-=======
         climberPosition = self.talonfx.get_position().value_as_double
         SmartDashboard.putNumber("Climber / Actual climber Position", climberPosition)
+        return self.talonfx.get_motor_output_status(True)
+       
         
        # current_rot = self.talonfx.get_position().value_as_double
        # self._field1_pub.set(current_rot)
@@ -91,4 +90,3 @@ class Climber(commands2.SubsystemBase):
        # SmartDashboard.putNumber("Shooter / Actual Hood Angle", hoodAngle)
        # SmartDashboard.putNumber("Shooter / Actual Hopper Speed", hopperSpeed)
        # SmartDashboard.putNumber("Shooter / Hopper Motor Command", self.m_hopperMotor.get())
->>>>>>> Stashed changes
