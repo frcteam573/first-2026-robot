@@ -173,31 +173,31 @@ class RobotContainer:
         # self._joystick.x().whileTrue(commands.drive_to_nearest_reef_pos(self.drivetrain, left=True))
         # self._joystick.b().whileTrue(commands.drive_to_nearest_reef_pos(self.drivetrain, left=False))
 
-        self._joystick.pov(0).whileTrue(
-            self.drivetrain.apply_request(
-                lambda: self._forward_straight.with_velocity_x(0.5).with_velocity_y(0)
-            )
-        )
-        self._joystick.pov(180).whileTrue(
-            self.drivetrain.apply_request(
-                lambda: self._forward_straight.with_velocity_x(-0.5).with_velocity_y(0)
-            )
-        )
+        # self._joystick.pov(0).whileTrue(
+        #     self.drivetrain.apply_request(
+        #         lambda: self._forward_straight.with_velocity_x(0.5).with_velocity_y(0)
+        #     )
+        # )
+        # self._joystick.pov(180).whileTrue(
+        #     self.drivetrain.apply_request(
+        #         lambda: self._forward_straight.with_velocity_x(-0.5).with_velocity_y(0)
+        #     )
+        # )
 
-        # Run SysId routines when holding back/start and X/Y.
-        # Note that each routine should be run exactly once in a single log.
-        (self._joystick.back() & self._joystick.y()).whileTrue(
-            self.drivetrain.sys_id_dynamic(SysIdRoutine.Direction.kForward)
-        )
-        (self._joystick.back() & self._joystick.x()).whileTrue(
-            self.drivetrain.sys_id_dynamic(SysIdRoutine.Direction.kReverse)
-        )
-        (self._joystick.start() & self._joystick.y()).whileTrue(
-            self.drivetrain.sys_id_quasistatic(SysIdRoutine.Direction.kForward)
-        )
-        (self._joystick.start() & self._joystick.x()).whileTrue(
-            self.drivetrain.sys_id_quasistatic(SysIdRoutine.Direction.kReverse)
-        )
+        # # Run SysId routines when holding back/start and X/Y.
+        # # Note that each routine should be run exactly once in a single log.
+        # (self._joystick.back() & self._joystick.y()).whileTrue(
+        #     self.drivetrain.sys_id_dynamic(SysIdRoutine.Direction.kForward)
+        # )
+        # (self._joystick.back() & self._joystick.x()).whileTrue(
+        #     self.drivetrain.sys_id_dynamic(SysIdRoutine.Direction.kReverse)
+        # )
+        # (self._joystick.start() & self._joystick.y()).whileTrue(
+        #     self.drivetrain.sys_id_quasistatic(SysIdRoutine.Direction.kForward)
+        # )
+        # (self._joystick.start() & self._joystick.x()).whileTrue(
+        #     self.drivetrain.sys_id_quasistatic(SysIdRoutine.Direction.kReverse)
+        # )
 
         # reset the field-centric heading on left bumper press
         #self._joystick.leftBumper().onTrue(

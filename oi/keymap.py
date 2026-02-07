@@ -25,11 +25,11 @@ class Keymap:
         
     class Climber:
         # set pos code
-        climbUp =  JoystickAxis(Controllers.DRIVER, controllerDRIVER.LT)
-        climbDown = JoystickAxis(Controllers.DRIVER, controllerDRIVER.RT)
+        #climbUp =  JoystickAxis(Controllers.DRIVER, controllerDRIVER.LT)
+        #climbDown = JoystickAxis(Controllers.DRIVER, controllerDRIVER.RT)
         # manual code
-        # extendclimber = JoystickAxis(Controllers.DRIVER, controllerDRIVER.LT)
-        # retractclimber = JoystickAxis(Controllers.DRIVER, controllerDRIVER.RT)
+        extendclimber = JoystickAxis(Controllers.DRIVER, controllerDRIVER.LT)
+        retractclimber = JoystickAxis(Controllers.DRIVER, controllerDRIVER.RT)
       
          
     class Shooter:
