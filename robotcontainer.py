@@ -54,7 +54,7 @@ class RobotContainer:
 
     def __init__(self) -> None:
         self._max_speed = (
-            TunerConstants.speed_at_12_volts
+            1.0 * TunerConstants.speed_at_12_volts
         )  # speed_at_12_volts desired top speed
         self._max_angular_rate = rotationsToRadians(
             0.75
@@ -73,12 +73,6 @@ class RobotContainer:
         )
         self._brake = swerve.requests.SwerveDriveBrake()
         self._point = swerve.requests.PointWheelsAt()
-        self._forward_straight = (
-            swerve.requests.RobotCentric()
-            .with_drive_request_type(
-                swerve.SwerveModule.DriveRequestType.OPEN_LOOP_VOLTAGE
-            )
-        )
 
         self._logger = Telemetry(self._max_speed)
 
@@ -104,8 +98,11 @@ class RobotContainer:
         NamedCommands.registerCommand("climbDown", commands.elevator.setPosition(self._elevator,position=0))
 
         # Auto builder
-        self._auto_chooser = AutoBuilder.buildAutoChooser("test auton")
-        SmartDashboard.putData("Choreo", self._auto_chooser)
+        try:
+            self._auto_chooser = AutoBuilder.buildAutoChooser("test auton")
+            SmartDashboard.putData("Choreo", self._auto_chooser)
+        except Exception as e:
+            print(f"Error building auto chooser: {e}")
 
         self._vision_est = config.Cameras.vision_controller
 
