@@ -76,6 +76,7 @@ class Climber:
     slot0.k_d = 0.5 # A velocity error of 1 rps results in 0.5 V output
     
     climberMode = False
+    climberSetPos = 10
 # ------------ Intake Settings -----------------
 class Intake:
     MinLength = inches_to_meters(0) # Intake height all the way down.
