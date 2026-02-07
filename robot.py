@@ -124,12 +124,12 @@ class MyRobot(commands2.TimedCommandRobot):
 
         config.RobotPoseConfig.pose = self.container.drivetrain.get_state().pose
         
-        subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
-        subsystems.Shooter.getMotors(self=Robot.shooter)
-        subsystems.Shooter.getShooterInfo(Robot.shooter)
-        subsystems.Intake.getIntakeInfo(Robot.intake)
+        # subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
+        # subsystems.Shooter.getMotors(self=Robot.shooter)
+        # subsystems.Shooter.getShooterInfo(Robot.shooter)
+        # subsystems.Intake.getIntakeInfo(Robot.intake)
         commands2.CommandScheduler.getInstance().run()
-        subsystems.Climber.getClimberDSOutput(Robot.climber)
+        # subsystems.Climber.getClimberDSOutput(Robot.climber)
     def disabledInit(self) -> None:
         """This function is called once each time the robot enters Disabled mode."""
         pass
