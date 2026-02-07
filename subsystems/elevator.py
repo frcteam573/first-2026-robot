@@ -46,7 +46,7 @@ class Elevator(commands2.SubsystemBase):
         return self.talonfx.get_position().value_as_double
 
     def getTalon(self) -> hardware.TalonFX:
-        self.talonfx = hardware.TalonFX(10, "canivore")
+        self.talonfx = hardware.TalonFX(80)
         return self.talonfx
     
     def getElevatorDSOutput(self):
