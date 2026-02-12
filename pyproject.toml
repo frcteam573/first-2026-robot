@@ -33,5 +33,5 @@ requires = [
     "pyntcore",
     "protobuf",
     "robotpy-pathplannerlib",
-    "robotpy-opencv"
+    "opencv-python"
 ]
