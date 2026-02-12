@@ -36,13 +36,14 @@ import utils.utils as utilities
 
 class Robot:
     # Defines all subsystems used in the robot, these are used to access the subsystems in commands and other files.
-    elevator = subsystems.Elevator()
-    climber = subsystems.Climber()
+    # elevator = subsystems.Elevator()
+    # climber = subsystems.Climber()
+    pass
 
-    shooter = subsystems.Shooter()
+    # shooter = subsystems.Shooter()
     # MotorStatus = subsystems.MotorStatus()
 
-    intake = subsystems.Intake()
+    # intake = subsystems.Intake()
 
 class RobotContainer:
     """
@@ -79,23 +80,23 @@ class RobotContainer:
         self._joystick = CommandXboxController(0)
 
         self.drivetrain = TunerConstants.create_drivetrain()
-        self._elevator = subsystems.Elevator()
-        self._climber = subsystems.Climber()
+        # self._elevator = subsystems.Elevator()
+        # self._climber = subsystems.Climber()
         
         #Name Commands for Autos these must be done before building the autobuilder
 
-        NamedCommands.registerCommand("Raise Elevator", commands.elevator.setPosition(self._elevator,position=10))
-        NamedCommands.registerCommand("Lower Elevator", commands.elevator.setPosition(self._elevator,position=0))
-        NamedCommands.registerCommand("Intake In", commands.intake.IntakeIn(Robot.intake))
-        NamedCommands.registerCommand("Intake Out", commands.intake.IntakeOut(Robot.intake))
-        NamedCommands.registerCommand("Intake Retract", commands.intake.IntakeRetract(Robot.intake))
-        # NamedCommands.registerCommand("Climber Extend", commands.climber.extendClimber(Robot.climber))
-        NamedCommands.registerCommand("Shoot Prep", commands.shooter.Shoot(Robot.shooter))
-        NamedCommands.registerCommand("Shoot Out", commands.shooter.Shoot(Robot.shooter, shootOut=True))
+        # NamedCommands.registerCommand("Raise Elevator", commands.elevator.setPosition(self._elevator,position=10))
+        # NamedCommands.registerCommand("Lower Elevator", commands.elevator.setPosition(self._elevator,position=0))
+        # NamedCommands.registerCommand("Intake In", commands.intake.IntakeIn(Robot.intake))
+        # NamedCommands.registerCommand("Intake Out", commands.intake.IntakeOut(Robot.intake))
+        # NamedCommands.registerCommand("Intake Retract", commands.intake.IntakeRetract(Robot.intake))
+        # # NamedCommands.registerCommand("Climber Extend", commands.climber.extendClimber(Robot.climber))
+        # NamedCommands.registerCommand("Shoot Prep", commands.shooter.Shoot(Robot.shooter))
+        # NamedCommands.registerCommand("Shoot Out", commands.shooter.Shoot(Robot.shooter, shootOut=True))
         
 
-        NamedCommands.registerCommand("climbUp", commands.elevator.setPosition(self._elevator,position=10))
-        NamedCommands.registerCommand("climbDown", commands.elevator.setPosition(self._elevator,position=0))
+        # NamedCommands.registerCommand("climbUp", commands.elevator.setPosition(self._elevator,position=10))
+        # NamedCommands.registerCommand("climbDown", commands.elevator.setPosition(self._elevator,position=0))
 
         # Auto builder
         try:
