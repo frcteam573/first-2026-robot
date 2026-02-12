@@ -61,7 +61,7 @@ class Climber(commands2.SubsystemBase):
         return self.talonfx.get_position().value_as_double
 
     def getTalon(self) -> hardware.TalonFX:
-        self.talonfx = hardware.TalonFX(10, "canivore")
+        self.talonfx = hardware.TalonFX(64)
         return self.talonfx
     
     def getClimberDSOutput(self):

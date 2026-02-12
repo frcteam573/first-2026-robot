@@ -12,7 +12,7 @@ import wpiutil
 import time
 
 from robotcontainer import RobotContainer, Robot
-from vision import vision_sim
+# from vision import vision_sim
 from vision.vision_estimator import VisionEstimator
 from telemetry import Telemetry
 
@@ -177,7 +177,8 @@ class MyRobot(commands2.TimedCommandRobot):
     
     def simulationInit(self) -> None:
         if self.photonVisionMethod == config.PhotonVisionSetting.SIM:
-            self.visionSim = vision_sim.photonvision_sim_setup() #Setup sim vision system
+            pass
+        #   self.visionSim = vision_sim.photonvision_sim_setup() #Setup sim vision system
     
     def simulationPeriodic(self) -> None:
         try:
