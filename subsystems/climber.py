@@ -18,7 +18,8 @@ class Climber(commands2.SubsystemBase):
         SmartDashboard.putData("Mech2d", self.mech)
 
         # climber Magic Motion and talon definition
-        self.talonfx = self.getTalon()
+        # self.talonfx = self.getTalon()
+        self.talonfx = hardware.TalonFX(64)
         self.motion_magic = controls.MotionMagicVoltage(0)
         
         # Retry config apply up to 5 times, report if failure
