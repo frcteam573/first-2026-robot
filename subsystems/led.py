@@ -106,7 +106,7 @@ class LED(commands2.SubsystemBase):
       Hood_At_Position = wpilib.SmartDashboard.getBoolean("Shooter / Hood at Position", False)
       Wheel_At_Speed = wpilib.SmartDashboard.getBoolean("Shooter / Wheel at Speed", False)
 
-      Aligned = wpilib.SmartDashboard.putBoolean("Aligned", False)
+      Aligned = wpilib.SmartDashboard.getBoolean("Aligned", False)
       Done_Climbing = wpilib.SmartDashboard.putBoolean("Done Climbing",False)
       TargetSeen = wpilib.SmartDashboard.putBoolean("Target Seen",False)
     # these 3 above i put as putboolean as I don't know if we already have a check for these... feel free to add more.

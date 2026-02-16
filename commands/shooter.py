@@ -31,7 +31,12 @@ class Shoot(commands2.Command):
         SmartDashboard.putBoolean("Shooter / Hood at Position", self.app.setHoodAngle(hoodAngle))
         SmartDashboard.putBoolean("Shooter / Wheel at Speed", self.app.setShooterSpeed(wheelSpeed))
         if Keymap.Shooter.shoot.getAsBoolean() or self.shootOut:
-            self.app.hopperMotorOn()
+            if wpilib.SmartDashboard.getBoolean("Aligned", False):
+                self.app.hopperMotorOff()
+                print('Aligned And Shot')
+            else:
+                print('Not Aligned')
+                self.app.hopperMotorOn()
         else:
             self.app.hopperMotorOff()    
         
