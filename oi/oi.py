@@ -54,6 +54,7 @@ commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue
 
 
 Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(Robot.shooter))
+Keymap.Shooter.shoot.whileTrue(commands.shooter.Shoot(Robot.shooter, True))
 Keymap.Intake.intakeIn.whileTrue(commands.intake.IntakeIn(Robot.intake))
 Keymap.Intake.intakeOut.whileTrue(commands.intake.IntakeOut(Robot.intake))
 Keymap.Intake.intakeRetract.whileTrue(commands.intake.IntakeRetract(Robot.intake))

@@ -38,6 +38,7 @@ class Shoot(commands2.Command):
                 print('Not Aligned')
                 self.app.hopperMotorOn()
         else:
+            print('Didnt pass first check')
             self.app.hopperMotorOff()    
         
     def end(self, interrupted=False) -> None:

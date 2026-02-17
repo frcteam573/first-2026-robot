@@ -81,6 +81,7 @@ class RobotContainer:
         self.drivetrain = TunerConstants.create_drivetrain()
         self._elevator = subsystems.Elevator()
         self._climber = subsystems.Climber()
+        # self._shooter = subsystems.Shooter()
         
         #Name Commands for Autos these must be done before building the autobuilder
 
@@ -186,7 +187,7 @@ class RobotContainer:
         # (self._joystick.back() & self._joystick.y()).whileTrue(
         #     self.drivetrain.sys_id_dynamic(SysIdRoutine.Direction.kForward)
         # )
-        # (self._joystick.back() & self._joystick.x()).whileTrue(
+        # (self._joystick.back() & self._joystick.x()).whileTrue(s
         #     self.drivetrain.sys_id_dynamic(SysIdRoutine.Direction.kReverse)
         # )
         # (self._joystick.start() & self._joystick.y()).whileTrue(
