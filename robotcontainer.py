@@ -124,10 +124,10 @@ class RobotContainer:
             self.drivetrain.apply_request(
                 lambda: (
                     self._drive.with_velocity_x(
-                        -self._joystick.getLeftY() * self._max_speed * .7
+                        -self._joystick.getLeftY() * self._max_speed * .3
                     )  # Drive forward with negative Y (forward)
                     .with_velocity_y(
-                        -self._joystick.getLeftX() * self._max_speed * .7
+                        -self._joystick.getLeftX() * self._max_speed * .3
                     )  # Drive left with negative X (left)
                     .with_rotational_rate(
                         -self._joystick.getRightX() * self._max_angular_rate 
@@ -145,13 +145,13 @@ class RobotContainer:
         self._joystick.y().whileTrue(self.drivetrain.apply_request(
                 lambda: (
                     self._drive.with_velocity_x(
-                        -self._joystick.getLeftY() * self._max_speed
+                        -self._joystick.getLeftY() * self._max_speed * .3
                     )  # Drive forward with negative Y (forward)
                     .with_velocity_y(
-                        -self._joystick.getLeftX() * self._max_speed
+                        -self._joystick.getLeftX() * self._max_speed *.3
                     )  # Drive left with negative X (left)
                     .with_rotational_rate(
-                        subsystems.CommandSwerveDrivetrain.calculate_relative_angle(self=self.drivetrain, robotPose=config.RobotPoseConfig.pose, targetPose=utilities.getTargetPose(config.RobotPoseConfig.pose))
+                        subsystems.CommandSwerveDrivetrain.calculate_relative_angle(self=self.drivetrain, robotPose=config.RobotPoseConfig.pose, targetPose=utilities.getTargetPose(config.RobotPoseConfig.pose)) * self._max_angular_rate 
                     )  # Drive counterclockwise with negative X (left)
                 )
             )) 

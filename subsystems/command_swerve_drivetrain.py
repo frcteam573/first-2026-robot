@@ -375,6 +375,8 @@ class CommandSwerveDrivetrain(Subsystem, TunerSwerveDrivetrain):
         # else:
         #     SmartDashboard.putBoolean("Aligned", False)
 
+        output = utilities.remap(output,config.DrivebasedAngleAlign.max_output)
+
         return -output
 
     
