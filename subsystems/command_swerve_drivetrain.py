@@ -154,6 +154,9 @@ class CommandSwerveDrivetrain(Subsystem, TunerSwerveDrivetrain):
         self._steer_characterization = swerve.requests.SysIdSwerveSteerGains()
         self._rotation_characterization = swerve.requests.SysIdSwerveRotation()
 
+        self.rAnglePID = PIDController(config.DrivebasedAngleAlign.p, config.DrivebasedAngleAlign.i, config.DrivebasedAngleAlign.d)
+        self.rAnglePID.setSetpoint(0)
+
         self._sys_id_routine_translation = SysIdRoutine(
             SysIdRoutine.Config(
                 # Use default ramp rate (1 V/s) and timeout (10 s)
@@ -365,7 +368,7 @@ class CommandSwerveDrivetrain(Subsystem, TunerSwerveDrivetrain):
 
         finalRelativeAngle = math.atan2(targetRelative.Y(), targetRelative.X())
             
-        output = self.TylersPID.calculate(finalRelativeAngle, 0.0)
+        output = self.rAnglePID.calculate(finalRelativeAngle, 0.0)
         
         # if abs(finalRelativeAngle) <= (config.DrivebasedAngleAlign.angleTolerance):
         #     SmartDashboard.putBoolean("Aligned", True)
