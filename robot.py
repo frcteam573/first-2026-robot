@@ -12,7 +12,7 @@ import wpiutil
 import time
 
 from robotcontainer import RobotContainer, Robot
-from vision import vision_sim
+# from vision import vision_sim
 from vision.vision_estimator import VisionEstimator
 from telemetry import Telemetry
 
@@ -124,12 +124,12 @@ class MyRobot(commands2.TimedCommandRobot):
 
         config.RobotPoseConfig.pose = self.container.drivetrain.get_state().pose
         
-        subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
-        subsystems.Shooter.getMotors(self=Robot.shooter)
-        subsystems.Shooter.getShooterInfo(Robot.shooter)
-        subsystems.Intake.getIntakeInfo(Robot.intake)
+        # subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
+        # subsystems.Shooter.getMotors(self=Robot.shooter)
+        # subsystems.Shooter.getShooterInfo(Robot.shooter)
+        # subsystems.Intake.getIntakeInfo(Robot.intake)
         commands2.CommandScheduler.getInstance().run()
-        subsystems.Climber.getClimberDSOutput(Robot.climber)
+        # subsystems.Climber.getClimberDSOutput(Robot.climber)
     def disabledInit(self) -> None:
         """This function is called once each time the robot enters Disabled mode."""
         pass
@@ -177,7 +177,8 @@ class MyRobot(commands2.TimedCommandRobot):
     
     def simulationInit(self) -> None:
         if self.photonVisionMethod == config.PhotonVisionSetting.SIM:
-            self.visionSim = vision_sim.photonvision_sim_setup() #Setup sim vision system
+            pass
+        #   self.visionSim = vision_sim.photonvision_sim_setup() #Setup sim vision system
     
     def simulationPeriodic(self) -> None:
         try:
