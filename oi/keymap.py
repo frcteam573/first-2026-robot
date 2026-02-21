@@ -35,6 +35,7 @@ class Keymap:
     class Shooter:
         setupShooter = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.RB)
         shoot = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.Y)
+        hopperMotorReverse = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.A)
 
     class Intake:
         intakeIn = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.LB)

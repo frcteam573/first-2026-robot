@@ -57,3 +57,4 @@ class OI:
 # Keymap.Intake.intakeIn.whileTrue(commands.intake.IntakeIn(Robot.intake))
 # Keymap.Intake.intakeOut.whileTrue(commands.intake.IntakeOut(Robot.intake))
 # Keymap.Intake.intakeRetract.whileTrue(commands.intake.IntakeRetract(Robot.intake))
+# Keymap.Shooter.hopperMotorReverse.whileTrue(commands.shooter.hopperMotorReverse(Robot.shooter))
