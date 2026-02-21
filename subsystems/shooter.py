@@ -176,6 +176,7 @@ class Shooter(commands2.SubsystemBase):
         self.m_hopperMotor.set(1)  
 
     def hopperMotorReverse(self):
+        # print("hopper motor reverse")
         self.m_hopperMotor.set(-1)
         
     def getMotors(self):

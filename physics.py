@@ -3,6 +3,7 @@ from wpilib import RobotController, DriverStation
 
 from wpimath.system.plant import DCMotor, LinearSystemId
 from wpimath.units import radiansToRotations
+from phoenix6 import hardware
 
 from pyfrc.physics.core import PhysicsInterface
 from phoenix6 import unmanaged
@@ -13,6 +14,8 @@ if typing.TYPE_CHECKING:
     from robot import MyRobot
 
 import subsystems.elevator
+import subsystems.climber
+
 class PhysicsEngine:
 
     def __init__(self, physics_controller: PhysicsInterface, robot: "MyRobot"):
@@ -22,8 +25,10 @@ class PhysicsEngine:
         gearbox = DCMotor.krakenX60FOC(1)
         self.motor_sim = sim.DCMotorSim(LinearSystemId.DCMotorSystem(gearbox, 0.01, 1.0), gearbox)
         # Keep a reference to the motor sim state so we can update it
-        self.talon_sim = subsystems.Elevator.getTalon(self).sim_state
-        self.talon_sim = subsystems.Climber.getTalon(self).sim_state
+        self.talonfx = hardware.TalonFX(80)
+        self.talon_sim = self.talonfx.sim_state
+        self.talonfx1 = hardware.TalonFX(64)
+        self.talon_sim1 = self.talonfx1.sim_state
 
     def update_sim(self, now: float, tm_diff: float) -> None:
         """

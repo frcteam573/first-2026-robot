@@ -2,4 +2,4 @@
 from commands.drivetrain import *
 # from commands.climber import *
 # from commands.intake import *
-# from commands.shooter import *
+from commands.shooter import *
