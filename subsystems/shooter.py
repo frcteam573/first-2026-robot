@@ -1,8 +1,9 @@
 import commands2
+from numpy import double
 import config
 import utils.utils as Tyler
 from phoenix6 import hardware, controls, configs, StatusCode, signals
-from wpilib import DriverStation, SmartDashboard, Mechanism2d, MechanismLigament2d
+from wpilib import DriverStation, Servo, SmartDashboard, Mechanism2d, MechanismLigament2d
 from ntcore import NetworkTableInstance
 from wpimath.geometry import Rotation2d, Pose2d
 import constants
@@ -15,7 +16,8 @@ class Shooter(commands2.SubsystemBase):
         # self.m_shooter = rev.SparkMax(58, rev.SparkMax.MotorType.kBrushless)
         self.m_shooter1 = hardware.TalonFX(60)
         self.m_shooter2 = hardware.TalonFX(61)  
-        self.m_hoodMotor1 = hardware.TalonFX(65)
+        # self.m_hoodMotor1 = hardware.TalonFX(65)
+        self.s_hoodServo = Servo(1) #change to match id of servo
         self.m_hopperMotor = hardware.TalonFX(68)
         
         # # Be able to switch which control request to use based on a button press
@@ -86,17 +88,17 @@ class Shooter(commands2.SubsystemBase):
         cfg.torque_current.peak_forward_torque_current = 120
         cfg.torque_current.peak_reverse_torque_current = -120
 
-        # Retry config apply up to 5 times, report if failure
-        status: StatusCode = StatusCode.STATUS_CODE_NOT_INITIALIZED
-        for _ in range(0, 5):
-            status = self.m_hoodMotor1.configurator.apply(cfg)
-            if status.is_ok():
-                break
-        if not status.is_ok():
-            print(f"Could not apply configs, error code: {status.name}")
+        # # Retry config apply up to 5 times, report if failure
+        # status: StatusCode = StatusCode.STATUS_CODE_NOT_INITIALIZED
+        # for _ in range(0, 5):
+        #     status = self.m_hoodMotor1.configurator.apply(cfg)
+        #     if status.is_ok():
+        #         break
+        # if not status.is_ok():
+        #     print(f"Could not apply configs, error code: {status.name}")
 
         # Make sure we start at 0
-        self.m_hoodMotor1.set_position(0)
+        self.s_hoodServo.setPosition(0)
 
     def setShooterSpeed(self, speed: float) -> bool:
         '''Sets the speed of the shooter motors based on supplied speed.
@@ -119,12 +121,13 @@ class Shooter(commands2.SubsystemBase):
             angle: The desired angle of the hood in degrees.
         '''
         # self.m_hoodMotor1.set(1)
-        self.m_hoodMotor1.set_control(self.position_voltage.with_position(angle * config.Shooter.hoodRotationsToAngle))
+        self.s_hoodServo.setAngle(angle * config.Shooter.hoodRotationsToAngle)
+        # self.m_hoodMotor1.set_control(self.position_voltage.with_position(angle * config.Shooter.hoodRotationsToAngle))
         #print("Shooter out Speed:", speed)
-        return Tyler.max_min_check(self.m_hoodMotor1.get_position().value_as_double/config.Shooter.hoodRotationsToAngle, angle, config.Shooter.hoodAngleTolerance)
+        return Tyler.max_min_check(float(self.s_hoodServo.getPosition()) / config.Shooter.hoodRotationsToAngle, angle, config.Shooter.hoodAngleTolerance)
 
     def hoodMotorOff(self):
-        self.m_hoodMotor1.set(0)
+        self.s_hoodServo.set(0)
 
     def inScoringZone(pose: Pose2d) -> bool:
         '''changes hood angle when not in alliance's zone
@@ -180,7 +183,7 @@ class Shooter(commands2.SubsystemBase):
         self.m_hopperMotor.set(-1)
         
     def getMotors(self):
-        motors = (self.m_shooter1, self.m_shooter2, self.m_hoodMotor1, self.m_hopperMotor)
+        motors = (self.m_shooter1, self.m_shooter2, self.m_hopperMotor)
         self.motorTemps = []
         for motor in motors:
             signal = motor.get_device_temp().value_as_double
@@ -199,7 +202,8 @@ class Shooter(commands2.SubsystemBase):
         '''
         shooterWheelSpeed = self.m_shooter1.get_velocity().value_as_double
         shooterWheelSpeed2 = self.m_shooter2.get_velocity().value_as_double
-        hoodAngle = self.m_hoodMotor1.get_position().value_as_double/config.Shooter.hoodRotationsToAngle
+        hoodAngle = (float(self.s_hoodServo.getPosition()) / config.Shooter.hoodRotationsToAngle)
+        # hoodAngle = self.m_hoodMotor1.get_position().value_as_double/config.Shooter.hoodRotationsToAngle
         hopperSpeed = self.m_hopperMotor.get_velocity().value_as_double
         SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed", shooterWheelSpeed)
         SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed 2", shooterWheelSpeed2)
