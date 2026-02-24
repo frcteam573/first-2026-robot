@@ -4,6 +4,11 @@ from phoenix6 import hardware, controls, configs, StatusCode
 from wpilib import DriverStation, SmartDashboard, Mechanism2d, MechanismLigament2d
 from ntcore import NetworkTableInstance
 
+import subsystems
+import subsystems.climber
+
+# from subsystems.climber import Climber
+
 class Intake(commands2.SubsystemBase):
 
     def __init__(self) -> None:
@@ -32,10 +37,23 @@ class Intake(commands2.SubsystemBase):
         if not status.is_ok():
             print(f"Could not apply configs, error code: {status.name}")
 
-    def setIntakePosition(self,position:float):
+    def setIntakePosition(self, position:float):
         #print("Set Intake Position")
-        self.m_intakeExtension.set_control(self.motion_magic.with_position(position).with_slot(0))
-        SmartDashboard.putNumber("Intake / Commanded Intake Extension Position", position)
+        if config.Climber.Deployed == False:
+            config.Intake.Deployed = True
+            self.m_intakeExtension.set_control(self.motion_magic.with_position(position).with_slot(0))
+            SmartDashboard.putNumber("Intake / Commanded Intake Extension Position", position)
+            SmartDashboard.putBoolean("Intake Deployed", config.Intake.Deployed)
+            SmartDashboard.putBoolean("Climber Deployed", config.Climber.Deployed)
+        elif config.Climber.Deployed == True:
+            pass
+            # subsystems.climber.Climber.retractClimberToCertainPos(self, config.Climber.MinLength)
+            # config.Climber.Deployed = False
+            # self.m_intakeExtension.set_control(self.motion_magic.with_position(position).with_slot(0))
+            # SmartDashboard.putNumber("Intake / Commanded Intake Extension Position", position)
+            # SmartDashboard.putBoolean("Intake Deployed", config.Intake.Deployed)
+            # SmartDashboard.putBoolean("Climber Deployed", config.Climber.Deployed)
+            
 
     def stopIntakeExtension(self):
         self.m_intakeExtension.set(0)    

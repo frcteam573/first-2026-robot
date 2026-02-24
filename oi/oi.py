@@ -26,6 +26,7 @@ from oi.keymap import Controllers, Keymap
 import constants
 from robotcontainer import Robot
 import robotcontainer
+from subsystems import climber
 
 
 
@@ -46,8 +47,8 @@ class OI:
 	
 
 # set pos code
-# commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, position = config.Climber.climberSetPos))
-# commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, 0))
+commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.setClimberPosition(climber.Climber, position=config.Climber.climberSetPos))
+commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.setClimberPosition(climber.Climber, 0))
 # # manual code
 # #commands2.button.Trigger(lambda: Keymap.Climber.extendclimber.value > .05).whileTrue(commands.extendclimber(Robot.climber))
 # #commands2.button.Trigger(lambda: Keymap.Climber.retractclimber.value > .05).whileTrue(commands.retractclimber(Robot.climber))

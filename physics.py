@@ -12,6 +12,7 @@ import typing
 if typing.TYPE_CHECKING:
     from robot import MyRobot
 
+import subsystems.climber
 import subsystems.elevator
 class PhysicsEngine:
 
@@ -22,8 +23,8 @@ class PhysicsEngine:
         gearbox = DCMotor.krakenX60FOC(1)
         self.motor_sim = sim.DCMotorSim(LinearSystemId.DCMotorSystem(gearbox, 0.01, 1.0), gearbox)
         # Keep a reference to the motor sim state so we can update it
-        self.talon_sim = subsystems.Elevator.getTalon(self).sim_state
-        self.talon_sim = subsystems.Climber.getTalon(self).sim_state
+        self.talon_sim = subsystems.elevator.Elevator.getTalon(self).sim_state
+        self.talon_sim = subsystems.climber.Climber.getTalon(self).sim_state
 
     def update_sim(self, now: float, tm_diff: float) -> None:
         """
