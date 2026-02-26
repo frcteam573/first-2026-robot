@@ -1,14 +1,14 @@
 from math import fabs
 
 import commands2
-from commands import intake
+
 import config
 import phoenix6
 from phoenix6 import hardware, controls, configs, StatusCode
 from wpilib import DriverStation, SmartDashboard, Mechanism2d, MechanismLigament2d
 from ntcore import NetworkTableInstance
 
-from subsystems.intake import Intake
+
 
 class Climber(commands2.SubsystemBase):
 
@@ -46,7 +46,7 @@ class Climber(commands2.SubsystemBase):
         if config.Climber.climberMode and config.Intake.Deployed == False:
             print("Set climber Position")
             config.Climber.Deployed = True
-            self.talonfx.set_control(self.motion_magic.with_position(position).with_slot(0))
+            self.m_climber.set_control(self.motion_magic.with_position(position).with_slot(0))
             SmartDashboard.putBoolean("Intake Deployed", config.Intake.Deployed)
             SmartDashboard.putBoolean("Climber Deployed", config.Climber.Deployed)
             SmartDashboard.putNumber("Climber / Actual Set Climber Position", position)
@@ -68,21 +68,21 @@ class Climber(commands2.SubsystemBase):
     def extendClimber(self):
         
         if config.Climber.climberMode and config.Climber.Deployed == False:
-         self.talonfx.set(1.0)
+         self.m_climber.set(1.0)
 
     def retractClimber(self):
         
         if config.Climber.climberMode:
-         self.talonfx.set(-1.0)
+         self.m_climber.set(-1.0)
 
     def retractClimberToCertainPos(self, position: float):
         if config.Climber.climberMode:
-            self.talonfx.set(position)
+            self.m_climber.set(position)
     
 
     def getClimberPosition(self):
-        print(self.talonfx)
-        return self.talonfx.get_position().value_as_double
+        print(self.m_climber)
+        return self.m_climber.get_position().value_as_double
 
     
     def getClimberDSOutput(self):

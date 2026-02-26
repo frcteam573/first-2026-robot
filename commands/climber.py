@@ -6,14 +6,13 @@ from oi.keymap import Keymap
 
 # from commands.wrist import Wrist
 
-from subsystems import climber
-from subsystems.climber import Climber 
+from subsystems.climber import Climber
 
 class setClimberPosition(commands2.Command):
       def __init__(
         # This defines what subsystem this command is for, so it can be used in the command scheduler.
         self, 
-        app: climber.Climber,
+        app: Climber,
         position: 0,
     ) -> None:
         super().__init__()
