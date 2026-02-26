@@ -37,13 +37,10 @@ import utils.utils as utilities
 class Robot:
     # Defines all subsystems used in the robot, these are used to access the subsystems in commands and other files.
     # elevator = subsystems.Elevator()
-    # climber = subsystems.Climber()
-    pass
-
-    # shooter = subsystems.Shooter()
+    climber = subsystems.Climber()
+    shooter = subsystems.Shooter()
     # MotorStatus = subsystems.MotorStatus()
-
-    # intake = subsystems.Intake()
+    intake = subsystems.Intake()
 
 class RobotContainer:
     """

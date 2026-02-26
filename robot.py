@@ -52,7 +52,7 @@ class MyRobot(commands2.TimedCommandRobot):
     """
     autonomousCommand: typing.Optional[commands2.Command] = None
 
-    photonVisionMethod = config.PhotonVisionSetting.REAL_CAMERA
+    photonVisionMethod = config.PhotonVisionSetting.SIM
 
     localizationMethod = config.PrimaryLocalization.VISION
 
@@ -126,10 +126,11 @@ class MyRobot(commands2.TimedCommandRobot):
         
         # subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
         # subsystems.Shooter.getMotors(self=Robot.shooter)
-        # subsystems.Shooter.getShooterInfo(Robot.shooter)
-        # subsystems.Intake.getIntakeInfo(Robot.intake)
+        subsystems.Shooter.getShooterInfo(Robot.shooter)
+        subsystems.Intake.getIntakeInfo(Robot.intake)
+        subsystems.Climber.getClimberDSOutput(Robot.climber)
         commands2.CommandScheduler.getInstance().run()
-        # subsystems.Climber.getClimberDSOutput(Robot.climber)
+
     def disabledInit(self) -> None:
         """This function is called once each time the robot enters Disabled mode."""
         pass
