@@ -26,6 +26,7 @@ class IntakeIn(commands2.Command):
     def execute(self) -> None:
         self.app.intakeMotorIn()  
         self.app.setIntakePosition(config.Intake.MaxLength)  
+        print('intake ran in')
         
     def end(self, interrupted=False) -> None:
         self.app.intakeMotorOff()
@@ -47,6 +48,7 @@ class IntakeOut(commands2.Command):
     def execute(self) -> None:
         self.app.intakeMotorOut()  
         self.app.setIntakePosition(config.Intake.MaxLength)  
+        print('intake ran out')
         
     def end(self, interrupted=False) -> None:
         self.app.intakeMotorOff()

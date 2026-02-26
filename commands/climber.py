@@ -48,7 +48,11 @@ class extendclimber(commands2.Command):
         self.addRequirements(app)
        # self.position = position
 
+      def initialize(self) -> None:
+        pass
+
       def execute(self):
+        print('ran extend climber')
         self.app.extendClimber()
         
     #  def isFinished(self):
@@ -72,8 +76,13 @@ class retractclimber(commands2.Command):
         self.addRequirements(app)
     #    self.position = position
 
+      def initialize(self) -> None:
+        pass
+
       def execute(self):
+        print('ran retract climber')
         self.app.retractClimber()
+        
         
      # def isFinished(self):
            

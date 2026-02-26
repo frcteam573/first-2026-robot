@@ -14,7 +14,6 @@ if typing.TYPE_CHECKING:
     from robot import MyRobot
 
 import subsystems.climber
-import subsystems.elevator
 import subsystems.climber
 
 class PhysicsEngine:

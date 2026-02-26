@@ -1,6 +1,7 @@
 """ This creates links between buttons and commands for the controllers"""
 import math
 import commands2
+from tomlkit import key
 import wpilib 
 from commands2 import (
 	InstantCommand,
@@ -10,7 +11,6 @@ from commands2 import (
 	FunctionalCommand,
 )
 import commands.climber
-import commands.elevator
 import commands.drivetrain
 import commands.shooter
 import commands.intake
@@ -49,14 +49,20 @@ class OI:
 	
 
 # set pos code
-commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, position = config.Climber.climberSetPos))
-commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, 0))
+# commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, position = config.Climber.climberSetPos))
+# commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, 0))
 # # manual code
 # #commands2.button.Trigger(lambda: Keymap.Climber.extendclimber.value > .05).whileTrue(commands.extendclimber(Robot.climber))
 # #commands2.button.Trigger(lambda: Keymap.Climber.retractclimber.value > .05).whileTrue(commands.retractclimber(Robot.climber))
 
 
-Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(Robot.shooter))
+# Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(Robot.shooter))
+
+Keymap.Shooter.setupShooter.whileTrue(commands.shooter.testComponents(Robot.shooter))
+Keymap.Shooter.hopperMotorReverse.whileTrue(commands.shooter.testHopper(Robot.shooter))
 Keymap.Intake.intakeIn.whileTrue(commands.intake.IntakeIn(Robot.intake))
 Keymap.Intake.intakeOut.whileTrue(commands.intake.IntakeOut(Robot.intake))
 Keymap.Intake.intakeRetract.whileTrue(commands.intake.IntakeRetract(Robot.intake))
+commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.extendclimber(Robot.climber))
+commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.retractclimber(Robot.climber))
+

@@ -23,7 +23,6 @@ from phoenix6 import hardware, controls, configs, StatusCode
 import config
 from ntcore import NetworkTableInstance
 import subsystems
-import commands.elevator
 import commands.climber
 import commands.drivetrain
 import commands.shooter
@@ -82,16 +81,15 @@ class RobotContainer:
         
         #Name Commands for Autos these must be done before building the autobuilder
 
-        # NamedCommands.registerCommand("Raise Elevator", commands.elevator.setPosition(self._elevator,position=10))
-        # NamedCommands.registerCommand("Lower Elevator", commands.elevator.setPosition(self._elevator,position=0))
         # NamedCommands.registerCommand("Intake In", commands.intake.IntakeIn(Robot.intake))
         # NamedCommands.registerCommand("Intake Out", commands.intake.IntakeOut(Robot.intake))
         # NamedCommands.registerCommand("Intake Retract", commands.intake.IntakeRetract(Robot.intake))
-        # # NamedCommands.registerCommand("Climber Extend", commands.climber.extendClimber(Robot.climber))
         # NamedCommands.registerCommand("Shoot Prep", commands.shooter.Shoot(Robot.shooter))
         # NamedCommands.registerCommand("Shoot Out", commands.shooter.Shoot(Robot.shooter, shootOut=True))
-        
 
+        
+        
+        # # NamedCommands.registerCommand("Climber Extend", commands.climber.extendClimber(Robot.climber))
         # NamedCommands.registerCommand("climbUp", commands.elevator.setPosition(self._elevator,position=10))
         # NamedCommands.registerCommand("climbDown", commands.elevator.setPosition(self._elevator,position=0))
 
