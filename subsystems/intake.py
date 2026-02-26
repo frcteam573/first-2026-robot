@@ -14,8 +14,8 @@ class Intake(commands2.SubsystemBase):
     def __init__(self) -> None:
         super().__init__()
 
-        self.m_intakeMotor = hardware.TalonFX(63)
-        self.m_intakeExtension = hardware.TalonFX(66)
+        self.m_intakeMotor = hardware.TalonFX(53)
+        self.m_intakeExtension = hardware.TalonFX(56)
 
 
         # Intake Example Section

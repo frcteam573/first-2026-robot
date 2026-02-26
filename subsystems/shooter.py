@@ -16,9 +16,9 @@ class Shooter(commands2.SubsystemBase):
         # self.m_shooter = rev.SparkMax(58, rev.SparkMax.MotorType.kBrushless)
         self.m_shooter1 = hardware.TalonFX(60)
         self.m_shooter2 = hardware.TalonFX(61)  
-        # self.m_hoodMotor1 = hardware.TalonFX(65)
+        self.m_hoodMotor1 = hardware.TalonFX(55)
         self.s_hoodServo = Servo(1) #change to match id of servo
-        self.m_hopperMotor = hardware.TalonFX(68)
+        self.m_hopperMotor = hardware.TalonFX(58)
         
         # # Be able to switch which control request to use based on a button press
         # # Start at velocity 0, use slot 0

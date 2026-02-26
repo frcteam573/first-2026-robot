@@ -22,7 +22,7 @@ class setClimberPosition(commands2.Command):
         self.position = position
 
       def execute(self):
-        # print(self.position)
+        print(self.position)
         self.app.setClimberPosition(self=self.app, position=self.position)
 
       def isFinished(self):
