@@ -140,9 +140,10 @@ class DrivebasedAngleAlign:
     allowable_errorY = 0.1
     allowable_errorR = 5  # degrees
     
-    p = 10
+    p = .75
     i = 0
     d = 0
+    max_output = .8
     alignmentPID = PIDController(p, i, d)
     angleTolerance = math.radians(10)
     distanceTolerance = 10 # meters

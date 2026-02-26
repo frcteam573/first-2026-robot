@@ -37,13 +37,10 @@ import utils.utils as utilities
 class Robot:
     # Defines all subsystems used in the robot, these are used to access the subsystems in commands and other files.
     # elevator = subsystems.Elevator()
-    # climber = subsystems.Climber()
-    pass
-
-    # shooter = subsystems.Shooter()
+    climber = subsystems.Climber()
+    shooter = subsystems.Shooter()
     # MotorStatus = subsystems.MotorStatus()
-
-    # intake = subsystems.Intake()
+    intake = subsystems.Intake()
 
 class RobotContainer:
     """
@@ -81,7 +78,7 @@ class RobotContainer:
 
         self.drivetrain = TunerConstants.create_drivetrain()
         # self._elevator = subsystems.Elevator()
-        # self._climber = subsystems.Climber()
+        self.climber = subsystems.Climber()
         
         #Name Commands for Autos these must be done before building the autobuilder
 
@@ -124,10 +121,10 @@ class RobotContainer:
             self.drivetrain.apply_request(
                 lambda: (
                     self._drive.with_velocity_x(
-                        -self._joystick.getLeftY() * self._max_speed * .7
+                        -self._joystick.getLeftY() * self._max_speed * .3
                     )  # Drive forward with negative Y (forward)
                     .with_velocity_y(
-                        -self._joystick.getLeftX() * self._max_speed * .7
+                        -self._joystick.getLeftX() * self._max_speed * .3
                     )  # Drive left with negative X (left)
                     .with_rotational_rate(
                         -self._joystick.getRightX() * self._max_angular_rate 
@@ -145,13 +142,13 @@ class RobotContainer:
         self._joystick.y().whileTrue(self.drivetrain.apply_request(
                 lambda: (
                     self._drive.with_velocity_x(
-                        -self._joystick.getLeftY() * self._max_speed
+                        -self._joystick.getLeftY() * self._max_speed * .3
                     )  # Drive forward with negative Y (forward)
                     .with_velocity_y(
-                        -self._joystick.getLeftX() * self._max_speed
+                        -self._joystick.getLeftX() * self._max_speed *.3
                     )  # Drive left with negative X (left)
                     .with_rotational_rate(
-                        subsystems.CommandSwerveDrivetrain.calculate_relative_angle(self=self.drivetrain, robotPose=config.RobotPoseConfig.pose, targetPose=utilities.getTargetPose(config.RobotPoseConfig.pose))
+                        subsystems.CommandSwerveDrivetrain.calculate_relative_angle(self=self.drivetrain, robotPose=config.RobotPoseConfig.pose, targetPose=utilities.getTargetPose(config.RobotPoseConfig.pose)) * self._max_angular_rate 
                     )  # Drive counterclockwise with negative X (left)
                 )
             )) 

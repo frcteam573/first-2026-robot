@@ -49,15 +49,14 @@ class OI:
 	
 
 # set pos code
-commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.setClimberPosition(Climber.Climber, position=config.Climber.climberSetPos))
-commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.setClimberPosition(Climber.Climber, 0))
+commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, position = config.Climber.climberSetPos))
+commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, 0))
 # # manual code
 # #commands2.button.Trigger(lambda: Keymap.Climber.extendclimber.value > .05).whileTrue(commands.extendclimber(Robot.climber))
 # #commands2.button.Trigger(lambda: Keymap.Climber.retractclimber.value > .05).whileTrue(commands.retractclimber(Robot.climber))
 
 
-# Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(Robot.shooter))
-# Keymap.Intake.intakeIn.whileTrue(commands.intake.IntakeIn(Robot.intake))
-# Keymap.Intake.intakeOut.whileTrue(commands.intake.IntakeOut(Robot.intake))
-# Keymap.Intake.intakeRetract.whileTrue(commands.intake.IntakeRetract(Robot.intake))
-# Keymap.Shooter.hopperMotorReverse.whileTrue(InstantCommand(lambda: commands.shooter.Shooter().hopperMotorReverse()))
+Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(Robot.shooter))
+Keymap.Intake.intakeIn.whileTrue(commands.intake.IntakeIn(Robot.intake))
+Keymap.Intake.intakeOut.whileTrue(commands.intake.IntakeOut(Robot.intake))
+Keymap.Intake.intakeRetract.whileTrue(commands.intake.IntakeRetract(Robot.intake))

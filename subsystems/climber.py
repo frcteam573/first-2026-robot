@@ -24,13 +24,13 @@ class Climber(commands2.SubsystemBase):
 
         # climber Magic Motion and talon definition
         # self.talonfx = self.getTalon()
-        self.talonfx = hardware.TalonFX(64)
+        self.m_climber = hardware.TalonFX(54)
         self.motion_magic = controls.MotionMagicVoltage(0)
         
         # Retry config apply up to 5 times, report if failure
         status: StatusCode = StatusCode.STATUS_CODE_NOT_INITIALIZED
         for _ in range(0, 5):
-            status = self.talonfx.configurator.apply(config.Climber.cfg)
+            status = self.m_climber.configurator.apply(config.Climber.cfg)
             if status.is_ok():
                 break
         if not status.is_ok():
@@ -63,7 +63,7 @@ class Climber(commands2.SubsystemBase):
 
 
     def stopClimber(self):
-        self.talonfx.set(0)
+        self.m_climber.set(0)
 
     def extendClimber(self):
         
@@ -84,33 +84,15 @@ class Climber(commands2.SubsystemBase):
         print(self.talonfx)
         return self.talonfx.get_position().value_as_double
 
-    def getTalon(self) -> hardware.TalonFX:
-        self.talonfx = hardware.TalonFX(64)
-        return self.talonfx
     
     def getClimberDSOutput(self):
-        current_rot = self.talonfx.get_position().value_as_double
+        current_rot = self.m_climber.get_position().value_as_double
         self._field1_pub.set(current_rot)
         self._field2_pub.set(self.motion_magic.position)
         self.Climber.setLength(config.Climber.MinLength + (current_rot * config.Climber.Rot_to_Dist))
         
     def getMotorOutputStatus(self):
-        climberPosition = self.talonfx.get_position().value_as_double
+        climberPosition = self.m_climber.get_position().value_as_double
         SmartDashboard.putNumber("Climber / Actual climber Position", climberPosition)
-        return self.talonfx.get_motor_output_status(True)
+        return self.m_climber.get_motor_output_status(True)
        
-        
-       # current_rot = self.talonfx.get_position().value_as_double
-       # self._field1_pub.set(current_rot)
-       # self._field2_pub.set(self.motion_magic.position)
-       # self.Climber.setLength(config.Climber.MinLength + (current_rot * config.Climber.Rot_to_Dist))
-
-       # shooterWheelSpeed = self.m_shooter1.get_velocity().value_as_double
-       # shooterWheelSpeed2 = self.m_shooter2.get_velocity().value_as_double
-       # hoodAngle = self.m_hoodMotor1.get_position().value_as_double/config.Shooter.hoodRotationsToAngle
-       # hopperSpeed = self.m_hopperMotor.get_velocity().value_as_double
-       # SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed", shooterWheelSpeed)
-       # SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed 2", shooterWheelSpeed2)
-       # SmartDashboard.putNumber("Shooter / Actual Hood Angle", hoodAngle)
-       # SmartDashboard.putNumber("Shooter / Actual Hopper Speed", hopperSpeed)
-       # SmartDashboard.putNumber("Shooter / Hopper Motor Command", self.m_hopperMotor.get())
