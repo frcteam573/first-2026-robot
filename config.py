@@ -77,8 +77,14 @@ class Climber:
     
     climberMode = False
     climberSetPos = 10
+
+    Deployed = False
+
 # ------------ Intake Settings -----------------
 class Intake:
+    
+    Deployed = False
+
     MinLength = inches_to_meters(0) # Intake height all the way down.
     MaxLength = inches_to_meters(10) # Intake height all the way up.
     Rot_to_Dist = 5*0.0254 # Number of Rotations to go 1 m

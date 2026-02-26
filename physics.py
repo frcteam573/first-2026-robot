@@ -3,6 +3,7 @@ from wpilib import RobotController, DriverStation
 
 from wpimath.system.plant import DCMotor, LinearSystemId
 from wpimath.units import radiansToRotations
+from phoenix6 import hardware
 
 from pyfrc.physics.core import PhysicsInterface
 from phoenix6 import unmanaged
@@ -12,7 +13,10 @@ import typing
 if typing.TYPE_CHECKING:
     from robot import MyRobot
 
+import subsystems.climber
 import subsystems.elevator
+import subsystems.climber
+
 class PhysicsEngine:
 
     def __init__(self, physics_controller: PhysicsInterface, robot: "MyRobot"):

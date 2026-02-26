@@ -1,9 +1,14 @@
+from math import fabs
+
 import commands2
+
 import config
 import phoenix6
 from phoenix6 import hardware, controls, configs, StatusCode
 from wpilib import DriverStation, SmartDashboard, Mechanism2d, MechanismLigament2d
 from ntcore import NetworkTableInstance
+
+
 
 class Climber(commands2.SubsystemBase):
 
@@ -37,11 +42,24 @@ class Climber(commands2.SubsystemBase):
         self._field1_pub = self._table.getDoubleTopic("Current Position").publish()
         self._field2_pub = self._table.getDoubleTopic("Current Setpoint").publish()
 
-    def setClimberPosition(self,position:float):
-        if config.Climber.climberMode:
-            # print("Set climber Position")
+    def setClimberPosition(self, position:float):
+        if config.Climber.climberMode and config.Intake.Deployed == False:
+            print("Set climber Position")
+            config.Climber.Deployed = True
             self.m_climber.set_control(self.motion_magic.with_position(position).with_slot(0))
+            SmartDashboard.putBoolean("Intake Deployed", config.Intake.Deployed)
+            SmartDashboard.putBoolean("Climber Deployed", config.Climber.Deployed)
             SmartDashboard.putNumber("Climber / Actual Set Climber Position", position)
+        elif config.Intake.Deployed == True:
+            pass
+            # print("UNDEPLOY INTAKE")
+            # Intake.setIntakePosition(config.Intake.MinLength)
+            # config.Intake.Deployed = False
+            # self.talonfx.set_control(self.motion_magic.with_position(position).with_slot(0))
+            # config.Climber.Deployed = True
+            # SmartDashboard.putNumber("Climber / Actual Set Climber Position", position)
+            # SmartDashboard.putBoolean("Intake Deployed", config.Intake.Deployed)
+            # SmartDashboard.putBoolean("Climber Deployed", config.Climber.Deployed)
 
 
     def stopClimber(self):
@@ -49,16 +67,21 @@ class Climber(commands2.SubsystemBase):
 
     def extendClimber(self):
         
-        if config.Climber.climberMode:
+        if config.Climber.climberMode and config.Climber.Deployed == False:
          self.m_climber.set(1.0)
 
     def retractClimber(self):
         
         if config.Climber.climberMode:
          self.m_climber.set(-1.0)
+
+    def retractClimberToCertainPos(self, position: float):
+        if config.Climber.climberMode:
+            self.m_climber.set(position)
     
 
     def getClimberPosition(self):
+        print(self.m_climber)
         return self.m_climber.get_position().value_as_double
 
     

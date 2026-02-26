@@ -6,7 +6,7 @@ from oi.keymap import Keymap
 
 # from commands.wrist import Wrist
 
-from subsystems.climber import Climber 
+from subsystems.climber import Climber
 
 class setClimberPosition(commands2.Command):
       def __init__(
@@ -22,9 +22,11 @@ class setClimberPosition(commands2.Command):
         self.position = position
 
       def execute(self):
-        self.app.setClimberPosition(self.position)
+        # print(self.position)
+        self.app.setClimberPosition(self=self.app, position=self.position)
 
       def isFinished(self):
+         print(self.position, Climber.getClimberPosition(self.app))
          if abs(Climber.getClimberPosition(self.app) - self.position) < .5:
             return True
         

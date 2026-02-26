@@ -24,8 +24,11 @@ import config
 from oi.keymap import Controllers, Keymap
 
 import constants
+import robot
 from robotcontainer import Robot
 import robotcontainer
+from subsystems.shooter import Shooter
+from subsystems.climber import Climber
 
 
 
