@@ -55,6 +55,7 @@ class Elevator:
 class Climber:
     MinLength = inches_to_meters(30) # Elevator height all the way down.
     Rot_to_Dist = 5*0.0254 # Number of Rotations to go 1 m
+    deploy_threshold = 1 # The distance in rotations when the climber should be considered deployed and the intake should not be allowed to move
     cfg = configs.TalonFXConfiguration()
      # Configure gear ratio
     fdb = cfg.feedback
@@ -84,14 +85,14 @@ class Climber:
 class Intake:
     
     Deployed = False
+    deploy_threshold = 5 # The distance in rotations when the intake should be considered deployed and the climber should not be allowed to move
+    MinRot = 0
+    MaxRot = 0.25 # The max rotation of the intake extension, this should be set to the value where the intake is fully extended
 
-    MinLength = inches_to_meters(0) # Intake height all the way down.
-    MaxLength = inches_to_meters(10) # Intake height all the way up.
-    Rot_to_Dist = 5*0.0254 # Number of Rotations to go 1 m
     cfg = configs.TalonFXConfiguration()
      # Configure gear ratio
     fdb = cfg.feedback
-    fdb.sensor_to_mechanism_ratio = 1 # 12.8 rotor rotations per mechanism rotation
+    fdb.sensor_to_mechanism_ratio = 1 #
 
     # Configure Motion Magic
     mm = cfg.motion_magic
@@ -104,7 +105,7 @@ class Intake:
     slot0.k_s = 0.25 # Add 0.25 V output to overcome static friction
     slot0.k_v = 0.12 # A velocity target of 1 rps results in 0.12 V output
     slot0.k_a = 0.01 # An acceleration of 1 rps/s requires 0.01 V output
-    slot0.k_p = 10 # A position error of 0.2 rotations results in 12 V output
+    slot0.k_p = 500 # A position error of 0.2 rotations results in 12 V output
     slot0.k_i = 0 # No output for integrated error
     slot0.k_d = 0.5 # A velocity error of 1 rps results in 0.5 V output
 

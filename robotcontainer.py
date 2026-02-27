@@ -78,6 +78,8 @@ class RobotContainer:
         self.drivetrain = TunerConstants.create_drivetrain()
         # self._elevator = subsystems.Elevator()
         self.climber = subsystems.Climber()
+        # self.shooter = subsystems.Shooter()
+        self.intake = subsystems.Intake()
         
         #Name Commands for Autos these must be done before building the autobuilder
 

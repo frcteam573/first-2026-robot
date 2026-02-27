@@ -63,6 +63,7 @@ Keymap.Shooter.hopperMotorReverse.whileTrue(commands.shooter.testHopper(Robot.sh
 Keymap.Intake.intakeIn.whileTrue(commands.intake.IntakeIn(Robot.intake))
 Keymap.Intake.intakeOut.whileTrue(commands.intake.IntakeOut(Robot.intake))
 Keymap.Intake.intakeRetract.whileTrue(commands.intake.IntakeRetract(Robot.intake))
+
 commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.extendclimber(Robot.climber))
 commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.retractclimber(Robot.climber))
 

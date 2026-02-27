@@ -25,7 +25,7 @@ import config, constants
 import ntcore
 from questnav.questnav import QuestNav
 
-from wpilib import DataLogManager, DriverStation
+from wpilib import DataLogManager, DriverStation, SmartDashboard
 import utils.utils as utilities
 
 
@@ -128,7 +128,10 @@ class MyRobot(commands2.TimedCommandRobot):
         # subsystems.Shooter.getMotors(self=Robot.shooter)
         subsystems.Shooter.getShooterInfo(Robot.shooter)
         subsystems.Intake.getIntakeInfo(Robot.intake)
-        subsystems.Climber.getClimberDSOutput(Robot.climber)
+        subsystems.Climber.getClimberInfo(Robot.climber)
+        #Deployed values
+        SmartDashboard.putBoolean("Deploy State / Intake Deployed", config.Intake.Deployed)
+        SmartDashboard.putBoolean("Deploy State / Climber Deployed", config.Climber.Deployed)
         commands2.CommandScheduler.getInstance().run()
 
     def disabledInit(self) -> None:

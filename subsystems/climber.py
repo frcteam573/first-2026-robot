@@ -36,31 +36,14 @@ class Climber(commands2.SubsystemBase):
         if not status.is_ok():
             print(f"Could not apply configs, error code: {status.name}")
 
-        #Output for logging
-        self._inst = NetworkTableInstance.getDefault()
-        self._table = self._inst.getTable("Climber")
-        self._field1_pub = self._table.getDoubleTopic("Current Position").publish()
-        self._field2_pub = self._table.getDoubleTopic("Current Setpoint").publish()
-
     def setClimberPosition(self, position:float):
         if config.Climber.climberMode and config.Intake.Deployed == False:
             print("Set climber Position")
-            config.Climber.Deployed = True
+            if self.m_climber.get_position().value_as_double > config.Climber.deploy_threshold:
+                config.Climber.Deployed = True
+            else:
+                config.Climber.Deployed = False
             self.m_climber.set_control(self.motion_magic.with_position(position).with_slot(0))
-            SmartDashboard.putBoolean("Intake Deployed", config.Intake.Deployed)
-            SmartDashboard.putBoolean("Climber Deployed", config.Climber.Deployed)
-            SmartDashboard.putNumber("Climber / Actual Set Climber Position", position)
-        elif config.Intake.Deployed == True:
-            pass
-            # print("UNDEPLOY INTAKE")
-            # Intake.setIntakePosition(config.Intake.MinLength)
-            # config.Intake.Deployed = False
-            # self.talonfx.set_control(self.motion_magic.with_position(position).with_slot(0))
-            # config.Climber.Deployed = True
-            # SmartDashboard.putNumber("Climber / Actual Set Climber Position", position)
-            # SmartDashboard.putBoolean("Intake Deployed", config.Intake.Deployed)
-            # SmartDashboard.putBoolean("Climber Deployed", config.Climber.Deployed)
-
 
     def stopClimber(self):
         self.m_climber.set(0)
@@ -68,31 +51,26 @@ class Climber(commands2.SubsystemBase):
     def extendClimber(self):
         
         if config.Climber.climberMode and config.Climber.Deployed == False:
-         self.m_climber.set(1.0)
+         self.m_climber.set(0.5)
 
     def retractClimber(self):
         
         if config.Climber.climberMode:
-         self.m_climber.set(-1.0)
+         self.m_climber.set(-0.5)
 
     def retractClimberToCertainPos(self, position: float):
         if config.Climber.climberMode:
             self.m_climber.set(position)
     
-
     def getClimberPosition(self):
         print(self.m_climber)
         return self.m_climber.get_position().value_as_double
 
-    
-    def getClimberDSOutput(self):
+    def getClimberInfo(self):
         current_rot = self.m_climber.get_position().value_as_double
-        self._field1_pub.set(current_rot)
-        self._field2_pub.set(self.motion_magic.position)
+        SmartDashboard.putNumber("Climber / Actual Position", current_rot)
+        SmartDashboard.putNumber("Climber / Setpoint Position", self.motion_magic.position)
+        SmartDashboard.putBoolean("Deploy State / Climber Deployed", config.Climber.Deployed)
+        SmartDashboard.putBoolean("Climber / Climber Mode", config.Climber.climberMode)
         self.Climber.setLength(config.Climber.MinLength + (current_rot * config.Climber.Rot_to_Dist))
-        
-    def getMotorOutputStatus(self):
-        climberPosition = self.m_climber.get_position().value_as_double
-        SmartDashboard.putNumber("Climber / Actual climber Position", climberPosition)
-        return self.m_climber.get_motor_output_status(True)
        
