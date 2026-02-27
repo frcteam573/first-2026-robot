@@ -62,13 +62,18 @@ class testComponents(commands2.Command):
         pass
 
     def execute(self) -> None:
-        self.app.setShooterSpeed(0.7)
+        self.app.setShooterBasic(0.5)
+        if Keymap.Shooter.shoot.getAsBoolean():
+            self.app.hopperMotorOn()
+        else:
+            self.app.hopperMotorOff()
         self.app.setHoodAngle(10)
         print('ran shooter and hood')
 
     def end(self, interrupted=False) -> None:
         self.app.shooterMotorOff()
         self.app.hoodMotorOff()
+        self.app.hopperMotorOff()
 
 class testHopper(commands2.Command):
     def __init__(

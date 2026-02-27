@@ -19,6 +19,7 @@ class Shooter(commands2.SubsystemBase):
         self.m_hoodMotor1 = hardware.TalonFX(55)
         self.s_hoodServo = Servo(1) #change to match id of servo
         self.m_hopperMotor = hardware.TalonFX(58)
+        self.m_shooterFeedMotor = hardware.TalonFX(59)
         
         # # Be able to switch which control request to use based on a button press
         # # Start at velocity 0, use slot 0
@@ -58,7 +59,7 @@ class Shooter(commands2.SubsystemBase):
         if not status.is_ok():
             print(f"Could not apply configs, error code: {status.name}")
 
-        self.m_shooter2.set_control(controls.Follower(self.m_shooter1.device_id,signals.MotorAlignmentValue.ALIGNED))
+        self.m_shooter2.set_control(controls.Follower(self.m_shooter1.device_id,signals.MotorAlignmentValue.OPPOSED))
 
         #self.talonfx = hardware.TalonFX(0, self.canbus)
        # self.talonfx_foll
@@ -111,6 +112,9 @@ class Shooter(commands2.SubsystemBase):
         #print("Shooter out Speed:", speed)
         return Tyler.max_min_check(self.m_shooter1.get_velocity().value_as_double, speed, config.Shooter.wheelSpeedShooterTolerance)
         
+    def setShooterBasic(self, speed: float):
+        self.m_shooter1.set(speed)
+
     def shooterMotorOff(self):
         self.m_shooter1.set(0)
 
@@ -174,13 +178,16 @@ class Shooter(commands2.SubsystemBase):
 
     def hopperMotorOff(self):
         self.m_hopperMotor.set(0)
+        self.m_shooterFeedMotor.set(0)
 
     def hopperMotorOn(self):
-        self.m_hopperMotor.set(1)  
+        self.m_hopperMotor.set(-1) 
+        self.m_shooterFeedMotor.set(-1) 
 
     def hopperMotorReverse(self):
         # print("hopper motor reverse")
-        self.m_hopperMotor.set(-1)
+        self.m_hopperMotor.set(1)
+        self.m_shooterFeedMotor.set(1)
         
     def getMotors(self):
         motors = (self.m_shooter1, self.m_shooter2, self.m_hopperMotor)
