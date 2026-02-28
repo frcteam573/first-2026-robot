@@ -206,8 +206,8 @@ class RobotContainer:
         )
 
         #Appendage Controls
-        # Keymap.Shooter.setupShooter.whileTrue(commands.shooter.testComponents(self.shooter))
-        Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(self.shooter))
+        Keymap.Shooter.setupShooter.whileTrue(commands.shooter.testComponents(self.shooter))
+        # Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(self.shooter))
         Keymap.Shooter.hopperMotorReverse.whileTrue(commands.shooter.testHopper(self.shooter))
         Keymap.Intake.intakeIn.whileTrue(commands.intake.IntakeIn(self.intake))
         Keymap.Intake.intakeOut.whileTrue(commands.intake.IntakeOut(self.intake))
