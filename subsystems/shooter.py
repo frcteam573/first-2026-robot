@@ -119,7 +119,7 @@ class Shooter(commands2.SubsystemBase):
         
         self.m_shooter1.set_control(self.velocity_voltage.with_velocity(speed))
         SmartDashboard.putNumber("Shooter / Shooter Wheel Speed Command", speed)
-        print("Shooter out Speed:", speed)
+        # print("Shooter out Speed:", speed)
         return Tyler.max_min_check(self.m_shooter1.get_velocity().value_as_double, speed, config.Shooter.wheelSpeedShooterTolerance)
         
     def setShooterBasic(self, speed: float):

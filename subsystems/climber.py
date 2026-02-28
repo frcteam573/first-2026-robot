@@ -38,7 +38,7 @@ class Climber(commands2.SubsystemBase):
 
     def setClimberPosition(self, position:float):
         if config.Climber.climberMode and config.Intake.Deployed == False:
-            print("Set climber Position")
+            # print("Set climber Position")
             if self.m_climber.get_position().value_as_double > config.Climber.deploy_threshold:
                 config.Climber.Deployed = True
             else:
@@ -63,7 +63,7 @@ class Climber(commands2.SubsystemBase):
             self.m_climber.set(position)
     
     def getClimberPosition(self):
-        print(self.m_climber)
+        # print(self.m_climber)
         return self.m_climber.get_position().value_as_double
 
     def getClimberInfo(self):

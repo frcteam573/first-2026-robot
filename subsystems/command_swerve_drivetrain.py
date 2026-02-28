@@ -359,7 +359,7 @@ class CommandSwerveDrivetrain(Subsystem, TunerSwerveDrivetrain):
 
         # Prevent the path from being flipped if the coordinates are already correct
         path.preventFlipping = True
-        print(path)
+        # print(path)
 
         return path
     
@@ -385,7 +385,7 @@ class CommandSwerveDrivetrain(Subsystem, TunerSwerveDrivetrain):
         for module in self.modules:
             motors.append(module.drive_motor)
             motors.append(module.steer_motor)
-            print(motors)
+            # print(motors)
         return motors
     
     def alignToHoop(self):

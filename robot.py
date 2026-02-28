@@ -171,7 +171,7 @@ class MyRobot(commands2.TimedCommandRobot):
         """This function is called periodically during operator control"""
         if commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerDRIVER.START) and commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerDRIVER.SELECT):
          config.Climber.climberMode = True
-         print("TEST")
+        #  print("TEST")
                  
         pass
 

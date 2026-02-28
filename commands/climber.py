@@ -22,11 +22,11 @@ class setClimberPosition(commands2.Command):
         self.position = position
 
       def execute(self):
-        print(self.position)
+        # print(self.position)
         self.app.setClimberPosition(position=self.position)
 
       def isFinished(self):
-         print(self.position, Climber.getClimberPosition(self.app))
+        #  print(self.position, Climber.getClimberPosition(self.app))
          if abs(Climber.getClimberPosition(self.app) - self.position) < .5:
             return True
         
@@ -52,7 +52,7 @@ class extendclimber(commands2.Command):
         pass
 
       def execute(self):
-        print('ran extend climber')
+        # print('ran extend climber')
         self.app.extendClimber()
         
     #  def isFinished(self):
@@ -80,7 +80,7 @@ class retractclimber(commands2.Command):
         pass
 
       def execute(self):
-        print('ran retract climber')
+        # print('ran retract climber')
         self.app.retractClimber()
         
         

@@ -33,12 +33,12 @@ class Shoot(commands2.Command):
         if Keymap.Shooter.shoot.getAsBoolean() or self.shootOut:
             if wpilib.SmartDashboard.getBoolean("Aligned", False):
                 self.app.hopperMotorOff()
-                print('Aligned And Shot')
+                # print('Aligned And Shot')
             else:
-                print('Not Aligned')
+                # print('Not Aligned')
                 self.app.hopperMotorOn()
         else:
-            print('Didnt pass first check')
+            # print('Didnt pass first check')
             self.app.hopperMotorOff()    
         
     def end(self, interrupted=False) -> None:
@@ -68,7 +68,7 @@ class testComponents(commands2.Command):
         else:
             self.app.hopperMotorOff()
         self.app.setHoodAngle(10)
-        print('ran shooter and hood')
+        # print('ran shooter and hood')
 
     def end(self, interrupted=False) -> None:
         self.app.shooterMotorOff()
@@ -90,7 +90,7 @@ class testHopper(commands2.Command):
 
     def execute(self) -> None:
         self.app.hopperMotorOn()
-        print('ran hopper')
+        # print('ran hopper')
 
     def end(self, interrupted=False) -> None:
         self.app.hopperMotorOff()
