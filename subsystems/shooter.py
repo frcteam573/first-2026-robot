@@ -15,6 +15,7 @@ class Shooter(commands2.SubsystemBase):
     def __init__(self) -> None:
         super().__init__()
         
+    
         # self.m_shooter = rev.SparkMax(58, rev.SparkMax.MotorType.kBrushless)
         self.m_shooter1 = hardware.TalonFX(60)
         self.m_shooter2 = hardware.TalonFX(61)  
@@ -69,9 +70,9 @@ class Shooter(commands2.SubsystemBase):
         self.m_shooter2.set_control(controls.Follower(self.m_shooter1.device_id,signals.MotorAlignmentValue.OPPOSED))
 
         #self.talonfx = hardware.TalonFX(0, self.canbus)
-       # self.talonfx_foll
+    # self.talonfx_foll
 
-       ##################
+    ##################
 
         # Be able to switch which control request to use based on a button press
         # Start at position 0, use slot 0
@@ -233,20 +234,23 @@ class Shooter(commands2.SubsystemBase):
             A list consisting of shooter wheel speed in RPS and hood angle in degrees.
 
         '''
-        shooterWheelSpeed = self.m_shooter1.get_velocity().value_as_double
-        shooterWheelSpeed2 = self.m_shooter2.get_velocity().value_as_double
-        hood1Angle = self.hoodVoltageToAngle(self.s_hoodSensor1.getVoltage())
-        hood2Angle = self.hoodVoltageToAngle(self.s_hoodSensor2.getVoltage())
-        # hoodAngle = self.m_hoodMotor1.get_position().value_as_double/config.Shooter.hoodRotationsToAngle
-        hopperSpeed = self.m_hopperMotor.get_velocity().value_as_double
+        try:
+            shooterWheelSpeed = self.m_shooter1.get_velocity().value_as_double
+            shooterWheelSpeed2 = self.m_shooter2.get_velocity().value_as_double
+            hood1Angle = self.hoodVoltageToAngle(self.s_hoodSensor1.getVoltage())
+            hood2Angle = self.hoodVoltageToAngle(self.s_hoodSensor2.getVoltage())
+            # hoodAngle = self.m_hoodMotor1.get_position().value_as_double/config.Shooter.hoodRotationsToAngle
+            hopperSpeed = self.m_hopperMotor.get_velocity().value_as_double
 
-        SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed", shooterWheelSpeed)
-        SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed 2", shooterWheelSpeed2)
+            SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed", shooterWheelSpeed)
+            SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed 2", shooterWheelSpeed2)
 
-        SmartDashboard.putNumber("Shooter / Commanded Hood Angle 1", self.s_hoodServo1.getAngle())
-        SmartDashboard.putNumber("Shooter / Actual Hood Angle 1", hood1Angle)
-        
-        SmartDashboard.putNumber("Shooter / Commanded Hood Angle 2", self.s_hoodServo2.getAngle())
-        SmartDashboard.putNumber("Shooter / Actual Hood Angle 2", hood2Angle)
-        SmartDashboard.putNumber("Shooter / Actual Hopper Speed", hopperSpeed)
-        SmartDashboard.putNumber("Shooter / Hopper Motor Command", self.m_hopperMotor.get())
+            SmartDashboard.putNumber("Shooter / Commanded Hood Angle 1", self.s_hoodServo1.getAngle())
+            SmartDashboard.putNumber("Shooter / Actual Hood Angle 1", hood1Angle)
+            
+            SmartDashboard.putNumber("Shooter / Commanded Hood Angle 2", self.s_hoodServo2.getAngle())
+            SmartDashboard.putNumber("Shooter / Actual Hood Angle 2", hood2Angle)
+            SmartDashboard.putNumber("Shooter / Actual Hopper Speed", hopperSpeed)
+            SmartDashboard.putNumber("Shooter / Hopper Motor Command", self.m_hopperMotor.get())
+        except:
+            pass

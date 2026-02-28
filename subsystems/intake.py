@@ -14,6 +14,7 @@ class Intake(commands2.SubsystemBase):
     def __init__(self) -> None:
         super().__init__()
 
+    
         self.m_intakeMotor = hardware.TalonFX(53)
         self.m_intakeExtension = hardware.TalonFX(56)
 
@@ -30,6 +31,7 @@ class Intake(commands2.SubsystemBase):
                 break
         if not status.is_ok():
             print(f"Could not apply configs, error code: {status.name}")
+
 
     def setIntakePosition(self, position:float):
         #print("Set Intake Position")
@@ -48,7 +50,7 @@ class Intake(commands2.SubsystemBase):
 
     def intakeExtIn(self):
         self.m_intakeExtension.set(-0.5)
-        
+
     def intakeMotorOut(self):
         self.m_intakeMotor.set(1)
         #print("intake out")
@@ -71,13 +73,16 @@ class Intake(commands2.SubsystemBase):
         
 
         '''
-        intakeWheelSpeed = self.m_intakeMotor.get_velocity().value_as_double
-        intakeExtension = self.m_intakeExtension.get_position().value_as_double
-        intakeExtensionSetpoint = self.motion_magic.position
-        SmartDashboard.putNumber("Intake / Actual Intake Motor Value", intakeWheelSpeed)
-        SmartDashboard.putNumber("Intake / Actual Intake Extension Position", intakeExtension)
-        SmartDashboard.putNumber("Intake / Commanded Intake Extension Position", intakeExtensionSetpoint)
-        SmartDashboard.putBoolean("Deploy State / Intake Deployed", config.Intake.Deployed)
+        try:
+            intakeWheelSpeed = self.m_intakeMotor.get_velocity().value_as_double
+            intakeExtension = self.m_intakeExtension.get_position().value_as_double
+            intakeExtensionSetpoint = self.motion_magic.position
+            SmartDashboard.putNumber("Intake / Actual Intake Motor Value", intakeWheelSpeed)
+            SmartDashboard.putNumber("Intake / Actual Intake Extension Position", intakeExtension)
+            SmartDashboard.putNumber("Intake / Commanded Intake Extension Position", intakeExtensionSetpoint)
+            SmartDashboard.putBoolean("Deploy State / Intake Deployed", config.Intake.Deployed)
+        except:
+            pass
 
     def getMotors(self):
         return [self.m_intakeExtension, self.m_intakeMotor]

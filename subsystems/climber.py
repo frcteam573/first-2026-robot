@@ -67,10 +67,13 @@ class Climber(commands2.SubsystemBase):
         return self.m_climber.get_position().value_as_double
 
     def getClimberInfo(self):
-        current_rot = self.m_climber.get_position().value_as_double
-        SmartDashboard.putNumber("Climber / Actual Position", current_rot)
-        SmartDashboard.putNumber("Climber / Setpoint Position", self.motion_magic.position)
-        SmartDashboard.putBoolean("Deploy State / Climber Deployed", config.Climber.Deployed)
-        SmartDashboard.putBoolean("Climber / Climber Mode", config.Climber.climberMode)
-        self.Climber.setLength(config.Climber.MinLength + (current_rot * config.Climber.Rot_to_Dist))
-       
+        try:
+
+            current_rot = self.m_climber.get_position().value_as_double
+            SmartDashboard.putNumber("Climber / Actual Position", current_rot)
+            SmartDashboard.putNumber("Climber / Setpoint Position", self.motion_magic.position)
+            SmartDashboard.putBoolean("Deploy State / Climber Deployed", config.Climber.Deployed)
+            SmartDashboard.putBoolean("Climber / Climber Mode", config.Climber.climberMode)
+            self.Climber.setLength(config.Climber.MinLength + (current_rot * config.Climber.Rot_to_Dist))
+        except:
+            pass
