@@ -1,6 +1,6 @@
 import commands2
 import config
-from phoenix6 import hardware, controls, configs, StatusCode
+from phoenix6 import hardware, controls, configs, StatusCode, CANBus
 from wpilib import DriverStation, SmartDashboard, Mechanism2d, MechanismLigament2d
 from ntcore import NetworkTableInstance
 
@@ -15,8 +15,8 @@ class Intake(commands2.SubsystemBase):
         super().__init__()
 
     
-        self.m_intakeMotor = hardware.TalonFX(53)
-        self.m_intakeExtension = hardware.TalonFX(56)
+        self.m_intakeMotor = hardware.TalonFX(53,CANBus("573CANivore"))
+        self.m_intakeExtension = hardware.TalonFX(56,CANBus("573CANivore"))
 
         # Intake Example Section
 
@@ -52,11 +52,11 @@ class Intake(commands2.SubsystemBase):
         self.m_intakeExtension.set(-0.5)
 
     def intakeMotorOut(self):
-        self.m_intakeMotor.set(1)
+        self.m_intakeMotor.set(-1)
         #print("intake out")
 
     def intakeMotorIn(self):
-        self.m_intakeMotor.set(-1)  
+        self.m_intakeMotor.set(0.7)  
         #print("intake in")     
 
     def intakeMotorOff(self):

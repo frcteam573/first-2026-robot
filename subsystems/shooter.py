@@ -4,7 +4,7 @@ import commands2
 from numpy import double
 import config
 import utils.utils as Tyler
-from phoenix6 import hardware, controls, configs, StatusCode, signals
+from phoenix6 import CANBus, hardware, controls, configs, StatusCode, signals
 from wpilib import AnalogInput, DriverStation, Servo, SmartDashboard, Mechanism2d, MechanismLigament2d
 from ntcore import NetworkTableInstance
 from wpimath.geometry import Rotation2d, Pose2d
@@ -17,17 +17,17 @@ class Shooter(commands2.SubsystemBase):
         
     
         # self.m_shooter = rev.SparkMax(58, rev.SparkMax.MotorType.kBrushless)
-        self.m_shooter1 = hardware.TalonFX(60)
-        self.m_shooter2 = hardware.TalonFX(61)  
-        self.m_hoodMotor1 = hardware.TalonFX(55)
+        self.m_shooter1 = hardware.TalonFX(60,CANBus("573CANivore"))
+        self.m_shooter2 = hardware.TalonFX(61,CANBus("573CANivore"))  
+        self.m_hoodMotor1 = hardware.TalonFX(55,CANBus("573CANivore"))
 
         self.s_hoodServo1 = Servo(0) #change to match id of servo
         self.s_hoodServo2 = Servo(1) #change to match id of servo
         self.s_hoodSensor1 = AnalogInput(0)
         self.s_hoodSensor2 = AnalogInput(1)
 
-        self.m_hopperMotor = hardware.TalonFX(58)
-        self.m_shooterFeedMotor = hardware.TalonFX(59)
+        self.m_hopperMotor = hardware.TalonFX(58,CANBus("573CANivore"))
+        self.m_shooterFeedMotor = hardware.TalonFX(59,CANBus("573CANivore"))
         
         # # Be able to switch which control request to use based on a button press
         # # Start at velocity 0, use slot 0

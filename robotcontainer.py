@@ -10,7 +10,7 @@ from commands2.button import CommandXboxController, Trigger
 from commands2.sysid import SysIdRoutine
 
 from generated.tuner_constants import TunerConstants
-from telemetry import Telemetry
+# from telemetry import Telemetry
 
 from pathplannerlib.auto import AutoBuilder, NamedCommands, RobotConfig, PathConstraints
 from pathplannerlib.events import EventTrigger
@@ -73,13 +73,13 @@ class RobotContainer:
         self._brake = swerve.requests.SwerveDriveBrake()
         self._point = swerve.requests.PointWheelsAt()
 
-        self._logger = Telemetry(self._max_speed)
+        # self._logger = Telemetry(self._max_speed)
 
         self._joystick = CommandXboxController(0)
 
         self.drivetrain = TunerConstants.create_drivetrain()
         # self._elevator = subsystems.Elevator()
-        self.climber = subsystems.Climber()
+        # self.climber = subsystems.Climber()
         self.shooter = subsystems.Shooter()
         self.intake = subsystems.Intake()
         
@@ -201,14 +201,14 @@ class RobotContainer:
         #    self.drivetrain.runOnce(lambda: self.drivetrain.seed_field_centric())
         #)
 
-        self.drivetrain.register_telemetry(
-            lambda state: self._logger.telemeterize(state)
-        )
+        # self.drivetrain.register_telemetry(
+        #     lambda state: self._logger.telemeterize(state)
+        # )
 
         #Appendage Controls
         Keymap.Shooter.setupShooter.whileTrue(commands.shooter.testComponents(self.shooter))
         # Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(self.shooter))
-        Keymap.Shooter.hopperMotorReverse.whileTrue(commands.shooter.testHopper(self.shooter))
+        # Keymap.Shooter.hopperMotorReverse.whileTrue(commands.shooter.testHopper(self.shooter))
         # Keymap.Intake.intakeIn.whileTrue(commands.intake.IntakeIn(self.intake))
         # Keymap.Intake.intakeOut.whileTrue(commands.intake.IntakeOut(self.intake))
         # Keymap.Intake.intakeRetract.whileTrue(commands.intake.IntakeRetract(self.intake))
@@ -217,8 +217,8 @@ class RobotContainer:
         Keymap.Intake.testextin.whileTrue(commands.intake.testIntakeExtensionIn(self.intake))
         Keymap.Intake.testroller.whileTrue(commands.intake.testIntakeRoller(self.intake))
 
-        commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.extendclimber(self.climber))
-        commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.retractclimber(self.climber))
+        # commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.extendclimber(self.climber))
+        # commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.retractclimber(self.climber))
 
         # commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, position = config.Climber.climberSetPos))
         # commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, 0))

@@ -62,7 +62,7 @@ class testComponents(commands2.Command):
         pass
 
     def execute(self) -> None:
-        self.app.setShooterBasic(0.5)
+        self.app.setShooterBasic(0.65)
         if Keymap.Shooter.shoot.getAsBoolean():
             self.app.hopperMotorOn()
         else:

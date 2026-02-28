@@ -4,7 +4,7 @@ import commands2
 
 import config
 import phoenix6
-from phoenix6 import hardware, controls, configs, StatusCode
+from phoenix6 import hardware, controls, configs, StatusCode,CANBus
 from wpilib import DriverStation, SmartDashboard, Mechanism2d, MechanismLigament2d
 from ntcore import NetworkTableInstance
 
@@ -24,7 +24,7 @@ class Climber(commands2.SubsystemBase):
 
         # climber Magic Motion and talon definition
         # self.talonfx = self.getTalon()
-        self.m_climber = hardware.TalonFX(54)
+        self.m_climber = hardware.TalonFX(54,CANBus("573CANivore"))
         self.motion_magic = controls.MotionMagicVoltage(0)
         
         # Retry config apply up to 5 times, report if failure
