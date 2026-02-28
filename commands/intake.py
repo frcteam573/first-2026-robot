@@ -73,3 +73,60 @@ class IntakeRetract(commands2.Command):
         
     def end(self, interrupted=False) -> None:
         self.app.intakeMotorOff()
+
+class testIntakeRoller(commands2.Command):
+    def __init__(
+        self, 
+        app: Intake,
+    ) -> None:
+        super().__init__()
+
+        self.app = app
+        self.addRequirements(app)
+        
+    def initialize(self) -> None:
+        pass
+
+    def execute(self) -> None:
+        self.app.intakeMotorIn()
+        
+    def end(self, interrupted=False) -> None:
+        self.app.intakeMotorOff()
+
+class testIntakeExtensionOut(commands2.Command):
+    def __init__(
+        self, 
+        app: Intake,
+    ) -> None:
+        super().__init__()
+
+        self.app = app
+        self.addRequirements(app)
+        
+    def initialize(self) -> None:
+        pass
+
+    def execute(self) -> None:
+        self.app.intakeExtOut()
+        
+    def end(self, interrupted=False) -> None:
+        self.app.stopIntakeExtension()
+
+class testIntakeExtensionIn(commands2.Command):
+    def __init__(
+        self, 
+        app: Intake,
+    ) -> None:
+        super().__init__()
+
+        self.app = app
+        self.addRequirements(app)
+        
+    def initialize(self) -> None:
+        pass
+
+    def execute(self) -> None:
+        self.app.intakeExtIn()
+        
+    def end(self, interrupted=False) -> None:
+        self.app.stopIntakeExtension()

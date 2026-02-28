@@ -40,7 +40,11 @@ class Keymap:
     class Intake:
         intakeIn = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.LB)
         intakeOut = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.X)
-        intakeRetract = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.B)    
+        intakeRetract = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.B)  
+
+        testroller = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.LB)  
+        testextin = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.X)
+        testextout = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.B)
 
     #class Intake:
          

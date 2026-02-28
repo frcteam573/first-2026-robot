@@ -43,6 +43,12 @@ class Intake(commands2.SubsystemBase):
     def stopIntakeExtension(self):
         self.m_intakeExtension.set(0)    
 
+    def intakeExtOut(self):
+        self.m_intakeExtension.set(0.5)
+
+    def intakeExtIn(self):
+        self.m_intakeExtension.set(-0.5)
+        
     def intakeMotorOut(self):
         self.m_intakeMotor.set(1)
         #print("intake out")
