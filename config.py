@@ -85,7 +85,7 @@ class Climber:
 class Intake:
     
     Deployed = False
-    deploy_threshold = 5 # The distance in rotations when the intake should be considered deployed and the climber should not be allowed to move
+    deploy_threshold = 0.05 # The distance in rotations when the intake should be considered deployed and the climber should not be allowed to move
     MinRot = 0
     MaxRot = 0.25 # The max rotation of the intake extension, this should be set to the value where the intake is fully extended
 

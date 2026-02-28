@@ -31,15 +31,17 @@ import commands.intake
 import constants
 import subsystems.command_swerve_drivetrain
 import utils.utils as utilities
+from oi.keymap import Controllers, Keymap
 
 
 class Robot:
     # Defines all subsystems used in the robot, these are used to access the subsystems in commands and other files.
     # elevator = subsystems.Elevator()
-    climber = subsystems.Climber()
-    shooter = subsystems.Shooter()
-    # MotorStatus = subsystems.MotorStatus()
-    intake = subsystems.Intake()
+    # climber = subsystems.Climber()
+    # shooter = subsystems.Shooter()
+    # # # MotorStatus = subsystems.MotorStatus()
+    # intake = subsystems.Intake()
+    pass
 
 class RobotContainer:
     """
@@ -78,7 +80,7 @@ class RobotContainer:
         self.drivetrain = TunerConstants.create_drivetrain()
         # self._elevator = subsystems.Elevator()
         self.climber = subsystems.Climber()
-        # self.shooter = subsystems.Shooter()
+        self.shooter = subsystems.Shooter()
         self.intake = subsystems.Intake()
         
         #Name Commands for Autos these must be done before building the autobuilder
@@ -202,6 +204,20 @@ class RobotContainer:
         self.drivetrain.register_telemetry(
             lambda state: self._logger.telemeterize(state)
         )
+
+        #Appendage Controls
+        # Keymap.Shooter.setupShooter.whileTrue(commands.shooter.testComponents(self.shooter))
+        Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(self.shooter))
+        Keymap.Shooter.hopperMotorReverse.whileTrue(commands.shooter.testHopper(self.shooter))
+        Keymap.Intake.intakeIn.whileTrue(commands.intake.IntakeIn(self.intake))
+        Keymap.Intake.intakeOut.whileTrue(commands.intake.IntakeOut(self.intake))
+        Keymap.Intake.intakeRetract.whileTrue(commands.intake.IntakeRetract(self.intake))
+
+        commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.extendclimber(self.climber))
+        commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.retractclimber(self.climber))
+
+        # commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, position = config.Climber.climberSetPos))
+        # commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, 0))
 
     def getAutonomousCommand(self) -> commands2.Command:
         """Use this to pass the autonomous command to the main {@link Robot} class.
