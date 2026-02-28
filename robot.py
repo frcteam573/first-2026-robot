@@ -126,8 +126,8 @@ class MyRobot(commands2.TimedCommandRobot):
         
         # subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
         # subsystems.Shooter.getMotors(self=Robot.shooter)
-        # subsystems.Shooter.getShooterInfo(self.container.shooter)
-        # subsystems.Intake.getIntakeInfo(self.container.intake)
+        subsystems.Shooter.getShooterInfo(self.container.shooter)
+        subsystems.Intake.getIntakeInfo(self.container.intake)
         subsystems.Climber.getClimberInfo(self.container.climber)
         #Deployed values
         SmartDashboard.putBoolean("Deploy State / Intake Deployed", config.Intake.Deployed)
