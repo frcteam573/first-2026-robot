@@ -80,8 +80,8 @@ class RobotContainer:
         self.drivetrain = TunerConstants.create_drivetrain()
         # self._elevator = subsystems.Elevator()
         self.climber = subsystems.Climber()
-        self.shooter = subsystems.Shooter()
-        self.intake = subsystems.Intake()
+        # self.shooter = subsystems.Shooter()
+        # self.intake = subsystems.Intake()
         
         #Name Commands for Autos these must be done before building the autobuilder
 
@@ -206,16 +206,16 @@ class RobotContainer:
         )
 
         #Appendage Controls
-        Keymap.Shooter.setupShooter.whileTrue(commands.shooter.testComponents(self.shooter))
+        # Keymap.Shooter.setupShooter.whileTrue(commands.shooter.testComponents(self.shooter))
         # Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(self.shooter))
-        Keymap.Shooter.hopperMotorReverse.whileTrue(commands.shooter.testHopper(self.shooter))
+        # Keymap.Shooter.hopperMotorReverse.whileTrue(commands.shooter.testHopper(self.shooter))
         # Keymap.Intake.intakeIn.whileTrue(commands.intake.IntakeIn(self.intake))
         # Keymap.Intake.intakeOut.whileTrue(commands.intake.IntakeOut(self.intake))
         # Keymap.Intake.intakeRetract.whileTrue(commands.intake.IntakeRetract(self.intake))
 
-        Keymap.Intake.testextout.whileTrue(commands.intake.testIntakeExtensionOut(self.intake))
-        Keymap.Intake.testextin.whileTrue(commands.intake.testIntakeExtensionIn(self.intake))
-        Keymap.Intake.testroller.whileTrue(commands.intake.testIntakeRoller(self.intake))
+        # Keymap.Intake.testextout.whileTrue(commands.intake.testIntakeExtensionOut(self.intake))
+        # Keymap.Intake.testextin.whileTrue(commands.intake.testIntakeExtensionIn(self.intake))
+        # Keymap.Intake.testroller.whileTrue(commands.intake.testIntakeRoller(self.intake))
 
         commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.extendclimber(self.climber))
         commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.retractclimber(self.climber))
