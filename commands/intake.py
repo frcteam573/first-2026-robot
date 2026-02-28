@@ -25,7 +25,8 @@ class IntakeIn(commands2.Command):
 
     def execute(self) -> None:
         self.app.intakeMotorIn()  
-        self.app.setIntakePosition(config.Intake.MaxLength)  
+        self.app.setIntakePosition(config.Intake.MaxRot)  
+        print('intake ran in')
         
     def end(self, interrupted=False) -> None:
         self.app.intakeMotorOff()
@@ -46,7 +47,8 @@ class IntakeOut(commands2.Command):
 
     def execute(self) -> None:
         self.app.intakeMotorOut()  
-        self.app.setIntakePosition(config.Intake.MaxLength)  
+        self.app.setIntakePosition(config.Intake.MaxRot)  
+        print('intake ran out')
         
     def end(self, interrupted=False) -> None:
         self.app.intakeMotorOff()
@@ -67,7 +69,7 @@ class IntakeRetract(commands2.Command):
 
     def execute(self) -> None:
         self.app.intakeMotorOff()  
-        self.app.setIntakePosition(config.Intake.MinLength)  
+        self.app.setIntakePosition(config.Intake.MinRot)  
         
     def end(self, interrupted=False) -> None:
         self.app.intakeMotorOff()

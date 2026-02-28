@@ -19,13 +19,13 @@ from telemetry import Telemetry
 from config import Cameras, Elevator
 from wpimath.geometry import Pose2d, Rotation2d, Pose3d
 
-import oi.oi
+# import oi.oi
 import subsystems
 import config, constants
 import ntcore
 from questnav.questnav import QuestNav
 
-from wpilib import DataLogManager, DriverStation
+from wpilib import DataLogManager, DriverStation, SmartDashboard
 import utils.utils as utilities
 
 
@@ -77,7 +77,7 @@ class MyRobot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData('QuestNavField',self.questnav_field)
         wpilib.SmartDashboard.putData('PhotonVisionField',self.photonvision_field)
 
-        oi.oi.OI.map_controls() #Map controls
+        # oi.oi.OI.map_controls() #Map controls
         self.time_start = time.time()
         self.wpilogger = DataLogManager.start()
         DriverStation.startDataLog(DataLogManager.getLog())
@@ -126,9 +126,12 @@ class MyRobot(commands2.TimedCommandRobot):
         
         # subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
         # subsystems.Shooter.getMotors(self=Robot.shooter)
-        subsystems.Shooter.getShooterInfo(Robot.shooter)
-        subsystems.Intake.getIntakeInfo(Robot.intake)
-        subsystems.Climber.getClimberDSOutput(Robot.climber)
+        subsystems.Shooter.getShooterInfo(self.container.shooter)
+        subsystems.Intake.getIntakeInfo(self.container.intake)
+        subsystems.Climber.getClimberInfo(self.container.climber)
+        #Deployed values
+        SmartDashboard.putBoolean("Deploy State / Intake Deployed", config.Intake.Deployed)
+        SmartDashboard.putBoolean("Deploy State / Climber Deployed", config.Climber.Deployed)
         commands2.CommandScheduler.getInstance().run()
 
     def disabledInit(self) -> None:

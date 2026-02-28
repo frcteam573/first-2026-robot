@@ -43,7 +43,54 @@ class Shoot(commands2.Command):
         
     def end(self, interrupted=False) -> None:
         self.app.shooterMotorOff()
-        self.app.hoodMotorOff()
+        self.app.setHoodAngle(0)
         self.app.hopperMotorOff() 
         SmartDashboard.putBoolean("Shooter / Hood at Position", False)
         SmartDashboard.putBoolean("Shooter / Wheel at Speed", False)
+
+class testComponents(commands2.Command):
+    def __init__(
+        self, 
+        app: Shooter, 
+    ) -> None:
+        super().__init__()
+
+        self.app = app
+        self.addRequirements(app)
+        
+    def initialize(self) -> None:
+        pass
+
+    def execute(self) -> None:
+        self.app.setShooterBasic(0.5)
+        if Keymap.Shooter.shoot.getAsBoolean():
+            self.app.hopperMotorOn()
+        else:
+            self.app.hopperMotorOff()
+        self.app.setHoodAngle(10)
+        print('ran shooter and hood')
+
+    def end(self, interrupted=False) -> None:
+        self.app.shooterMotorOff()
+        self.app.setHoodAngle(0)
+        self.app.hopperMotorOff()
+
+class testHopper(commands2.Command):
+    def __init__(
+        self, 
+        app: Shooter, 
+    ) -> None:
+        super().__init__()
+
+        self.app = app
+        self.addRequirements(app)
+        
+    def initialize(self) -> None:
+        pass
+
+    def execute(self) -> None:
+        self.app.hopperMotorOn()
+        print('ran hopper')
+
+    def end(self, interrupted=False) -> None:
+        self.app.hopperMotorOff()

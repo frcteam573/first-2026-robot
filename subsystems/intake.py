@@ -14,16 +14,10 @@ class Intake(commands2.SubsystemBase):
     def __init__(self) -> None:
         super().__init__()
 
-        self.m_intakeMotor = hardware.TalonFX(63)
-        self.m_intakeExtension = hardware.TalonFX(66)
-
+        self.m_intakeMotor = hardware.TalonFX(53)
+        self.m_intakeExtension = hardware.TalonFX(56)
 
         # Intake Example Section
-        #Creat 2d Mechanism for visualization of simulation
-        self.mech = Mechanism2d(3,3)
-        self.root = self.mech.getRoot("Intake",1.5,0)
-        self.intake = self.root.appendLigament("intake", config.Intake.MinLength,90)
-        SmartDashboard.putData("Mech2d", self.mech)
 
         # Elvator Magic Motion and talon definition
         self.motion_magic = controls.MotionMagicVoltage(0)
@@ -40,21 +34,12 @@ class Intake(commands2.SubsystemBase):
     def setIntakePosition(self, position:float):
         #print("Set Intake Position")
         if config.Climber.Deployed == False:
-            config.Intake.Deployed = True
+            if self.m_intakeExtension.get_position().value_as_double > config.Intake.deploy_threshold:
+                config.Intake.Deployed = True
+            else:
+                config.Intake.Deployed = False
             self.m_intakeExtension.set_control(self.motion_magic.with_position(position).with_slot(0))
-            SmartDashboard.putNumber("Intake / Commanded Intake Extension Position", position)
-            SmartDashboard.putBoolean("Intake Deployed", config.Intake.Deployed)
-            SmartDashboard.putBoolean("Climber Deployed", config.Climber.Deployed)
-        elif config.Climber.Deployed == True:
-            pass
-            # subsystems.climber.Climber.retractClimberToCertainPos(self, config.Climber.MinLength)
-            # config.Climber.Deployed = False
-            # self.m_intakeExtension.set_control(self.motion_magic.with_position(position).with_slot(0))
-            # SmartDashboard.putNumber("Intake / Commanded Intake Extension Position", position)
-            # SmartDashboard.putBoolean("Intake Deployed", config.Intake.Deployed)
-            # SmartDashboard.putBoolean("Climber Deployed", config.Climber.Deployed)
             
-
     def stopIntakeExtension(self):
         self.m_intakeExtension.set(0)    
 
@@ -81,9 +66,12 @@ class Intake(commands2.SubsystemBase):
 
         '''
         intakeWheelSpeed = self.m_intakeMotor.get_velocity().value_as_double
-        intakeExtension = self.m_intakeExtension.get_position().value_as_double/config.Intake.Rot_to_Dist
+        intakeExtension = self.m_intakeExtension.get_position().value_as_double
+        intakeExtensionSetpoint = self.motion_magic.position
         SmartDashboard.putNumber("Intake / Actual Intake Motor Value", intakeWheelSpeed)
         SmartDashboard.putNumber("Intake / Actual Intake Extension Position", intakeExtension)
+        SmartDashboard.putNumber("Intake / Commanded Intake Extension Position", intakeExtensionSetpoint)
+        SmartDashboard.putBoolean("Deploy State / Intake Deployed", config.Intake.Deployed)
 
     def getMotors(self):
         return [self.m_intakeExtension, self.m_intakeMotor]
