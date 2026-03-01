@@ -81,8 +81,8 @@ class MyRobot(commands2.TimedCommandRobot):
         self.time_start = time.time()
         self.wpilogger = DataLogManager.start()
         DriverStation.startDataLog(DataLogManager.getLog())
-        # if wpilib.RobotBase.isSimulation(): #Only run is in SIM
-        #     self.simulationInit()
+        if wpilib.RobotBase.isSimulation(): #Only run is in SIM
+            self.simulationInit()
 
     def robotPeriodic(self) -> None:
         """This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -104,9 +104,9 @@ class MyRobot(commands2.TimedCommandRobot):
         self.questnav.command_periodic()
 
         # #Only run during SIM
-        # # if wpilib.RobotBase.isSimulation():
+        if wpilib.RobotBase.isSimulation():
             
-        # #     self.simulationPeriodic()
+            self.simulationPeriodic()
 
         # Add measurements to localization based on primary source
         if self.localizationMethod == config.PrimaryLocalization.VISION:
@@ -134,12 +134,13 @@ class MyRobot(commands2.TimedCommandRobot):
 
     def disabledPeriodic(self) -> None:
         """This function is called periodically when disabled"""
-        self.vision_est = self.container._vision_est.get_estimated_robot_pose()
-        if self.vision_est:
-            self.photonvision_field.setRobotPose(self.vision_est[0])
-        else:
-            self.photonvision_pose = None
-        self.resetPoseBasedOnVision() # Resets pose of QuestNav and robot based on Vision Only
+        
+        # self.vision_est = self.container._vision_est.get_estimated_robot_pose()
+        # if self.vision_est:
+        #     self.photonvision_field.setRobotPose(self.vision_est[0])
+        # else:
+        #     self.photonvision_pose = None
+        # self.resetPoseBasedOnVision() # Resets pose of QuestNav and robot based on Vision Only
 
     def autonomousInit(self) -> None:
         """This autonomous runs the autonomous command selected by your RobotContainer class."""
@@ -150,10 +151,10 @@ class MyRobot(commands2.TimedCommandRobot):
         if self.autonomousCommand:
             self.autonomousCommand.schedule()
 
+        self.resetQuestNavPoseforAutoStart()
+
     def autonomousPeriodic(self) -> None:
         """This function is called periodically during autonomous"""
-
-
         pass
 
     def teleopInit(self) -> None:
@@ -216,7 +217,11 @@ class MyRobot(commands2.TimedCommandRobot):
             self.container.drivetrain.reset_pose(vision_est[0])
             self.questnav.set_pose(Pose3d(vision_est[0]))
             self.questnav_field.setRobotPose(Pose3d(vision_est[0]).toPose2d())
-        
+
+    def resetQuestNavPoseforAutoStart(self):
+        current_pose = self.container.drivetrain.get_state().pose
+        self.questnav.set_pose(Pose3d(current_pose))
+        self.questnav_field.setRobotPose(current_pose)
 
 
 

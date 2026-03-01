@@ -264,7 +264,7 @@ class CommandSwerveDrivetrain(Subsystem, TunerSwerveDrivetrain):
             ),
             config,
             # Assume the path needs to be flipped for Red vs Blue, this is normally the case
-            lambda: False,#(DriverStation.getAlliance() or DriverStation.Alliance.kBlue) == DriverStation.Alliance.kRed,
+            lambda: DriverStation.getAlliance() == DriverStation.Alliance.kRed,
             self # Subsystem for requirements
         )
 
@@ -281,6 +281,7 @@ class CommandSwerveDrivetrain(Subsystem, TunerSwerveDrivetrain):
         :rtype: Command
         """
         return self.run(lambda: self.set_control(request()))
+
 
     def sys_id_quasistatic(self, direction: SysIdRoutine.Direction) -> Command:
         """
@@ -418,36 +419,3 @@ class CommandSwerveDrivetrain(Subsystem, TunerSwerveDrivetrain):
             motors.append(module.steer_motor)
             # print(motors)
         return motors
-    
-    def alignToHoop(self):
-        self._max_speed = (
-            1
-            # TunerConstants.speed_at_12_volts
-        )  # speed_at_12_volts desired top speed
-        self._max_angular_rate = rotationsToRadians(
-            0.75
-        )  # 3/4 of a rotation per second max angular velocity
-        
-
-        self._drive = (
-            swerve.requests.FieldCentric()
-            # .with_deadband(self._max_speed * 0.1)
-            # .with_rotational_deadband(
-            #     self._max_angular_rate * 0.1
-            # )  # Add a 10% deadband
-            .with_drive_request_type(
-                swerve.SwerveModule.DriveRequestType.OPEN_LOOP_VOLTAGE
-            )  # Use open-loop control for drive motors
-        )
-        self._joystick = CommandXboxController(0)
-        lambda: (
-                    self._drive.with_velocity_x(
-                        0
-                    )  # Drive forward with negative Y (forward)
-                    .with_velocity_y(
-                        0
-                    )  # Drive left with negative X (left)
-                    .with_rotational_rate(
-                        self.calculate_relative_angle(self=self, robotPose=config.RobotPoseConfig.pose, targetPose=utilities.getTargetPose(config.RobotPoseConfig.pose))
-                    )  # Drive counterclockwise with negative X (left)
-                )

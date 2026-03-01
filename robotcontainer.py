@@ -88,21 +88,21 @@ class RobotContainer:
         # NamedCommands.registerCommand("Intake In", commands.intake.IntakeIn(Robot.intake))
         # NamedCommands.registerCommand("Intake Out", commands.intake.IntakeOut(Robot.intake))
         # NamedCommands.registerCommand("Intake Retract", commands.intake.IntakeRetract(Robot.intake))
-        # NamedCommands.registerCommand("Shoot Prep", commands.shooter.Shoot(Robot.shooter))
-        # NamedCommands.registerCommand("Shoot Out", commands.shooter.Shoot(Robot.shooter, shootOut=True))
+        NamedCommands.registerCommand("Shoot Prep", commands.shooter.Shoot(self.shooter))
+        NamedCommands.registerCommand("Shoot Out", commands.shooter.Shoot(self.shooter, shootOut=True))
 
-        
+        NamedCommands.registerCommand("AlignDT", commands.drivetrain.AlignDT(self.drivetrain))
         
         # # NamedCommands.registerCommand("Climber Extend", commands.climber.extendClimber(Robot.climber))
         # NamedCommands.registerCommand("climbUp", commands.elevator.setPosition(self._elevator,position=10))
         # NamedCommands.registerCommand("climbDown", commands.elevator.setPosition(self._elevator,position=0))
 
         # Auto builder
-        # try:
-        self._auto_chooser = AutoBuilder.buildAutoChooser("test auton")
-        SmartDashboard.putData("Auto Chooser", self._auto_chooser)
-        # except Exception as e:
-        #     print(f"Error building auto chooser: {e}")
+        try:
+            self._auto_chooser = AutoBuilder.buildAutoChooser("Trench to HP")
+            SmartDashboard.putData("Auto Chooser", self._auto_chooser)
+        except Exception as e:
+            print(f"Error building auto chooser: {e}")
 
         self._vision_est = config.Cameras.vision_controller
 
