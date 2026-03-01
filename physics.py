@@ -26,7 +26,7 @@ class PhysicsEngine:
         gearratio = 100
         self.motor_sim = sim.DCMotorSim(LinearSystemId.DCMotorSystem(gearbox, 0.01, gearratio), gearbox)
         # Keep a reference to the motor sim state so we can update it
-        self.talon_sim = robot.container.climber.m_climber.sim_state
+        # self.talon_sim = robot.container.climber.m_climber.sim_state
 
         #Intake extension SIM
         gearbox_intake_extension = DCMotor.krakenX44(1)
@@ -62,11 +62,11 @@ class PhysicsEngine:
         if DriverStation.isEnabled():
             unmanaged.feed_enable(100)
 
-        self.talon_sim.set_supply_voltage(RobotController.getBatteryVoltage())
-        self.motor_sim.setInputVoltage(self.talon_sim.motor_voltage)
-        self.motor_sim.update(tm_diff)
-        self.talon_sim.set_raw_rotor_position(radiansToRotations(self.motor_sim.getAngularPosition()))
-        self.talon_sim.set_rotor_velocity(radiansToRotations(self.motor_sim.getAngularVelocity()))
+        # self.talon_sim.set_supply_voltage(RobotController.getBatteryVoltage())
+        # self.motor_sim.setInputVoltage(self.talon_sim.motor_voltage)
+        # self.motor_sim.update(tm_diff)
+        # self.talon_sim.set_raw_rotor_position(radiansToRotations(self.motor_sim.getAngularPosition()))
+        # self.talon_sim.set_rotor_velocity(radiansToRotations(self.motor_sim.getAngularVelocity()))
 
         self.talon_sim_intake.set_supply_voltage(RobotController.getBatteryVoltage())
         self.motor_sim_intake.setInputVoltage(self.talon_sim_intake.motor_voltage)

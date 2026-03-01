@@ -10,7 +10,7 @@ from commands2.button import CommandXboxController, Trigger
 from commands2.sysid import SysIdRoutine
 
 from generated.tuner_constants import TunerConstants
-# from telemetry import Telemetry
+from telemetry import Telemetry
 
 from pathplannerlib.auto import AutoBuilder, NamedCommands, RobotConfig, PathConstraints
 from pathplannerlib.events import EventTrigger
@@ -73,7 +73,7 @@ class RobotContainer:
         self._brake = swerve.requests.SwerveDriveBrake()
         self._point = swerve.requests.PointWheelsAt()
 
-        # self._logger = Telemetry(self._max_speed)
+        self._logger = Telemetry(self._max_speed)
 
         self._joystick = CommandXboxController(0)
 
@@ -201,9 +201,9 @@ class RobotContainer:
         #    self.drivetrain.runOnce(lambda: self.drivetrain.seed_field_centric())
         #)
 
-        # self.drivetrain.register_telemetry(
-        #     lambda state: self._logger.telemeterize(state)
-        # )
+        self.drivetrain.register_telemetry(
+            lambda state: self._logger.telemeterize(state)
+        )
 
         #Appendage Controls
         Keymap.Shooter.setupShooter.whileTrue(commands.shooter.testComponents(self.shooter))

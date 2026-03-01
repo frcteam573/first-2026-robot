@@ -54,7 +54,7 @@ class MyRobot(commands2.TimedCommandRobot):
 
     photonVisionMethod = config.PhotonVisionSetting.REAL_CAMERA
 
-    localizationMethod = config.PrimaryLocalization.ODO_Only
+    localizationMethod = config.PrimaryLocalization.QUESTNAV
 
     def robotInit(self) -> None:
         """
@@ -196,30 +196,19 @@ class MyRobot(commands2.TimedCommandRobot):
 
     def add_questnav_to_pose_estimate(self):
         # get new pose frames
+        # print("QuestNav1")
         frames = self.questnav.get_all_unread_pose_frames()
         for frame in frames:
-            if self.questnav.is_connected() and self.questnav.is_tracking():
+            # print("QuestNav2")
+            if self.questnav.is_connected():# and self.questnav.is_tracking():
                 # Add to pose estimator
                 #print("QN Pose:",frame.quest_pose_3d.toPose2d())
-                
+                # print("QuestNav3")
                 #print("Timestamp:", frame.data_timestamp - self.time_start)
                 self.questnav_field.setRobotPose(frame.quest_pose_3d.toPose2d())
                 self.container.drivetrain.add_vision_measurement(
                     frame.quest_pose_3d.toPose2d(),
                     frame.data_timestamp- self.time_start) # Standard deviations
-
-        # current_pose = self.container.drivetrain.get_state().pose
-        # vision_ests = self.container._vision_est.get_estimated_robot_pose(current_pose)
-        # if vision_ests is not None:
-        #     for vision_est in vision_ests:
-        #         esti_pose = vision_est[0]
-        #         if esti_pose is not None:
-        #             relative = esti_pose.relativeTo(current_pose)
-        #             dist = (relative.X()**2 + relative.Y()**2)**(1/2)
-        #             if  dist < 0.5:
-        #                 self.container.drivetrain.add_vision_measurement(vision_est[0],vision_est[1],vision_est[2])
-        #                 #print(vision_est[2])
-        #                 #print("Odo Pose: ", self.container.drivetrain.get_state().pose, "Vision Est Pose", vision_est[0])
         
     def resetPoseBasedOnVision(self):
         vision_est = self.container._vision_est.get_estimated_robot_pose()
