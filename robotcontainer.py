@@ -98,11 +98,11 @@ class RobotContainer:
         # NamedCommands.registerCommand("climbDown", commands.elevator.setPosition(self._elevator,position=0))
 
         # Auto builder
-        try:
-            self._auto_chooser = AutoBuilder.buildAutoChooser("test auton")
-            SmartDashboard.putData("Choreo", self._auto_chooser)
-        except Exception as e:
-            print(f"Error building auto chooser: {e}")
+        # try:
+        self._auto_chooser = AutoBuilder.buildAutoChooser("test auton")
+        SmartDashboard.putData("Auto Chooser", self._auto_chooser)
+        # except Exception as e:
+        #     print(f"Error building auto chooser: {e}")
 
         self._vision_est = config.Cameras.vision_controller
 
@@ -181,20 +181,20 @@ class RobotContainer:
         #     )
         # )
 
-        # Run SysId routines when holding back/start and X/Y.
-        # Note that each routine should be run exactly once in a single log.
-        (self._joystick.back() & self._joystick.y()).whileTrue(
-            self.drivetrain.sys_id_dynamic(SysIdRoutine.Direction.kForward)
-        )
-        (self._joystick.back() & self._joystick.x()).whileTrue(
-            self.drivetrain.sys_id_dynamic(SysIdRoutine.Direction.kReverse)
-        )
-        (self._joystick.start() & self._joystick.y()).whileTrue(
-            self.drivetrain.sys_id_quasistatic(SysIdRoutine.Direction.kForward)
-        )
-        (self._joystick.start() & self._joystick.x()).whileTrue(
-            self.drivetrain.sys_id_quasistatic(SysIdRoutine.Direction.kReverse)
-        )
+        # # Run SysId routines when holding back/start and X/Y.
+        # # Note that each routine should be run exactly once in a single log.
+        # (self._joystick.back() & self._joystick.y()).whileTrue(
+        #     self.drivetrain.sys_id_dynamic(SysIdRoutine.Direction.kForward)
+        # )
+        # (self._joystick.back() & self._joystick.x()).whileTrue(
+        #     self.drivetrain.sys_id_dynamic(SysIdRoutine.Direction.kReverse)
+        # )
+        # (self._joystick.start() & self._joystick.y()).whileTrue(
+        #     self.drivetrain.sys_id_quasistatic(SysIdRoutine.Direction.kForward)
+        # )
+        # (self._joystick.start() & self._joystick.x()).whileTrue(
+        #     self.drivetrain.sys_id_quasistatic(SysIdRoutine.Direction.kReverse)
+        # )
 
         # reset the field-centric heading on left bumper press
         #self._joystick.leftBumper().onTrue(
