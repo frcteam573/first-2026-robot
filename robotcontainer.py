@@ -91,7 +91,7 @@ class RobotContainer:
         NamedCommands.registerCommand("Shoot Prep", commands.shooter.Shoot(self.shooter))
         NamedCommands.registerCommand("Shoot Out", commands.shooter.Shoot(self.shooter, shootOut=True))
 
-        NamedCommands.registerCommand("AlignDT", commands.drivetrain.AlignDT(self.drivetrain))
+        NamedCommands.registerCommand("AlignDT", self.alignDT(drivetrain=self.drivetrain))
         
         # # NamedCommands.registerCommand("Climber Extend", commands.climber.extendClimber(Robot.climber))
         # NamedCommands.registerCommand("climbUp", commands.elevator.setPosition(self._elevator,position=10))
@@ -108,6 +108,22 @@ class RobotContainer:
 
         # Configure the button bindings
         self.configureButtonBindings()
+
+    def alignDT(self, drivetrain) -> commands2.Command:
+        return self.drivetrain.apply_request(
+                lambda: (
+                    self._drive.with_velocity_x(
+                        0
+                    )  # Drive forward with negative Y (forward)
+                    .with_velocity_y(
+                        0
+                    )  # Drive left with negative X (left)
+                    .with_rotational_rate(
+                        subsystems.CommandSwerveDrivetrain.calculate_relative_angle(self=self.drivetrain, robotPose=config.RobotPoseConfig.pose, targetPose=utilities.getTargetPose(config.RobotPoseConfig.pose)) * self._max_angular_rate 
+                    )  # Drive counterclockwise with negative X (left)
+                )
+            )
+
 
     def configureButtonBindings(self) -> None:
         """
