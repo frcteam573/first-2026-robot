@@ -76,16 +76,18 @@ class Shooter(commands2.SubsystemBase):
 
         # Be able to switch which control request to use based on a button press
         # Start at position 0, use slot 0
-        self.position_voltage = controls.PositionVoltage(0).with_slot(0)
+        self.position_voltage = controls.VelocityVoltage(0).with_slot(0)
         # Start at position 0, use slot 1
         self.position_torque = controls.PositionTorqueCurrentFOC(0).with_slot(1)
         # Keep a brake request so we can disable the motor
         self.brake = controls.NeutralOut()
 
         cfg = configs.TalonFXConfiguration()
-        cfg.slot0.k_p = 2.4; # An error of 1 rotation results in 2.4 V output
+        cfg.slot0.k_p = 0.109999; # An error of 1 rotation results in 2.4 V output
         cfg.slot0.k_i = 0; # No output for integrated error
-        cfg.slot0.k_d = 0.1; # A velocity of 1 rps results in 0.1 V output
+        cfg.slot0.k_d = 0; # A velocity of 1 rps results in 0.1 V output
+        cfg.slot0.k_s = 0.0996
+        cfg.slot0.k_v = 0.1199
         # Peak output of 8 V
         cfg.voltage.peak_forward_voltage = 8
         cfg.voltage.peak_reverse_voltage = -8
