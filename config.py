@@ -87,7 +87,7 @@ class Intake:
     Deployed = False
     deploy_threshold = 0.05 # The distance in rotations when the intake should be considered deployed and the climber should not be allowed to move
     MinRot = 0
-    MaxRot = 0.25 # The max rotation of the intake extension, this should be set to the value where the intake is fully extended
+    MaxRot = -52 # The max rotation of the intake extension, this should be set to the value where the intake is fully extended
 
     cfg = configs.TalonFXConfiguration()
      # Configure gear ratio
@@ -102,12 +102,14 @@ class Intake:
     mm.motion_magic_jerk = 100
 
     slot0 = cfg.slot0
-    slot0.k_s = 0.25 # Add 0.25 V output to overcome static friction
-    slot0.k_v = 0.12 # A velocity target of 1 rps results in 0.12 V output
-    slot0.k_a = 0.01 # An acceleration of 1 rps/s requires 0.01 V output
-    slot0.k_p = 500 # A position error of 0.2 rotations results in 12 V output
+    slot0.k_s = 0 # Add 0.25 V output to overcome static friction
+    slot0.k_v = 999999731779099 # A velocity target of 1 rps results in 0.12 V output
+    slot0.k_a = 0.00999999977648 # An acceleration of 1 rps/s requires 0.01 V output
+    slot0.k_p = 1 # A position error of 0.2 rotations results in 12 V output
     slot0.k_i = 0 # No output for integrated error
-    slot0.k_d = 0.5 # A velocity error of 1 rps results in 0.5 V output
+    slot0.k_d = 0 # A velocity error of 1 rps results in 0.5 V output
+
+
 
 
 

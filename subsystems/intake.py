@@ -1,8 +1,12 @@
+from unittest import signals
+
 import commands2
+import phoenix6
 import config
-from phoenix6 import hardware, controls, configs, StatusCode, CANBus
+from phoenix6 import hardware, controls, configs, StatusCode, CANBus, signals
 from wpilib import DriverStation, SmartDashboard, Mechanism2d, MechanismLigament2d
 from ntcore import NetworkTableInstance
+from phoenix6.configs.talon_fx_configs import MotorOutputConfigs
 
 import subsystems
 import subsystems.climber
@@ -17,6 +21,16 @@ class Intake(commands2.SubsystemBase):
     
         self.m_intakeMotor = hardware.TalonFX(53,CANBus("573CANivore"))
         self.m_intakeExtension = hardware.TalonFX(56,CANBus("573CANivore"))
+
+        self.m_intakeExtension.setNeutralMode(neutralMode=phoenix6.signals.NeutralModeValue.BRAKE)
+        self.m_intakeMotor.set_control(phoenix6.controls.DutyCycleOut(0.25))
+        output_configs = MotorOutputConfigs()
+        # Set deadband to 1% (0.01) - default is 0.001 (0.1%)
+        output_configs.duty_cycle_neutral_deadband = 0.25 
+
+        # Apply the configuration
+        self.m_intakeExtension.configurator.apply(output_configs)
+
 
         # Intake Example Section
 
