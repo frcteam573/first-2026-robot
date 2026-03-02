@@ -81,6 +81,11 @@ class MyRobot(commands2.TimedCommandRobot):
         self.time_start = time.time()
         self.wpilogger = DataLogManager.start()
         DriverStation.startDataLog(DataLogManager.getLog())
+
+        #For TESTING
+        SmartDashboard.putNumber("Shooter / TEST Wheel Speed", 0)
+
+
         if wpilib.RobotBase.isSimulation(): #Only run is in SIM
             self.simulationInit()
 
