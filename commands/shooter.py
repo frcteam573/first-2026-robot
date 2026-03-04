@@ -50,6 +50,73 @@ class Shoot(commands2.Command):
         SmartDashboard.putBoolean("Shooter / Hood at Position", False)
         SmartDashboard.putBoolean("Shooter / Wheel at Speed", False)
 
+class TestHood2(commands2.Command):
+    #This command used to run shooter motor
+    def __init__(
+        self, 
+        app: Shooter, 
+    ) -> None:
+        super().__init__()
+
+        self.app = app
+        self.addRequirements(app)
+        
+    def initialize(self) -> None:
+        print('INIT')
+        pass
+
+    def execute(self) -> None:
+        print("ext")
+        self.app.setHoodAngle(True)
+
+    def end(self, interrupted=False) -> None:
+
+        self.app.setHoodAngle(False)
+
+
+class testHoodDown(commands2.Command):
+    def __init__(
+        self, 
+        app: Shooter, 
+    ) -> None:
+        super().__init__()
+
+        self.app = app
+        self.addRequirements(app)
+        
+    def initialize(self) -> None:
+        pass
+
+    def execute(self) -> None:
+        self.app.setHoodAngle(False)
+        print('hood')
+
+    def end(self, interrupted=False) -> None:
+        self.app.hoodOff()
+
+class testHoodUP(commands2.Command):
+    def __init__(
+        self, 
+        app: Shooter, 
+    ) -> None:
+        super().__init__()
+
+        self.app = app
+        self.addRequirements(app)
+        
+    def initialize(self) -> None:
+        pass
+
+    def execute(self) -> None:
+        self.app.setHoodAngle(True)
+        print('hood')
+
+    def end(self, interrupted=False) -> None:
+        self.app.hoodOff()
+
+
+
+
 class testComponents(commands2.Command):
     def __init__(
         self, 

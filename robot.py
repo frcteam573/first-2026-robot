@@ -80,11 +80,13 @@ class MyRobot(commands2.TimedCommandRobot):
         self.resetQuestNavPoseforAutoStart()
 
         self.container.shooter.hoodInitialize() #Initialize hood sensor zero values
+        self.container.shooter.hoodOff()
 
         # oi.oi.OI.map_controls() #Map controls
         self.time_start = time.time()
         self.wpilogger = DataLogManager.start()
         DriverStation.startDataLog(DataLogManager.getLog())
+        self.container.intake.intakeMotorOff()
 
         #For TESTING
         SmartDashboard.putNumber("Shooter / TEST Wheel Speed", 0)
@@ -130,7 +132,7 @@ class MyRobot(commands2.TimedCommandRobot):
         
         # # subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
         # # subsystems.Shooter.getMotors(self=Robot.shooter)
-        # subsystems.Shooter.getShooterInfo(self.container.shooter)
+        subsystems.Shooter.getShooterInfo(self.container.shooter)
         # subsystems.Intake.getIntakeInfo(self.container.intake)
         # # subsystems.Climber.getClimberInfo(self.container.climber)
         # #Deployed values

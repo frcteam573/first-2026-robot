@@ -26,7 +26,8 @@ class Shooter:
     hoodAngleTolerance = 12 ## change number
     hoodSensorZero1 = 1.1 ## doesnt matter
     hoodSensorZero2 = 1.1 ## doesnt matter
-    fullHoodOffset = 3.3
+    fullHoodOffset1 = 1.38-0.96
+    fullHoodOffset2 = 3.3-2.96
 
 # ------------ Elevator Settings -----------------
 class Elevator:
