@@ -32,6 +32,5 @@ requires = [
     "photonlibpy",
     "pyntcore",
     "protobuf",
-    "robotpy-pathplannerlib",
-    "robotpy-opencv"
+    "robotpy-pathplannerlib"
 ]

@@ -17,7 +17,7 @@ from vision.vision_estimator import VisionEstimator
 from telemetry import Telemetry
 
 from config import Cameras, Elevator
-from wpimath.geometry import Pose2d, Rotation2d, Pose3d
+from wpimath.geometry import Pose2d, Rotation2d, Pose3d, Translation3d, Rotation3d,Quaternion
 
 # import oi.oi
 import subsystems
@@ -67,16 +67,17 @@ class MyRobot(commands2.TimedCommandRobot):
         self.container = RobotContainer()
 
         #Setting default pose
-        self.container.drivetrain.reset_pose(Pose2d(2,2,Rotation2d(0)))
+        self.container.drivetrain.reset_pose(Pose2d(0,0,Rotation2d(0)))
 
         self.questnav = QuestNav()  #Initialize QuestNav
+        
 
         #Initialize the items to send vision and questnav pose to dashboard
         self.questnav_field = wpilib.Field2d()
         self.photonvision_field = wpilib.Field2d()
         wpilib.SmartDashboard.putData('QuestNavField',self.questnav_field)
         wpilib.SmartDashboard.putData('PhotonVisionField',self.photonvision_field)
-
+        self.resetQuestNavPoseforAutoStart()
         # oi.oi.OI.map_controls() #Map controls
         self.time_start = time.time()
         self.wpilogger = DataLogManager.start()
@@ -86,8 +87,8 @@ class MyRobot(commands2.TimedCommandRobot):
         SmartDashboard.putNumber("Shooter / TEST Wheel Speed", 0)
 
 
-        if wpilib.RobotBase.isSimulation(): #Only run is in SIM
-            self.simulationInit()
+        # if wpilib.RobotBase.isSimulation(): #Only run is in SIM
+        #     self.simulationInit()
 
     def robotPeriodic(self) -> None:
         """This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -109,15 +110,16 @@ class MyRobot(commands2.TimedCommandRobot):
         self.questnav.command_periodic()
 
         # #Only run during SIM
-        if wpilib.RobotBase.isSimulation():
+        # if wpilib.RobotBase.isSimulation():
             
-            self.simulationPeriodic()
+        #     self.simulationPeriodic()
 
         # Add measurements to localization based on primary source
         if self.localizationMethod == config.PrimaryLocalization.VISION:
             self.add_vision_to_pose_esitmate()
         elif self.localizationMethod == config.PrimaryLocalization.QUESTNAV:
             self.add_questnav_to_pose_estimate()
+            pass
         else:
             pass
 
@@ -125,8 +127,8 @@ class MyRobot(commands2.TimedCommandRobot):
         
         # # subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
         # # subsystems.Shooter.getMotors(self=Robot.shooter)
-        subsystems.Shooter.getShooterInfo(self.container.shooter)
-        subsystems.Intake.getIntakeInfo(self.container.intake)
+        # subsystems.Shooter.getShooterInfo(self.container.shooter)
+        # subsystems.Intake.getIntakeInfo(self.container.intake)
         # # subsystems.Climber.getClimberInfo(self.container.climber)
         # #Deployed values
         SmartDashboard.putBoolean("Deploy State / Intake Deployed", config.Intake.Deployed)
@@ -171,6 +173,7 @@ class MyRobot(commands2.TimedCommandRobot):
         config.Alliance.blue_team = wpilib.DriverStation.Alliance.kBlue == self.alliance #Set a config value to this color used in automous selection
         if self.autonomousCommand:
             self.autonomousCommand.cancel()
+        self.resetQuestNavPoseforAutoStart() #TEMP
 
     def teleopPeriodic(self) -> None:
         """This function is called periodically during operator control"""
@@ -211,9 +214,11 @@ class MyRobot(commands2.TimedCommandRobot):
                 #print("QN Pose:",frame.quest_pose_3d.toPose2d())
                 # print("QuestNav3")
                 #print("Timestamp:", frame.data_timestamp - self.time_start)
-                self.questnav_field.setRobotPose(frame.quest_pose_3d.toPose2d())
+                newPose = (frame.quest_pose_3d.transformBy(constants.Robot_To_Quest.inverse())).toPose2d()
+                self.questnav_field.setRobotPose(newPose)
+                print("QuestNavPose", newPose)
                 self.container.drivetrain.add_vision_measurement(
-                    frame.quest_pose_3d.toPose2d(),
+                    newPose,
                     frame.data_timestamp- self.time_start) # Standard deviations
         
     def resetPoseBasedOnVision(self):
@@ -225,8 +230,12 @@ class MyRobot(commands2.TimedCommandRobot):
 
     def resetQuestNavPoseforAutoStart(self):
         current_pose = self.container.drivetrain.get_state().pose
-        self.questnav.set_pose(Pose3d(current_pose))
-        self.questnav_field.setRobotPose(current_pose)
+
+        questNavpose = current_pose.transformBy(constants.Robot_To_Quest2D)
+
+        self.questnav.set_pose(Pose3d(questNavpose))
+        print(questNavpose)
+        self.questnav_field.setRobotPose(questNavpose)
 
 
 

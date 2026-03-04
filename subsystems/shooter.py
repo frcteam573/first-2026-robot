@@ -89,8 +89,8 @@ class Shooter(commands2.SubsystemBase):
         cfg.slot0.k_s = 0.0996
         cfg.slot0.k_v = 0.1199
         # Peak output of 8 V
-        cfg.voltage.peak_forward_voltage = 8
-        cfg.voltage.peak_reverse_voltage = -8
+        cfg.voltage.peak_forward_voltage = 12
+        cfg.voltage.peak_reverse_voltage = -12
 
         cfg.slot1.k_p = 60; # An error of 1 rotation results in 60 A output
         cfg.slot1.k_i = 0; # No output for integrated error
