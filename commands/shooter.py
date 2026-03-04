@@ -30,8 +30,9 @@ class Shoot(commands2.Command):
         wheelSpeed, hoodAngle = self.app.calcTarget(config.RobotPoseConfig.pose, utils.utils.getTargetPose(config.RobotPoseConfig.pose))
         wheelSpeed = SmartDashboard.getNumber("Shooter / TEST Wheel Speed", 0)
         self.app.setShooterSpeed(wheelSpeed)
-        SmartDashboard.putBoolean("Shooter / Hood at Position", self.app.setHoodAngle(hoodAngle))
-        SmartDashboard.putBoolean("Shooter / Wheel at Speed", self.app.setShooterSpeed(wheelSpeed))
+        # self.app.setShooterBasic(1)
+        # SmartDashboard.putBoolean("Shooter / Hood at Position", self.app.setHoodAngle(hoodAngle))
+        # SmartDashboard.putBoolean("Shooter / Wheel at Speed", self.app.setShooterSpeed(wheelSpeed))
         if Keymap.Shooter.shoot.getAsBoolean() or self.shootOut:
             if wpilib.SmartDashboard.getBoolean("Aligned", False):
                 self.app.hopperMotorOff()
@@ -45,7 +46,7 @@ class Shoot(commands2.Command):
         
     def end(self, interrupted=False) -> None:
         self.app.shooterMotorOff()
-        self.app.setHoodAngle(False)
+        # self.app.setHoodAngle(False)
         self.app.hopperMotorOff() 
         SmartDashboard.putBoolean("Shooter / Hood at Position", False)
         SmartDashboard.putBoolean("Shooter / Wheel at Speed", False)

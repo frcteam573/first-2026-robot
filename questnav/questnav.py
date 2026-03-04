@@ -149,8 +149,8 @@ class QuestNav:
         events = self.data_listener.readQueue()
         event = None
         try:
-
-            event = events[0]
+            
+            event = events[len(events)-1]
 
             current_time = time.time()
         

@@ -239,8 +239,7 @@ class MyRobot(commands2.TimedCommandRobot):
         questNavpose = current_pose.transformBy(constants.Robot_To_Quest2D)
 
         self.questnav.set_pose(Pose3d(questNavpose))
-        print(questNavpose)
-        self.questnav_field.setRobotPose(questNavpose)
+        # self.questnav_field.setRobotPose(questNavpose)
 
 
 
