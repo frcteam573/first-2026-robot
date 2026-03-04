@@ -78,6 +78,9 @@ class MyRobot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData('QuestNavField',self.questnav_field)
         wpilib.SmartDashboard.putData('PhotonVisionField',self.photonvision_field)
         self.resetQuestNavPoseforAutoStart()
+
+        self.container.shooter.hoodInitialize() #Initialize hood sensor zero values
+
         # oi.oi.OI.map_controls() #Map controls
         self.time_start = time.time()
         self.wpilogger = DataLogManager.start()
@@ -216,7 +219,7 @@ class MyRobot(commands2.TimedCommandRobot):
                 #print("Timestamp:", frame.data_timestamp - self.time_start)
                 newPose = (frame.quest_pose_3d.transformBy(constants.Robot_To_Quest.inverse())).toPose2d()
                 self.questnav_field.setRobotPose(newPose)
-                print("QuestNavPose", newPose)
+                # print("QuestNavPose", newPose)
                 self.container.drivetrain.add_vision_measurement(
                     newPose,
                     frame.data_timestamp- self.time_start) # Standard deviations

@@ -134,31 +134,52 @@ class Shooter(commands2.SubsystemBase):
     def hoodVoltageToAngle(self, voltage) -> float:
         '''Converts voltage from hood sensor to angle in degrees.'''
         return 10*voltage - 40 # NEED TO BE CHANGED
+    
+    def hoodInitialize(self):
+        config.Shooter.hoodSensorZero1 = self.s_hoodSensor1.getVoltage()
+        config.Shooter.hoodSensorZero2 = self.s_hoodSensor2.getVoltage()
 
-    def setHoodAngle(self, angle: float) -> bool:
+    def setHoodAngle(self, hoodExtended: bool) -> bool:
         '''Sets the angle of hood.
         
         Args:
             angle: The desired angle of the hood in degrees.
         '''
-        #This sets the angle value
-        self.s_hoodServo1.setAngle(angle * config.Shooter.hoodRotationsToAngle)
-        self.s_hoodServo2.setAngle(angle * config.Shooter.hoodRotationsToAngle)
+        setpoint1 = 0
+        setpoint2 = 0
 
-        #This checks if the hood is at the desired angle within a certain tolerance, and returns true if it is, false if it isnt
-
-        angle1 = self.hoodVoltageToAngle(self.s_hoodSensor1.getVoltage())
-        angle2 = self.hoodVoltageToAngle(self.s_hoodSensor2.getVoltage())
-
-        if abs(angle1 - angle) < config.Shooter.hoodAngleTolerance and abs(angle2 - angle) < config.Shooter.hoodAngleTolerance:
-           return True
+        if hoodExtended:
+            setpoint1 = config.Shooter.fullHoodOffset + config.Shooter.hoodSensorZero1
+            setpoint2 = config.Shooter.fullHoodOffset - config.Shooter.hoodSensorZero2
         else:
-           return False
+            setpoint1 = config.Shooter.hoodSensorZero1
+            setpoint2 = config.Shooter.hoodSensorZero2
 
-        # return True
+        hood1Voltage = self.s_hoodSensor1.getVoltage()
+        hood2Voltage = self.s_hoodSensor2.getVoltage()
 
-        # return Tyler.max_min_check(float(self.s_hoodServ.getPosition()) / config.Shooter.hoodRotationsToAngle, angle, config.Shooter.hoodAngleTolerance)
+        setpoint1InPosition = False
+        setpoint2InPosition = False
 
+        if setpoint1 - hood1Voltage > 0.2:
+            self.s_hoodServo1.setPosition(1)
+        elif setpoint1 - hood1Voltage < -0.2:
+            self.s_hoodServo1.setPosition(0)
+        else:
+            self.s_hoodServo1.setOffline()
+            setpoint1InPosition = True
+
+        if setpoint2 - hood2Voltage > 0.2:
+            self.s_hoodServo2.setPosition(0)
+        elif setpoint2 - hood2Voltage < -0.2:
+            self.s_hoodServo2.setPosition(1)
+        else:
+            self.s_hoodServo2.setOffline() 
+            setpoint2InPosition = True   
+
+        return setpoint1InPosition and setpoint2InPosition
+        
+       
 
 
 
@@ -200,9 +221,13 @@ class Shooter(commands2.SubsystemBase):
         Distance = (IntermediatePose.X()**2 + IntermediatePose.Y()**2)**.5  #pythagoream theorum
         SmartDashboard.putNumber("Shooter / Calculated Shooter Distance", Distance)
         shooterWheelSpeed = 1 * Distance ### FIX
-        Angle = 1 * Distance ### FIX
+        if Distance > 1:
+            Angle = True
+        else:
+            Angle = False
+        
         SmartDashboard.putNumber("Shooter / Calculated Wheel Speed", shooterWheelSpeed)
-        SmartDashboard.putNumber("Shooter / Calculated Angle", Angle)
+        SmartDashboard.putBoolean("Shooter / Calculated Angle", Angle)
         return shooterWheelSpeed, Angle
 
     def hopperMotorOff(self):
