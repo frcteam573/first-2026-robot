@@ -27,9 +27,12 @@ class Intake(commands2.SubsystemBase):
         output_configs = MotorOutputConfigs()
         # Set deadband to 1% (0.01) - default is 0.001 (0.1%)
         output_configs.duty_cycle_neutral_deadband = 0.25 
+        current_configs = phoenix6.configs.config_groups.CurrentLimitsConfigs()
+        current_configs.stator_current_limit = 25 # Limit supply current to 25A
 
         # Apply the configuration
         self.m_intakeExtension.configurator.apply(output_configs)
+        self.m_intakeExtension.configurator.apply(current_configs)
 
 
         # Intake Example Section
