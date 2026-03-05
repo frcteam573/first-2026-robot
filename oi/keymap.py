@@ -34,17 +34,18 @@ class Keymap:
          
     class Shooter:
         setupShooter = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.RB)
-        shoot = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.Y)
-        hopperMotorReverse = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.A)
+        shoot = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.B)
+        hopperMotorReverse = JoystickAxis(Controllers.OPERATOR, controllerDRIVER.RT)
+        hoodReset = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER,controllerOPERATOR.X)
 
     class Intake:
-        intakeIn = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.LB)
-        intakeOut = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.X)
-        intakeRetract = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.B)  
+        #intakeIn = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.LB)
+        # intakeOut = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.X)
+        # intakeRetract = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.B)  
 
         testroller = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.LB)  
-        testextin = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.X)
-        testextout = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.B)
+        testextin = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.Y)
+        testextout = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.A)
 
     #class Intake:
          

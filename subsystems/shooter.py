@@ -137,12 +137,16 @@ class Shooter(commands2.SubsystemBase):
         return 10*voltage - 40 # NEED TO BE CHANGED
     
     def hoodInitialize(self):
-        config.Shooter.hoodSensorZero1 = self.s_hoodSensor1.getVoltage()
-        config.Shooter.hoodSensorZero2 = self.s_hoodSensor2.getVoltage()
+        config.Shooter.hoodSensorZero1 = self.s_hoodSensor1.getAverageVoltage()
+        config.Shooter.hoodSensorZero2 = self.s_hoodSensor2.getAverageVoltage()
 
     def hoodOff(self):
         self.s_hoodServo1.set(0.5)
         self.s_hoodServo2.set(0.5)
+
+    def hoodreset(self):
+        self.s_hoodServo1.set(0)
+        self.s_hoodServo2.set(1)
 
     def setHoodAngle(self, hoodExtended: bool) -> bool:
         '''Sets the angle of hood.
@@ -150,43 +154,53 @@ class Shooter(commands2.SubsystemBase):
         Args:
             angle: The desired angle of the hood in degrees.
         '''
-        setpoint1 = 0
-        setpoint2 = 0
-
         if hoodExtended:
-            setpoint1 = config.Shooter.fullHoodOffset1 + config.Shooter.hoodSensorZero1
-            setpoint2 = -config.Shooter.fullHoodOffset2 + config.Shooter.hoodSensorZero2
-        else:
-            setpoint1 = config.Shooter.hoodSensorZero1
-            setpoint2 = config.Shooter.hoodSensorZero2
-
-        hood1Voltage = self.s_hoodSensor1.getVoltage()
-        hood2Voltage = self.s_hoodSensor2.getVoltage()
-
-        setpoint1InPosition = False
-        setpoint2InPosition = False
-        hood1_diff = setpoint1-hood1Voltage
-        hood2_diff = setpoint2-hood2Voltage
-        print("Hood1 Diff", hood1_diff)
-        # print("Hood2 Diff", hood2_diff)
-        if hood1_diff > 0.05:
             self.s_hoodServo1.set(1)
-            # print("HERE")
-        elif hood1_diff < -0.05:
-            self.s_hoodServo1.set(0)
-        else:
-            self.s_hoodServo1.set(0.5) # Set to 0.5 to hold position
-            setpoint1InPosition = True
-
-        if hood2_diff > .05:
-            self.s_hoodServo2.set(1)
-        elif hood2_diff< -.05:
             self.s_hoodServo2.set(0)
         else:
-            self.s_hoodServo2.set(0.5) # Set to 0.5 to hold position
-            setpoint2InPosition = True   
+            self.s_hoodServo1.set(0)
+            self.s_hoodServo2.set(1)
+        # setpoint1 = 0
+        # setpoint2 = 0
 
-        return setpoint1InPosition and setpoint2InPosition
+        # if hoodExtended:
+        #     setpoint1 = config.Shooter.fullHoodOffset1 + config.Shooter.hoodSensorZero1
+        #     setpoint2 = -config.Shooter.fullHoodOffset2 + config.Shooter.hoodSensorZero2
+        # else:
+        #     setpoint1 = config.Shooter.hoodSensorZero1
+        #     setpoint2 = config.Shooter.hoodSensorZero2
+
+        # hood1Voltage = self.s_hoodSensor1.getAverageVoltage()
+        # hood2Voltage = self.s_hoodSensor2.getAverageVoltage()
+        # rail_curr = wpilib.RobotController.getCurrent6V()
+        # setpoint1InPosition = False
+        # setpoint2InPosition = False
+        # hood1_diff = setpoint1-hood1Voltage
+        # hood2_diff = setpoint2-hood2Voltage
+        # SmartDashboard.putNumber("Shooter / Rail Curr", rail_curr)
+        # SmartDashboard.putNumber("Shooter / Hood1 Diff", hood1_diff)
+        # SmartDashboard.putNumber("Shooter / Hood2 Diff", hood2_diff)
+        # SmartDashboard.putNumber("Shooter / Hood1 Zero", config.Shooter.hoodSensorZero1)
+        # SmartDashboard.putNumber("Shooter / Hood2 Zero", config.Shooter.hoodSensorZero2)
+        # if hood1_diff > 0.05:
+        #     self.s_hoodServo1.set(0)
+        #     self.s_hoodServo1.get
+        #     # print("HERE")
+        # elif hood1_diff < -0.05:
+        #     self.s_hoodServo1.set(1)
+        # else:
+        #     self.s_hoodServo1.set(0.5) # Set to 0.5 to hold position
+        #     setpoint1InPosition = True
+
+        # if hood2_diff > .05:
+        #     self.s_hoodServo2.set(1)
+        # elif hood2_diff< -.05:
+        #     self.s_hoodServo2.set(0)
+        # else:
+        #     self.s_hoodServo2.set(0.5) # Set to 0.5 to hold position
+        #     setpoint2InPosition = True   
+
+        return True
         
        
 

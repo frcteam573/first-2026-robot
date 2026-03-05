@@ -78,9 +78,9 @@ class MyRobot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData('QuestNavField',self.questnav_field)
         wpilib.SmartDashboard.putData('PhotonVisionField',self.photonvision_field)
         self.resetQuestNavPoseforAutoStart()
-
-        self.container.shooter.hoodInitialize() #Initialize hood sensor zero values
         self.container.shooter.hoodOff()
+        self.container.shooter.hoodInitialize() #Initialize hood sensor zero values
+        
 
         # oi.oi.OI.map_controls() #Map controls
         self.time_start = time.time()

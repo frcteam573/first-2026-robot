@@ -224,15 +224,17 @@ class RobotContainer:
         #Appendage Controls
         # Keymap.Shooter.setupShooter.whileTrue(commands.shooter.testHoodUP(self.shooter))
         # Keymap.Shooter.shoot.whileTrue(commands.shooter.testHoodDown(self.shooter))
+        commands2.button.Trigger(lambda: Keymap.Shooter.hopperMotorReverse.value > 0.5).whileTrue(commands.shooter.revHopper(self.shooter))
+        Keymap.Shooter.hoodReset.whileTrue(commands.shooter.hoodReset(self.shooter))
         Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(self.shooter))
-        # Keymap.Shooter.hopperMotorReverse.whileTrue(commands.shooter.testHopper(self.shooter))
+        # Keymap.Shooter.hopperMotorReverse.whileTrue(commands.shooter.revHopper(self.shooter))
         # Keymap.Intake.intakeIn.whileTrue(commands.intake.IntakeIn(self.intake))
         # Keymap.Intake.intakeOut.whileTrue(commands.intake.IntakeOut(self.intake))
         # Keymap.Intake.intakeRetract.whileTrue(commands.intake.IntakeRetract(self.intake))
 
-        # Keymap.Intake.testextout.whileTrue(commands.intake.testIntakeExtensionOut(self.intake))
-        # Keymap.Intake.testextin.whileTrue(commands.intake.testIntakeExtensionIn(self.intake))
-        # Keymap.Intake.testroller.whileTrue(commands.intake.testIntakeRoller(self.intake))
+        Keymap.Intake.testextout.whileTrue(commands.intake.testIntakeExtensionOut(self.intake))
+        Keymap.Intake.testextin.whileTrue(commands.intake.testIntakeExtensionIn(self.intake))
+        Keymap.Intake.testroller.whileTrue(commands.intake.testIntakeRoller(self.intake))
 
         # commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.extendclimber(self.climber))
         # commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.retractclimber(self.climber))

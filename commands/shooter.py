@@ -30,6 +30,7 @@ class Shoot(commands2.Command):
         wheelSpeed, hoodAngle = self.app.calcTarget(config.RobotPoseConfig.pose, utils.utils.getTargetPose(config.RobotPoseConfig.pose))
         wheelSpeed = SmartDashboard.getNumber("Shooter / TEST Wheel Speed", 0)
         self.app.setShooterSpeed(wheelSpeed)
+        self.app.setHoodAngle(hoodAngle)
         # self.app.setShooterBasic(1)
         # SmartDashboard.putBoolean("Shooter / Hood at Position", self.app.setHoodAngle(hoodAngle))
         # SmartDashboard.putBoolean("Shooter / Wheel at Speed", self.app.setShooterSpeed(wheelSpeed))
@@ -115,7 +116,25 @@ class testHoodUP(commands2.Command):
     def end(self, interrupted=False) -> None:
         self.app.hoodOff()
 
+class hoodReset(commands2.Command):
+    def __init__(
+        self, 
+        app: Shooter, 
+    ) -> None:
+        super().__init__()
 
+        self.app = app
+        self.addRequirements(app)
+        
+    def initialize(self) -> None:
+        pass
+
+    def execute(self) -> None:
+        self.app.setHoodAngle(False)
+        print('hood')
+
+    def end(self, interrupted=False) -> None:
+        self.app.hoodOff()
 
 
 class testComponents(commands2.Command):
@@ -145,7 +164,7 @@ class testComponents(commands2.Command):
         self.app.setHoodAngle(0)
         self.app.hopperMotorOff()
 
-class testHopper(commands2.Command):
+class revHopper(commands2.Command):
     def __init__(
         self, 
         app: Shooter, 
@@ -159,7 +178,7 @@ class testHopper(commands2.Command):
         pass
 
     def execute(self) -> None:
-        self.app.hopperMotorOn()
+        self.app.hopperMotorReverse()
         # print('ran hopper')
 
     def end(self, interrupted=False) -> None:
