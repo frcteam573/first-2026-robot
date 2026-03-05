@@ -223,9 +223,11 @@ class MyRobot(commands2.TimedCommandRobot):
                 newPose = quest_pose.transformBy((constants.Robot_To_Quest2D.inverse()))
                 self.questnav_field.setRobotPose(newPose)
                 # print("QuestNavPose", newPose)
+                custom_std_devs = (0.01, 0.01, 0.01) # TUNE SMALL NUMBERS MEAN MORE TRUST IN QuestNav
                 self.container.drivetrain.add_vision_measurement(
                     newPose,
-                    frame.data_timestamp- self.time_start) # Standard deviations
+                    frame.data_timestamp- self.time_start,
+                    custom_std_devs) # Standard deviations
         
     def resetPoseBasedOnVision(self):
         vision_est = self.container._vision_est.get_estimated_robot_pose()

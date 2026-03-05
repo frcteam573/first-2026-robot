@@ -22,13 +22,14 @@ class Intake(commands2.SubsystemBase):
         self.m_intakeMotor = hardware.TalonFX(53,CANBus("573CANivore"))
         self.m_intakeExtension = hardware.TalonFX(56,CANBus("573CANivore"))
 
+        #Not sure if this is working
         self.m_intakeExtension.setNeutralMode(neutralMode=phoenix6.signals.NeutralModeValue.BRAKE)
         self.m_intakeMotor.set_control(phoenix6.controls.DutyCycleOut(0.25))
         output_configs = MotorOutputConfigs()
         # Set deadband to 1% (0.01) - default is 0.001 (0.1%)
         output_configs.duty_cycle_neutral_deadband = 0.25 
         current_configs = phoenix6.configs.config_groups.CurrentLimitsConfigs()
-        current_configs.stator_current_limit = 25 # Limit supply current to 25A
+        current_configs.stator_current_limit = 40 # Limit supply current to 25A
 
         # Apply the configuration
         self.m_intakeExtension.configurator.apply(output_configs)
@@ -73,7 +74,7 @@ class Intake(commands2.SubsystemBase):
         #print("intake out")
 
     def intakeMotorIn(self):
-        self.m_intakeMotor.set(0.7)  
+        self.m_intakeMotor.set(1)  
         #print("intake in")     
 
     def intakeMotorOff(self):

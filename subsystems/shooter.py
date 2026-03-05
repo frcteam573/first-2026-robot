@@ -244,14 +244,13 @@ class Shooter(commands2.SubsystemBase):
         Distance = (IntermediatePose.X()**2 + IntermediatePose.Y()**2)**.5  #pythagoream theorum
         SmartDashboard.putNumber("Shooter / Calculated Shooter Distance", Distance)
         Distance = (Distance/.0254) # convert to inches
-        shooterWheelSpeed = ((.625 * Distance) + 27.5)
-        if Distance > 36:
+        if Distance > 71:
             Angle = True
-            shooterWheelSpeed = ((.625 * Distance) + 27.5)
+            shooterWheelSpeed = ((.625 * Distance) + 6.4583)
         else:
             shooterWheelSpeed = 60
             Angle = False
-        
+
         SmartDashboard.putNumber("Shooter / Calculated Wheel Speed", shooterWheelSpeed)
         SmartDashboard.putBoolean("Shooter / Calculated Angle", Angle)
         return shooterWheelSpeed, Angle
