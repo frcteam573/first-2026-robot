@@ -206,7 +206,7 @@ class Shooter(commands2.SubsystemBase):
 
 
 
-    def inScoringZone(pose: Pose2d) -> bool:
+    def inScoringZone(self,pose: Pose2d) -> bool:
         '''changes hood angle when not in alliance's zone
         
         Args:

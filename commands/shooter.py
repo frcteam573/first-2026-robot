@@ -28,7 +28,7 @@ class Shoot(commands2.Command):
 
     def execute(self) -> None:
         wheelSpeed, hoodAngle = self.app.calcTarget(config.RobotPoseConfig.pose, utils.utils.getTargetPose(config.RobotPoseConfig.pose))
-        # wheelSpeed = SmartDashboard.getNumber("Shooter / TEST Wheel Speed", 0)
+        wheelSpeed = SmartDashboard.getNumber("Shooter / TEST Wheel Speed", 0)
         self.app.setShooterSpeed(wheelSpeed)
         self.app.setHoodAngle(hoodAngle)
         # self.app.setShooterBasic(1)

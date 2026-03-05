@@ -110,7 +110,7 @@ class MyRobot(commands2.TimedCommandRobot):
         #Run camera update and questNav update every loop
 
         utilities.calculate_alignment(robotPose=config.RobotPoseConfig.pose, targetPose=utilities.getTargetPose(config.RobotPoseConfig.pose))
-
+        config.inZone = self.container.shooter.inScoringZone(config.RobotPoseConfig.pose)
         # #Run QuestNav command every loop
         self.questnav.command_periodic()
 
@@ -223,7 +223,7 @@ class MyRobot(commands2.TimedCommandRobot):
                 newPose = quest_pose.transformBy((constants.Robot_To_Quest2D.inverse()))
                 self.questnav_field.setRobotPose(newPose)
                 # print("QuestNavPose", newPose)
-                custom_std_devs = (0.01, 0.01, 0.01) # TUNE SMALL NUMBERS MEAN MORE TRUST IN QuestNav
+                custom_std_devs = (0.01, 0.01, 0.02) # TUNE SMALL NUMBERS MEAN MORE TRUST IN QuestNav
                 self.container.drivetrain.add_vision_measurement(
                     newPose,
                     frame.data_timestamp- self.time_start,

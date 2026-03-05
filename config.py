@@ -10,6 +10,7 @@ from wpimath.controller import PIDController
 import math
 
 LedCounter = 0
+inZone = True
 
 class PrimaryLocalization(Enum):
     ODO_Only = 0
