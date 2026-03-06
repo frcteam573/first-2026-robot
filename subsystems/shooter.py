@@ -154,12 +154,18 @@ class Shooter(commands2.SubsystemBase):
         Args:
             angle: The desired angle of the hood in degrees.
         '''
+
         if hoodExtended:
             self.s_hoodServo1.set(1)
             self.s_hoodServo2.set(0)
         else:
             self.s_hoodServo1.set(0)
             self.s_hoodServo2.set(1)
+
+        
+
+
+
         # setpoint1 = 0
         # setpoint2 = 0
 

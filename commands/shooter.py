@@ -24,16 +24,22 @@ class Shoot(commands2.Command):
         self.shootOut = shootOut
         
     def initialize(self) -> None:
+        self.hoodatlimit = False
         pass
 
     def execute(self) -> None:
         wheelSpeed, hoodAngle = self.app.calcTarget(config.RobotPoseConfig.pose, utils.utils.getTargetPose(config.RobotPoseConfig.pose))
         # wheelSpeed = SmartDashboard.getNumber("Shooter / TEST Wheel Speed", 0)
         self.app.setShooterSpeed(wheelSpeed)
+
         self.app.setHoodAngle(hoodAngle)
-        # self.app.setShooterBasic(1)
-        # SmartDashboard.putBoolean("Shooter / Hood at Position", self.app.setHoodAngle(hoodAngle))
-        # SmartDashboard.putBoolean("Shooter / Wheel at Speed", self.app.setShooterSpeed(wheelSpeed))
+
+        # MAYBE WE TRY THIS TO PREVENT HOOD DAMAGE
+        # current_6v = wpilib.RobotController.getCurrent6V()
+        # SmartDashboard.putNumber("Shooter / 6V Current", current_6v)
+        # if current_6v > 5.5:
+        #     self.hoodatlimit = True
+        
         if Keymap.Shooter.shoot.getAsBoolean() or self.shootOut:
             if wpilib.SmartDashboard.getBoolean("Aligned", False):
                 self.app.hopperMotorOff()
