@@ -134,7 +134,7 @@ class MyRobot(commands2.TimedCommandRobot):
         # # subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
         # # subsystems.Shooter.getMotors(self=Robot.shooter)
         subsystems.Shooter.getShooterInfo(self.container.shooter)
-        # subsystems.Intake.getIntakeInfo(self.container.intake)
+        subsystems.Intake.getIntakeInfo(self.container.intake)
         # # subsystems.Climber.getClimberInfo(self.container.climber)
         # #Deployed values
         SmartDashboard.putBoolean("Deploy State / Intake Deployed", config.Intake.Deployed)
@@ -179,7 +179,7 @@ class MyRobot(commands2.TimedCommandRobot):
         config.Alliance.blue_team = wpilib.DriverStation.Alliance.kBlue == self.alliance #Set a config value to this color used in automous selection
         if self.autonomousCommand:
             self.autonomousCommand.cancel()
-        self.resetQuestNavPoseforAutoStart() #TEMP
+        # self.resetQuestNavPoseforAutoStart() #TEMP
 
     def teleopPeriodic(self) -> None:
         """This function is called periodically during operator control"""

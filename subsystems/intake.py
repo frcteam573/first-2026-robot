@@ -64,10 +64,16 @@ class Intake(commands2.SubsystemBase):
         self.m_intakeExtension.set(0)    
 
     def intakeExtOut(self):
-        self.m_intakeExtension.set(0.5)
+        if self.m_intakeExtension.get_position().value_as_double > config.Intake.MaxRot:
+            self.m_intakeExtension.set(0.5)
+        else:
+            self.m_intakeExtension.set(0)
 
     def intakeExtIn(self):
-        self.m_intakeExtension.set(-0.5)
+        if self.m_intakeExtension.get_position().value_as_double < config.Intake.MinRot:
+            self.m_intakeExtension.set(-0.5)
+        else:
+            self.m_intakeExtension.set(0)
 
     def intakeMotorOut(self):
         self.m_intakeMotor.set(-1)

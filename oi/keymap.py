@@ -46,6 +46,7 @@ class Keymap:
         testroller = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.LB)  
         testextin = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.Y)
         testextout = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.A)
+        rollerbackwards = JoystickAxis(Controllers.OPERATOR, controllerOPERATOR.LT)
 
     #class Intake:
          

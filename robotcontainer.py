@@ -85,10 +85,8 @@ class RobotContainer:
         
         #Name Commands for Autos these must be done before building the autobuilder
 
-        # NamedCommands.registerCommand("Intake In", commands.intake.IntakeIn(Robot.intake))
-        # NamedCommands.registerCommand("Intake Out", commands.intake.IntakeOut(Robot.intake))
-        # NamedCommands.registerCommand("Intake Retract", commands.intake.IntakeRetract(Robot.intake))
-        NamedCommands.registerCommand("Shoot Prep", commands.shooter.Shoot(self.shooter))
+        NamedCommands.registerCommand("Intake In", commands.intake.intakegeneral(self.intake, intakeIn=1,autolower=True))
+        NamedCommands.registerCommand("Shooter Prep", commands.shooter.Shoot(self.shooter))
         NamedCommands.registerCommand("Shoot Out", commands.shooter.Shoot(self.shooter, shootOut=True))
 
         NamedCommands.registerCommand("AlignDT", self.alignDT(drivetrain=self.drivetrain))
@@ -145,7 +143,7 @@ class RobotContainer:
                         -self._joystick.getLeftX() * self._max_speed * .5
                     )  # Drive left with negative X (left)
                     .with_rotational_rate(
-                        -self._joystick.getRightX() * self._max_angular_rate *.5
+                        -self._joystick.getRightX() * self._max_angular_rate *.75
                     )  # Drive counterclockwise with negative X (left)
                 )
             )
@@ -232,9 +230,13 @@ class RobotContainer:
         # Keymap.Intake.intakeOut.whileTrue(commands.intake.IntakeOut(self.intake))
         # Keymap.Intake.intakeRetract.whileTrue(commands.intake.IntakeRetract(self.intake))
 
-        Keymap.Intake.testextout.whileTrue(commands.intake.testIntakeExtensionOut(self.intake))
+        Keymap.Intake.testroller.whileTrue(commands.intake.intakegeneral(self.intake,1))
+        commands2.button.Trigger(lambda: Keymap.Intake.rollerbackwards.value > 0.5).whileTrue(commands.intake.intakegeneral(self.intake,0))
         Keymap.Intake.testextin.whileTrue(commands.intake.testIntakeExtensionIn(self.intake))
-        Keymap.Intake.testroller.whileTrue(commands.intake.testIntakeRoller(self.intake))
+        Keymap.Intake.testextout.whileTrue(commands.intake.testIntakeExtensionOut(self.intake))
+
+
+
 
         # commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.extendclimber(self.climber))
         # commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.retractclimber(self.climber))
