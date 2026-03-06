@@ -74,7 +74,7 @@ class Intake(commands2.SubsystemBase):
         #print("intake out")
 
     def intakeMotorIn(self):
-        self.m_intakeMotor.set(1)  
+        self.m_intakeMotor.set(.85)  
         #print("intake in")     
 
     def intakeMotorOff(self):

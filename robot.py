@@ -123,6 +123,7 @@ class MyRobot(commands2.TimedCommandRobot):
         if self.localizationMethod == config.PrimaryLocalization.VISION:
             self.add_vision_to_pose_esitmate()
         elif self.localizationMethod == config.PrimaryLocalization.QUESTNAV:
+            
             self.add_questnav_to_pose_estimate()
             pass
         else:
@@ -223,11 +224,14 @@ class MyRobot(commands2.TimedCommandRobot):
                 newPose = quest_pose.transformBy((constants.Robot_To_Quest2D.inverse()))
                 self.questnav_field.setRobotPose(newPose)
                 # print("QuestNavPose", newPose)
-                custom_std_devs = (0.01, 0.01, 0.02) # TUNE SMALL NUMBERS MEAN MORE TRUST IN QuestNav
-                self.container.drivetrain.add_vision_measurement(
-                    newPose,
-                    frame.data_timestamp- self.time_start,
-                    custom_std_devs) # Standard deviations
+                custom_std_devs = tuple([0.01, 0.01, 0.02]) # TUNE SMALL NUMBERS MEAN MORE TRUST IN QuestNav
+                # print(frame.data_timestamp- self.time_start)
+                if newPose is not None:
+                    self.container.drivetrain.reset_pose(newPose)
+                # self.container.drivetrain.add_vision_measurement(
+                #     newPose,
+                #     frame.data_timestamp- self.time_start,
+                #     custom_std_devs) # Standard deviations
         
     def resetPoseBasedOnVision(self):
         vision_est = self.container._vision_est.get_estimated_robot_pose()

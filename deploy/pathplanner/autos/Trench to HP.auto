@@ -13,12 +13,6 @@
                 "data": {
                   "pathName": "Trench to HP"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake In"
-                }
               }
             ]
           }
@@ -74,7 +68,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 5.0
+                  "waitTime": 3.0
                 }
               },
               {
