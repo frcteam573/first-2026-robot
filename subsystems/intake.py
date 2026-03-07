@@ -64,13 +64,13 @@ class Intake(commands2.SubsystemBase):
         self.m_intakeExtension.set(0)    
 
     def intakeExtOut(self):
-        if self.m_intakeExtension.get_position().value_as_double > config.Intake.MaxRot:
+        if self.m_intakeExtension.get_position().value_as_double < config.Intake.MaxRot:
             self.m_intakeExtension.set(0.5)
         else:
             self.m_intakeExtension.set(0)
 
     def intakeExtIn(self):
-        if self.m_intakeExtension.get_position().value_as_double < config.Intake.MinRot:
+        if self.m_intakeExtension.get_position().value_as_double > config.Intake.MinRot:
             self.m_intakeExtension.set(-0.5)
         else:
             self.m_intakeExtension.set(0)

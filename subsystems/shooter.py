@@ -305,6 +305,9 @@ class Shooter(commands2.SubsystemBase):
             # hoodAngle = self.m_hoodMotor1.get_position().value_as_double/config.Shooter.hoodRotationsToAngle
             hopperSpeed = self.m_hopperMotor.get_velocity().value_as_double
 
+            current_6v = wpilib.RobotController.getCurrent6V()
+            SmartDashboard.putNumber("Shooter / 6V Current", current_6v)
+
             SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed", shooterWheelSpeed)
             SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed 2", shooterWheelSpeed2)
 

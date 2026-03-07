@@ -22,21 +22,29 @@ class Shoot(commands2.Command):
         self.app = app
         self.addRequirements(app)
         self.shootOut = shootOut
+        self.hoodattimer = 0
         
     def initialize(self) -> None:
-        self.hoodatlimit = False
-        pass
+        self.hoodattimer = 0
+
 
     def execute(self) -> None:
         wheelSpeed, hoodAngle = self.app.calcTarget(config.RobotPoseConfig.pose, utils.utils.getTargetPose(config.RobotPoseConfig.pose))
         # wheelSpeed = SmartDashboard.getNumber("Shooter / TEST Wheel Speed", 0)
         self.app.setShooterSpeed(wheelSpeed)
+        print('Hodd Timer', self.hoodattimer)
+        if self.hoodattimer < 35:
+            self.app.setHoodAngle(hoodAngle)
+        else:
 
-        self.app.setHoodAngle(hoodAngle)
+            self.app.hoodOff()
+
+        self.hoodattimer = self.hoodattimer + 1
+
+        
 
         # MAYBE WE TRY THIS TO PREVENT HOOD DAMAGE
-        # current_6v = wpilib.RobotController.getCurrent6V()
-        # SmartDashboard.putNumber("Shooter / 6V Current", current_6v)
+        
         # if current_6v > 5.5:
         #     self.hoodatlimit = True
         
@@ -131,13 +139,22 @@ class hoodReset(commands2.Command):
 
         self.app = app
         self.addRequirements(app)
+        self.hoodattimer = 0
         
     def initialize(self) -> None:
+        self.hoodattimer = 0
         pass
 
     def execute(self) -> None:
-        self.app.setHoodAngle(False)
-        print('hood')
+
+        if self.hoodattimer < 40:
+            self.app.setHoodAngle(False)
+        else:
+
+            self.app.hoodOff()
+
+        self.hoodattimer = self.hoodattimer + 1
+
 
     def end(self, interrupted=False) -> None:
         self.app.hoodOff()

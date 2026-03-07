@@ -91,7 +91,7 @@ class Intake:
     Deployed = False
     deploy_threshold = 0.05 # The distance in rotations when the intake should be considered deployed and the climber should not be allowed to move
     MinRot = 0
-    MaxRot = -52 # The max rotation of the intake extension, this should be set to the value where the intake is fully extended
+    MaxRot = 37 # The max rotation of the intake extension, this should be set to the value where the intake is fully extended
 
     cfg = configs.TalonFXConfiguration()
      # Configure gear ratio
