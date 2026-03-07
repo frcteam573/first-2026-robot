@@ -24,6 +24,7 @@ import questnav.commands_pb2 as commands_pb2
 #import commands_pb2
 import questnav.geometry3d_pb2 as geometry3d_pb2
 #import geometry3d_pb2
+from wpilib import SmartDashboard
 
 
 @dataclass
@@ -325,6 +326,8 @@ class QuestNav:
             True if Quest is connected and sending data, False otherwise
         """
         current_time = time.time()
+        if (current_time - self._last_frame_timestamp) > .1: #only logs number if the questnav is delayed, for debugging purposes.
+            SmartDashboard.putNumber("Questnav Overrun", current_time - self._last_frame_timestamp)
         return (current_time - self._last_frame_timestamp) < 0.1  # 100ms timeout
     
     def get_frame_count(self) -> Optional[int]:

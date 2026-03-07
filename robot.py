@@ -90,7 +90,7 @@ class MyRobot(commands2.TimedCommandRobot):
 
         #For TESTING
         SmartDashboard.putNumber("Shooter / TEST Wheel Speed", 0)
-
+        self.logDelay = 0
 
         # if wpilib.RobotBase.isSimulation(): #Only run is in SIM
         #     self.simulationInit()
@@ -133,12 +133,19 @@ class MyRobot(commands2.TimedCommandRobot):
         
         # # subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
         # # subsystems.Shooter.getMotors(self=Robot.shooter)
-        subsystems.Shooter.getShooterInfo(self.container.shooter)
-        subsystems.Intake.getIntakeInfo(self.container.intake)
-        # # subsystems.Climber.getClimberInfo(self.container.climber)
-        # #Deployed values
-        SmartDashboard.putBoolean("Deploy State / Intake Deployed", config.Intake.Deployed)
-        SmartDashboard.putBoolean("Deploy State / Climber Deployed", config.Climber.Deployed)
+
+        if self.logDelay == 3:
+            subsystems.Shooter.getShooterInfo(self.container.shooter)
+            subsystems.Intake.getIntakeInfo(self.container.intake)
+            # # subsystems.Climber.getClimberInfo(self.container.climber)
+            # #Deployed values
+            SmartDashboard.putBoolean("Deploy State / Intake Deployed", config.Intake.Deployed)
+            SmartDashboard.putBoolean("Deploy State / Climber Deployed", config.Climber.Deployed)
+            self.logDelay = 0
+        else:
+            self.logDelay += 1
+
+
         commands2.CommandScheduler.getInstance().run()
 
     def disabledInit(self) -> None:
