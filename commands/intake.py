@@ -112,19 +112,19 @@ class intakegeneral(commands2.Command):
 
         if Keymap.Intake.testextin.getAsBoolean():
             self.app.intakeExtIn()
-        elif Keymap.Intake.testextout.getAsBoolean() or self.autolower:
-            self.app.intakeExtOut()
         elif Keymap.Shooter.shoot.getAsBoolean() or self.autoJiggle:
-            if self.jiggleTimer > 50 and self.jiggleTimer < 75:
+            if self.jiggleTimer > 10 and self.jiggleTimer < 35:
                 self.app.intakeExtIn()
-            elif self.jiggleTimer >= 75 and self.jiggleTimer < 80:
+            elif self.jiggleTimer >= 35 and self.jiggleTimer < 40:
                 self.app.intakeExtOut()
-            elif self.jiggleTimer >=80:
+            elif self.jiggleTimer >=40:
                 self.app.stopIntakeExtension()
                 self.jiggleTimer = 0
             else:
                 self.app.stopIntakeExtension()
             self.jiggleTimer += 1
+        elif Keymap.Intake.testextout.getAsBoolean() or self.autolower:
+            self.app.intakeExtOut()
         else:
             self.app.stopIntakeExtension()
                 
