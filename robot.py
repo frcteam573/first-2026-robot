@@ -5,6 +5,8 @@
 # the WPILib BSD license file in the root directory of this project.
 #
 
+from calendar import c
+
 import wpilib
 import commands2
 import typing
@@ -142,6 +144,10 @@ class MyRobot(commands2.TimedCommandRobot):
             SmartDashboard.putBoolean("Deploy State / Intake Deployed", config.Intake.Deployed)
             SmartDashboard.putBoolean("Deploy State / Climber Deployed", config.Climber.Deployed)
             self.logDelay = 0
+            robotToOculus = config.RobotPoseConfig.pose.relativeTo(self.questnav_field.getRobotPose())
+            oculusErrorDistance = ((robotToOculus.X()**2 + robotToOculus.Y()**2)**0.5)
+            
+            SmartDashboard.putBoolean("Robot/Oculus Aligned ", oculusErrorDistance >= 1)
         else:
             self.logDelay += 1
 
