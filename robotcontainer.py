@@ -88,8 +88,10 @@ class RobotContainer:
         NamedCommands.registerCommand("Intake In", commands.intake.intakegeneral(self.intake, intakeIn=1,autolower=True))
         NamedCommands.registerCommand("Shooter Prep", commands.shooter.Shoot(self.shooter))
         NamedCommands.registerCommand("Shoot Out", commands.shooter.Shoot(self.shooter, shootOut=True))
+        NamedCommands.registerCommand("Intake Jiggle", commands.intake.intakegeneral(self.intake, intakeIn=1, autolower=True, autoJiggle=True))
 
         NamedCommands.registerCommand("AlignDT", self.alignDT(drivetrain=self.drivetrain))
+        NamedCommands.registerCommand("Hood Reset", commands.shooter.hoodReset(self.shooter))
         
         # # NamedCommands.registerCommand("Climber Extend", commands.climber.extendClimber(Robot.climber))
         # NamedCommands.registerCommand("climbUp", commands.elevator.setPosition(self._elevator,position=10))

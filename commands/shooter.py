@@ -32,7 +32,7 @@ class Shoot(commands2.Command):
         wheelSpeed, hoodAngle = self.app.calcTarget(config.RobotPoseConfig.pose, utils.utils.getTargetPose(config.RobotPoseConfig.pose))
         # wheelSpeed = SmartDashboard.getNumber("Shooter / TEST Wheel Speed", 0)
         self.app.setShooterSpeed(wheelSpeed)
-        print('Hodd Timer', self.hoodattimer)
+        # print('Hodd Timer', self.hoodattimer)
         if self.hoodattimer < 35:
             self.app.setHoodAngle(hoodAngle)
         else:

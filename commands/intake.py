@@ -1,3 +1,4 @@
+from enum import auto
 import typing
 import commands2
 import wpilib
@@ -85,7 +86,9 @@ class intakegeneral(commands2.Command):
         self, 
         app: Intake,
         intakeIn: int = 1,
-        autolower: bool = False
+        autolower: bool = False,
+        autoJiggle: bool = False
+
     ) -> None:
         super().__init__()
 
@@ -93,9 +96,11 @@ class intakegeneral(commands2.Command):
         self.addRequirements(app)
         self.intakeIn = intakeIn
         self.autolower = autolower
+        self.autoJiggle = autoJiggle
+        
         
     def initialize(self) -> None:
-        pass
+        self.jiggleTimer = 0
 
     def execute(self) -> None:
         if self.intakeIn == 1:
@@ -109,6 +114,17 @@ class intakegeneral(commands2.Command):
             self.app.intakeExtIn()
         elif Keymap.Intake.testextout.getAsBoolean() or self.autolower:
             self.app.intakeExtOut()
+        elif Keymap.Shooter.shoot.getAsBoolean() or self.autoJiggle:
+            if self.jiggleTimer > 50 and self.jiggleTimer < 75:
+                self.app.intakeExtIn()
+            elif self.jiggleTimer >= 75 and self.jiggleTimer < 80:
+                self.app.intakeExtOut()
+            elif self.jiggleTimer >=80:
+                self.app.stopIntakeExtension()
+                self.jiggleTimer = 0
+            else:
+                self.app.stopIntakeExtension()
+            self.jiggleTimer += 1
         else:
             self.app.stopIntakeExtension()
                 
