@@ -2,7 +2,9 @@
   "robotWidth": 0.762,
   "robotLength": 0.609,
   "holonomicMode": true,
-  "pathFolders": [],
+  "pathFolders": [
+    "tyler test 3-14"
+  ],
   "autoFolders": [],
   "defaultMaxVel": 2.75,
   "defaultMaxAccel": 2.75,

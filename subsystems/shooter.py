@@ -252,7 +252,7 @@ class Shooter(commands2.SubsystemBase):
         Distance = (Distance/.0254) # convert to inches
 
         if config.inZone:
-            if Distance > 71:
+            if Distance > 60:
                 Angle = True
                 shooterWheelSpeed = ((.625 * Distance) + 6.4583)
             else:

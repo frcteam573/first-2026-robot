@@ -30,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "HP Trench to center"
+                  "pathName": "mcdonalds"
                 }
               },
               {
@@ -49,7 +49,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "2 -HP Trench to Center 2"
+                  "pathName": "2 mcdonald tyler copy - HP Trench to Center 2"
                 }
               },
               {
@@ -124,7 +124,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "HP Trench to Center 3"
+                  "pathName": "3 tyler copy - HP Trench to Center 3"
                 }
               },
               {
@@ -143,100 +143,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "HP to score"
+                  "pathName": "4 tyler copy - HP to climb"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "Intake In"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 1.0
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AlignDT"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shooter Prep"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 2.5
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shoot Out"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AlignDT"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake In"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 1.5
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shoot Out"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AlignDT"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake Jiggle"
                 }
               }
             ]
