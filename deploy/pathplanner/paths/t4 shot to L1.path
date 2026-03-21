@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.502,
-        "y": 4.372
+        "x": 1.8932247271229916,
+        "y": 4.920653698728829
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8574822565862865,
-        "y": 5.469058047228599
+        "x": 2.0903019583990914,
+        "y": 5.074473609379391
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "tylerTest123"
     },
     {
       "anchor": {
@@ -20,28 +20,28 @@
         "y": 4.95706
       },
       "prevControl": {
-        "x": 1.0915479104899097,
-        "y": 5.398011772784928
+        "x": 1.1910463303742977,
+        "y": 5.178494525778297
       },
       "nextControl": {
-        "x": 1.046736012323776,
-        "y": 4.203910200247237
+        "x": 0.9589536696257024,
+        "y": 4.7356254742217025
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.075,
-        "y": 4.529
+        "x": 1.064476493373248,
+        "y": 4.5634414830096395
       },
       "prevControl": {
-        "x": 1.1112944325233225,
-        "y": 5.145527933512166
+        "x": 1.1025186193647813,
+        "y": 4.810530124290546
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "climb1"
     }
   ],
   "rotationTargets": [
@@ -69,7 +69,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -9.4
+    "rotation": -17.65639702256686
   },
   "useDefaultConstraints": true
 }

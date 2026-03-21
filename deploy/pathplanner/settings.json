@@ -2,8 +2,12 @@
   "robotWidth": 0.762,
   "robotLength": 0.609,
   "holonomicMode": true,
-  "pathFolders": [],
-  "autoFolders": [],
+  "pathFolders": [
+    "tyler test 3-14"
+  ],
+  "autoFolders": [
+    "saturday 3-21 tyler"
+  ],
   "defaultMaxVel": 2.75,
   "defaultMaxAccel": 2.75,
   "defaultMaxAngVel": 540.0,
