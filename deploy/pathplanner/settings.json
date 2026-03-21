@@ -5,7 +5,9 @@
   "pathFolders": [
     "tyler test 3-14"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "saturday 3-21 tyler"
+  ],
   "defaultMaxVel": 2.75,
   "defaultMaxAccel": 2.75,
   "defaultMaxAngVel": 540.0,

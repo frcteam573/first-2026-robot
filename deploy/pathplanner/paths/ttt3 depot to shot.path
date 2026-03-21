@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.399861668492282,
-        "y": 5.498104307984659
+        "x": 0.560246443167344,
+        "y": 5.955
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.181994553549079,
-        "y": 5.6207171956691315
+        "x": 0.8422882303190694,
+        "y": 5.960730645710635
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "depotPickup"
     },
     {
       "anchor": {
@@ -20,36 +20,31 @@
         "y": 5.955
       },
       "prevControl": {
-        "x": 1.5985058690067413,
-        "y": 5.944647580915225
+        "x": 1.0987260148291984,
+        "y": 5.953310528351667
       },
       "nextControl": {
-        "x": 1.0989347432634966,
-        "y": 5.965352419084775
+        "x": 1.9127846674042792,
+        "y": 5.958811970030279
       },
       "isLocked": false,
       "linkedName": "almostDepotPickup"
     },
     {
       "anchor": {
-        "x": 0.560246443167344,
-        "y": 5.955
+        "x": 1.621,
+        "y": 4.029004
       },
       "prevControl": {
-        "x": 0.8532848765511595,
-        "y": 5.971445912457043
+        "x": 1.6360372927858493,
+        "y": 4.278551349867059
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "depotPickup"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.9684210526315792,
-      "rotationDegrees": 0.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -62,7 +57,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 0.0
   },
   "reversed": false,

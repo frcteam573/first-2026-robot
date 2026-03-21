@@ -3,50 +3,34 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.399861668492282,
-        "y": 5.498104307984659
+        "x": 2.4,
+        "y": 2.502
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.181994553549079,
-        "y": 5.6207171956691315
+        "x": 0.5373925849671382,
+        "y": 0.7202832265180925
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "shootPos433245"
     },
     {
       "anchor": {
-        "x": 1.348720306135119,
-        "y": 5.955
+        "x": 0.5126215895610919,
+        "y": 0.6619928825622776
       },
       "prevControl": {
-        "x": 1.5985058690067413,
-        "y": 5.944647580915225
-      },
-      "nextControl": {
-        "x": 1.0989347432634966,
-        "y": 5.965352419084775
-      },
-      "isLocked": false,
-      "linkedName": "almostDepotPickup"
-    },
-    {
-      "anchor": {
-        "x": 0.560246443167344,
-        "y": 5.955
-      },
-      "prevControl": {
-        "x": 0.8532848765511595,
-        "y": 5.971445912457043
+        "x": 0.7317864566718095,
+        "y": 0.7822707318294703
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "depotPickup"
+      "linkedName": "HP_station"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.9684210526315792,
+      "waypointRelativePos": 0.5,
       "rotationDegrees": 0.0
     }
   ],
@@ -69,7 +53,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 33.572
   },
   "useDefaultConstraints": true
 }

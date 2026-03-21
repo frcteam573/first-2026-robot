@@ -3,50 +3,50 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.399861668492282,
-        "y": 5.498104307984659
+        "x": 1.6644892339093502,
+        "y": 1.8289013238403764
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.181994553549079,
-        "y": 5.6207171956691315
+        "x": 1.2902549204203746,
+        "y": 2.0963107249370534
+      },
+      "isLocked": false,
+      "linkedName": "shootPos647"
+    },
+    {
+      "anchor": {
+        "x": 1.074,
+        "y": 2.5942583900071736
+      },
+      "prevControl": {
+        "x": 1.0682758907730543,
+        "y": 2.3415702168685737
+      },
+      "nextControl": {
+        "x": 1.0796617619375717,
+        "y": 2.844194270688124
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.348720306135119,
-        "y": 5.955
+        "x": 1.0742035407205106,
+        "y": 2.9282197991580916
       },
       "prevControl": {
-        "x": 1.5985058690067413,
-        "y": 5.944647580915225
-      },
-      "nextControl": {
-        "x": 1.0989347432634966,
-        "y": 5.965352419084775
-      },
-      "isLocked": false,
-      "linkedName": "almostDepotPickup"
-    },
-    {
-      "anchor": {
-        "x": 0.560246443167344,
-        "y": 5.955
-      },
-      "prevControl": {
-        "x": 0.8532848765511595,
-        "y": 5.971445912457043
+        "x": 1.0733063701979024,
+        "y": 2.678221408993168
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "depotPickup"
+      "linkedName": "climb2"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.9684210526315792,
+      "waypointRelativePos": 0.8105263157894718,
       "rotationDegrees": 0.0
     }
   ],
@@ -69,7 +69,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 36.645649164620295
   },
   "useDefaultConstraints": true
 }
