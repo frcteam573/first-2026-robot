@@ -3,50 +3,50 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.502,
-        "y": 4.372
+        "x": 2.3199187597401107,
+        "y": 5.618998829887542
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.113630413870514,
-        "y": 5.0059440644329225
+        "x": 2.07262852080312,
+        "y": 5.655707653438374
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "shootPos1"
     },
     {
       "anchor": {
-        "x": 1.6523631814561144,
-        "y": 5.9409926723383775
+        "x": 1.4400797353811563,
+        "y": 5.941290826225959
       },
       "prevControl": {
-        "x": 1.9022696994496997,
-        "y": 5.93415657225706
+        "x": 1.6900731972494039,
+        "y": 5.939482782219948
       },
       "nextControl": {
-        "x": 1.4024566634625295,
-        "y": 5.947828772419695
+        "x": 1.190086273512906,
+        "y": 5.94309887023197
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "almost intake from depot"
     },
     {
       "anchor": {
-        "x": 0.6756646787264373,
-        "y": 5.9409926723383775
+        "x": 0.6542626702640684,
+        "y": 5.941290826225959
       },
       "prevControl": {
-        "x": 0.9393105057590581,
-        "y": 5.93757075429134
+        "x": 0.9042123784359832,
+        "y": 5.94630514420297
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "intake from depot"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.0245614035087787,
+      "waypointRelativePos": 1.007017543859646,
       "rotationDegrees": 0.0
     }
   ],
@@ -69,7 +69,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -9.411000000000001
+    "rotation": -35.80898595557979
   },
   "useDefaultConstraints": true
 }
