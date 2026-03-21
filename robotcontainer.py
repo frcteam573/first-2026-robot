@@ -23,7 +23,6 @@ from phoenix6 import hardware, controls, configs, StatusCode
 import config
 from ntcore import NetworkTableInstance
 import subsystems
-import commands.elevator
 import commands.climber
 import commands.drivetrain
 import commands.shooter
@@ -32,18 +31,17 @@ import commands.intake
 import constants
 import subsystems.command_swerve_drivetrain
 import utils.utils as utilities
+from oi.keymap import Controllers, Keymap
 
 
 class Robot:
     # Defines all subsystems used in the robot, these are used to access the subsystems in commands and other files.
     # elevator = subsystems.Elevator()
     # climber = subsystems.Climber()
-    pass
-
     # shooter = subsystems.Shooter()
-    # MotorStatus = subsystems.MotorStatus()
-
+    # # # MotorStatus = subsystems.MotorStatus()
     # intake = subsystems.Intake()
+    pass
 
 class RobotContainer:
     """
@@ -81,27 +79,28 @@ class RobotContainer:
 
         self.drivetrain = TunerConstants.create_drivetrain()
         # self._elevator = subsystems.Elevator()
-        # self._climber = subsystems.Climber()
+        # self.climber = subsystems.Climber()
+        self.shooter = subsystems.Shooter()
+        self.intake = subsystems.Intake()
         
         #Name Commands for Autos these must be done before building the autobuilder
 
-        # NamedCommands.registerCommand("Raise Elevator", commands.elevator.setPosition(self._elevator,position=10))
-        # NamedCommands.registerCommand("Lower Elevator", commands.elevator.setPosition(self._elevator,position=0))
-        # NamedCommands.registerCommand("Intake In", commands.intake.IntakeIn(Robot.intake))
-        # NamedCommands.registerCommand("Intake Out", commands.intake.IntakeOut(Robot.intake))
-        # NamedCommands.registerCommand("Intake Retract", commands.intake.IntakeRetract(Robot.intake))
-        # # NamedCommands.registerCommand("Climber Extend", commands.climber.extendClimber(Robot.climber))
-        # NamedCommands.registerCommand("Shoot Prep", commands.shooter.Shoot(Robot.shooter))
-        # NamedCommands.registerCommand("Shoot Out", commands.shooter.Shoot(Robot.shooter, shootOut=True))
-        
+        NamedCommands.registerCommand("Intake In", commands.intake.intakegeneral(self.intake, intakeIn=1,autolower=True))
+        NamedCommands.registerCommand("Shooter Prep", commands.shooter.Shoot(self.shooter))
+        NamedCommands.registerCommand("Shoot Out", commands.shooter.Shoot(self.shooter, shootOut=True))
+        NamedCommands.registerCommand("Intake Jiggle", commands.intake.intakegeneral(self.intake, intakeIn=1, autolower=True, autoJiggle=True))
 
+        NamedCommands.registerCommand("AlignDT", self.alignDT(drivetrain=self.drivetrain))
+        NamedCommands.registerCommand("Hood Reset", commands.shooter.hoodReset(self.shooter))
+        
+        # # NamedCommands.registerCommand("Climber Extend", commands.climber.extendClimber(Robot.climber))
         # NamedCommands.registerCommand("climbUp", commands.elevator.setPosition(self._elevator,position=10))
         # NamedCommands.registerCommand("climbDown", commands.elevator.setPosition(self._elevator,position=0))
 
         # Auto builder
         try:
-            self._auto_chooser = AutoBuilder.buildAutoChooser("test auton")
-            SmartDashboard.putData("Choreo", self._auto_chooser)
+            self._auto_chooser = AutoBuilder.buildAutoChooser("Trench to HP")
+            SmartDashboard.putData("Auto Chooser", self._auto_chooser)
         except Exception as e:
             print(f"Error building auto chooser: {e}")
 
@@ -109,6 +108,22 @@ class RobotContainer:
 
         # Configure the button bindings
         self.configureButtonBindings()
+
+    def alignDT(self, drivetrain) -> commands2.Command:
+        return self.drivetrain.apply_request(
+                lambda: (
+                    self._drive.with_velocity_x(
+                        0
+                    )  # Drive forward with negative Y (forward)
+                    .with_velocity_y(
+                        0
+                    )  # Drive left with negative X (left)
+                    .with_rotational_rate(
+                        subsystems.CommandSwerveDrivetrain.calculate_relative_angle(self=self.drivetrain, robotPose=config.RobotPoseConfig.pose, targetPose=utilities.getTargetPose(config.RobotPoseConfig.pose)) * self._max_angular_rate 
+                    )  # Drive counterclockwise with negative X (left)
+                )
+            )
+
 
     def configureButtonBindings(self) -> None:
         """
@@ -124,13 +139,13 @@ class RobotContainer:
             self.drivetrain.apply_request(
                 lambda: (
                     self._drive.with_velocity_x(
-                        -self._joystick.getLeftY() * self._max_speed * .7
+                        -self._joystick.getLeftY() * self._max_speed * .5
                     )  # Drive forward with negative Y (forward)
                     .with_velocity_y(
-                        -self._joystick.getLeftX() * self._max_speed * .7
+                        -self._joystick.getLeftX() * self._max_speed * .5
                     )  # Drive left with negative X (left)
                     .with_rotational_rate(
-                        -self._joystick.getRightX() * self._max_angular_rate 
+                        -self._joystick.getRightX() * self._max_angular_rate *.75
                     )  # Drive counterclockwise with negative X (left)
                 )
             )
@@ -145,13 +160,13 @@ class RobotContainer:
         self._joystick.y().whileTrue(self.drivetrain.apply_request(
                 lambda: (
                     self._drive.with_velocity_x(
-                        -self._joystick.getLeftY() * self._max_speed
+                        -self._joystick.getLeftY() * self._max_speed * .3
                     )  # Drive forward with negative Y (forward)
                     .with_velocity_y(
-                        -self._joystick.getLeftX() * self._max_speed
+                        -self._joystick.getLeftX() * self._max_speed *.3
                     )  # Drive left with negative X (left)
                     .with_rotational_rate(
-                        subsystems.CommandSwerveDrivetrain.calculate_relative_angle(self=self.drivetrain, robotPose=config.RobotPoseConfig.pose, targetPose=utilities.getTargetPose(config.RobotPoseConfig.pose))
+                        subsystems.CommandSwerveDrivetrain.calculate_relative_angle(self=self.drivetrain, robotPose=config.RobotPoseConfig.pose, targetPose=utilities.getTargetPose(config.RobotPoseConfig.pose)) * self._max_angular_rate 
                     )  # Drive counterclockwise with negative X (left)
                 )
             )) 
@@ -205,6 +220,31 @@ class RobotContainer:
         self.drivetrain.register_telemetry(
             lambda state: self._logger.telemeterize(state)
         )
+
+        #Appendage Controls
+        # Keymap.Shooter.setupShooter.whileTrue(commands.shooter.testHoodUP(self.shooter))
+        # Keymap.Shooter.shoot.whileTrue(commands.shooter.testHoodDown(self.shooter))
+        commands2.button.Trigger(lambda: Keymap.Shooter.hopperMotorReverse.value > 0.5).whileTrue(commands.shooter.revHopper(self.shooter))
+        Keymap.Shooter.hoodReset.whileTrue(commands.shooter.hoodReset(self.shooter))
+        Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(self.shooter))
+        # Keymap.Shooter.hopperMotorReverse.whileTrue(commands.shooter.revHopper(self.shooter))
+        # Keymap.Intake.intakeIn.whileTrue(commands.intake.IntakeIn(self.intake))
+        # Keymap.Intake.intakeOut.whileTrue(commands.intake.IntakeOut(self.intake))
+        # Keymap.Intake.intakeRetract.whileTrue(commands.intake.IntakeRetract(self.intake))
+
+        Keymap.Intake.testroller.whileTrue(commands.intake.intakegeneral(self.intake,1))
+        commands2.button.Trigger(lambda: Keymap.Intake.rollerbackwards.value > 0.5).whileTrue(commands.intake.intakegeneral(self.intake,0))
+        Keymap.Intake.testextin.whileTrue(commands.intake.testIntakeExtensionIn(self.intake))
+        Keymap.Intake.testextout.whileTrue(commands.intake.testIntakeExtensionOut(self.intake))
+
+
+
+
+        # commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.extendclimber(self.climber))
+        # commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.retractclimber(self.climber))
+
+        # commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, position = config.Climber.climberSetPos))
+        # commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, 0))
 
     def getAutonomousCommand(self) -> commands2.Command:
         """Use this to pass the autonomous command to the main {@link Robot} class.

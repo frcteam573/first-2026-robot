@@ -10,6 +10,7 @@ from wpimath.controller import PIDController
 import math
 
 LedCounter = 0
+inZone = True
 
 class PrimaryLocalization(Enum):
     ODO_Only = 0
@@ -24,7 +25,10 @@ class Shooter:
     hoodRotationsToAngle = 6   ## number of rotations per degree in angle of hood ## NEEDS TO BE CHANGED 
     wheelSpeedShooterTolerance = 10 ##### +- tolerance value in RPS ### change number    
     hoodAngleTolerance = 12 ## change number
-
+    hoodSensorZero1 = 1.1 ## doesnt matter
+    hoodSensorZero2 = 1.1 ## doesnt matter
+    fullHoodOffset1 = 2.58-3.01
+    fullHoodOffset2 = 3.31-2.95
 
 # ------------ Elevator Settings -----------------
 class Elevator:
@@ -55,6 +59,7 @@ class Elevator:
 class Climber:
     MinLength = inches_to_meters(30) # Elevator height all the way down.
     Rot_to_Dist = 5*0.0254 # Number of Rotations to go 1 m
+    deploy_threshold = 1 # The distance in rotations when the climber should be considered deployed and the intake should not be allowed to move
     cfg = configs.TalonFXConfiguration()
      # Configure gear ratio
     fdb = cfg.feedback
@@ -77,15 +82,21 @@ class Climber:
     
     climberMode = False
     climberSetPos = 10
+
+    Deployed = False
+
 # ------------ Intake Settings -----------------
 class Intake:
-    MinLength = inches_to_meters(0) # Intake height all the way down.
-    MaxLength = inches_to_meters(10) # Intake height all the way up.
-    Rot_to_Dist = 5*0.0254 # Number of Rotations to go 1 m
+    
+    Deployed = False
+    deploy_threshold = 0.05 # The distance in rotations when the intake should be considered deployed and the climber should not be allowed to move
+    MinRot = 0
+    MaxRot = 37 # The max rotation of the intake extension, this should be set to the value where the intake is fully extended
+
     cfg = configs.TalonFXConfiguration()
      # Configure gear ratio
     fdb = cfg.feedback
-    fdb.sensor_to_mechanism_ratio = 1 # 12.8 rotor rotations per mechanism rotation
+    fdb.sensor_to_mechanism_ratio = 1 #
 
     # Configure Motion Magic
     mm = cfg.motion_magic
@@ -95,12 +106,14 @@ class Intake:
     mm.motion_magic_jerk = 100
 
     slot0 = cfg.slot0
-    slot0.k_s = 0.25 # Add 0.25 V output to overcome static friction
-    slot0.k_v = 0.12 # A velocity target of 1 rps results in 0.12 V output
-    slot0.k_a = 0.01 # An acceleration of 1 rps/s requires 0.01 V output
-    slot0.k_p = 10 # A position error of 0.2 rotations results in 12 V output
+    slot0.k_s = 0 # Add 0.25 V output to overcome static friction
+    slot0.k_v = 999999731779099 # A velocity target of 1 rps results in 0.12 V output
+    slot0.k_a = 0.00999999977648 # An acceleration of 1 rps/s requires 0.01 V output
+    slot0.k_p = 1 # A position error of 0.2 rotations results in 12 V output
     slot0.k_i = 0 # No output for integrated error
-    slot0.k_d = 0.5 # A velocity error of 1 rps results in 0.5 V output
+    slot0.k_d = 0 # A velocity error of 1 rps results in 0.5 V output
+
+
 
 
 
@@ -134,9 +147,10 @@ class DrivebasedAngleAlign:
     allowable_errorY = 0.1
     allowable_errorR = 5  # degrees
     
-    p = 10
+    p = .75
     i = 0
     d = 0
+    max_output = .8
     alignmentPID = PIDController(p, i, d)
     angleTolerance = math.radians(10)
     distanceTolerance = 10 # meters

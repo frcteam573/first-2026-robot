@@ -5,6 +5,8 @@
 # the WPILib BSD license file in the root directory of this project.
 #
 
+from calendar import c
+
 import wpilib
 import commands2
 import typing
@@ -17,15 +19,15 @@ from vision.vision_estimator import VisionEstimator
 from telemetry import Telemetry
 
 from config import Cameras, Elevator
-from wpimath.geometry import Pose2d, Rotation2d, Pose3d
+from wpimath.geometry import Pose2d, Rotation2d, Pose3d, Translation3d, Rotation3d,Quaternion
 
-import oi.oi
+# import oi.oi
 import subsystems
 import config, constants
 import ntcore
 from questnav.questnav import QuestNav
 
-from wpilib import DataLogManager, DriverStation
+from wpilib import DataLogManager, DriverStation, SmartDashboard
 import utils.utils as utilities
 
 
@@ -54,7 +56,7 @@ class MyRobot(commands2.TimedCommandRobot):
 
     photonVisionMethod = config.PhotonVisionSetting.REAL_CAMERA
 
-    localizationMethod = config.PrimaryLocalization.VISION
+    localizationMethod = config.PrimaryLocalization.QUESTNAV
 
     def robotInit(self) -> None:
         """
@@ -67,22 +69,33 @@ class MyRobot(commands2.TimedCommandRobot):
         self.container = RobotContainer()
 
         #Setting default pose
-        self.container.drivetrain.reset_pose(Pose2d(2,2,Rotation2d(0)))
+        self.container.drivetrain.reset_pose(Pose2d(0,0,Rotation2d(0)))
 
         self.questnav = QuestNav()  #Initialize QuestNav
+        
 
         #Initialize the items to send vision and questnav pose to dashboard
         self.questnav_field = wpilib.Field2d()
         self.photonvision_field = wpilib.Field2d()
         wpilib.SmartDashboard.putData('QuestNavField',self.questnav_field)
         wpilib.SmartDashboard.putData('PhotonVisionField',self.photonvision_field)
+        self.resetQuestNavPoseforAutoStart()
+        self.container.shooter.hoodOff()
+        self.container.shooter.hoodInitialize() #Initialize hood sensor zero values
+        
 
-        oi.oi.OI.map_controls() #Map controls
+        # oi.oi.OI.map_controls() #Map controls
         self.time_start = time.time()
         self.wpilogger = DataLogManager.start()
         DriverStation.startDataLog(DataLogManager.getLog())
-        if wpilib.RobotBase.isSimulation(): #Only run is in SIM
-            self.simulationInit()
+        self.container.intake.intakeMotorOff()
+
+        #For TESTING
+        SmartDashboard.putNumber("Shooter / TEST Wheel Speed", 0)
+        self.logDelay = 0
+
+        # if wpilib.RobotBase.isSimulation(): #Only run is in SIM
+        #     self.simulationInit()
 
     def robotPeriodic(self) -> None:
         """This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -99,44 +112,61 @@ class MyRobot(commands2.TimedCommandRobot):
         #Run camera update and questNav update every loop
 
         utilities.calculate_alignment(robotPose=config.RobotPoseConfig.pose, targetPose=utilities.getTargetPose(config.RobotPoseConfig.pose))
-
-        self.vision_est = self.container._vision_est.get_estimated_robot_pose()
-        if self.vision_est:
-            self.photonvision_field.setRobotPose(self.vision_est[0])
-        else:
-            self.photonvision_pose = None
-
-        #Run QuestNav command every loop
+        config.inZone = self.container.shooter.inScoringZone(config.RobotPoseConfig.pose)
+        # #Run QuestNav command every loop
         self.questnav.command_periodic()
 
-        #Only run during SIM
-        if wpilib.RobotBase.isSimulation():
+        # #Only run during SIM
+        # if wpilib.RobotBase.isSimulation():
             
-            self.simulationPeriodic()
+        #     self.simulationPeriodic()
 
-        #Add measurements to localization based on primary source
+        # Add measurements to localization based on primary source
         if self.localizationMethod == config.PrimaryLocalization.VISION:
             self.add_vision_to_pose_esitmate()
         elif self.localizationMethod == config.PrimaryLocalization.QUESTNAV:
+            
             self.add_questnav_to_pose_estimate()
+            pass
         else:
             pass
 
         config.RobotPoseConfig.pose = self.container.drivetrain.get_state().pose
         
-        # subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
-        # subsystems.Shooter.getMotors(self=Robot.shooter)
-        # subsystems.Shooter.getShooterInfo(Robot.shooter)
-        # subsystems.Intake.getIntakeInfo(Robot.intake)
+        # # subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
+        # # subsystems.Shooter.getMotors(self=Robot.shooter)
+
+        if self.logDelay == 3:
+            subsystems.Shooter.getShooterInfo(self.container.shooter)
+            subsystems.Intake.getIntakeInfo(self.container.intake)
+            # # subsystems.Climber.getClimberInfo(self.container.climber)
+            # #Deployed values
+            SmartDashboard.putBoolean("Deploy State / Intake Deployed", config.Intake.Deployed)
+            SmartDashboard.putBoolean("Deploy State / Climber Deployed", config.Climber.Deployed)
+            self.logDelay = 0
+            robotToOculus = config.RobotPoseConfig.pose.relativeTo(self.questnav_field.getRobotPose())
+            oculusErrorDistance = ((robotToOculus.X()**2 + robotToOculus.Y()**2)**0.5)
+            
+            SmartDashboard.putBoolean("Robot/Oculus Aligned ", oculusErrorDistance >= 1)
+        else:
+            self.logDelay += 1
+
+
         commands2.CommandScheduler.getInstance().run()
-        # subsystems.Climber.getClimberDSOutput(Robot.climber)
+
     def disabledInit(self) -> None:
         """This function is called once each time the robot enters Disabled mode."""
         pass
 
     def disabledPeriodic(self) -> None:
         """This function is called periodically when disabled"""
-        self.resetPoseBasedOnVision() # Resets pose of QuestNav and robot based on Vision Only
+        
+        # self.vision_est = self.container._vision_est.get_estimated_robot_pose()
+        # if self.vision_est:
+        #     self.photonvision_field.setRobotPose(self.vision_est[0])
+        # else:
+        #     self.photonvision_pose = None
+        # self.resetPoseBasedOnVision() # Resets pose of QuestNav and robot based on Vision Only
 
     def autonomousInit(self) -> None:
         """This autonomous runs the autonomous command selected by your RobotContainer class."""
@@ -147,10 +177,10 @@ class MyRobot(commands2.TimedCommandRobot):
         if self.autonomousCommand:
             self.autonomousCommand.schedule()
 
+        self.resetQuestNavPoseforAutoStart()
+
     def autonomousPeriodic(self) -> None:
         """This function is called periodically during autonomous"""
-
-
         pass
 
     def teleopInit(self) -> None:
@@ -162,12 +192,13 @@ class MyRobot(commands2.TimedCommandRobot):
         config.Alliance.blue_team = wpilib.DriverStation.Alliance.kBlue == self.alliance #Set a config value to this color used in automous selection
         if self.autonomousCommand:
             self.autonomousCommand.cancel()
+        # self.resetQuestNavPoseforAutoStart() #TEMP
 
     def teleopPeriodic(self) -> None:
         """This function is called periodically during operator control"""
         if commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerDRIVER.START) and commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerDRIVER.SELECT):
          config.Climber.climberMode = True
-         print("TEST")
+        #  print("TEST")
                  
         pass
 
@@ -193,36 +224,42 @@ class MyRobot(commands2.TimedCommandRobot):
 
     def add_questnav_to_pose_estimate(self):
         # get new pose frames
+        # print("QuestNav1")
         frames = self.questnav.get_all_unread_pose_frames()
         for frame in frames:
-            if self.questnav.is_connected(): #and self.questnav.is_tracking():
+            # print("QuestNav2")
+            if self.questnav.is_connected():# and self.questnav.is_tracking():
                 # Add to pose estimator
                 #print("QN Pose:",frame.quest_pose_3d.toPose2d())
-                
+                # print("QuestNav3")
                 #print("Timestamp:", frame.data_timestamp - self.time_start)
-                self.questnav_field.setRobotPose(frame.quest_pose_3d.toPose2d())
-                self.container.drivetrain.add_vision_measurement(
-                    frame.quest_pose_3d.toPose2d(),
-                    frame.data_timestamp- self.time_start) # Standard deviations
-
-        # current_pose = self.container.drivetrain.get_state().pose
-        # vision_ests = self.container._vision_est.get_estimated_robot_pose(current_pose)
-        # if vision_ests is not None:
-        #     for vision_est in vision_ests:
-        #         esti_pose = vision_est[0]
-        #         if esti_pose is not None:
-        #             relative = esti_pose.relativeTo(current_pose)
-        #             dist = (relative.X()**2 + relative.Y()**2)**(1/2)
-        #             if  dist < 0.5:
-        #                 self.container.drivetrain.add_vision_measurement(vision_est[0],vision_est[1],vision_est[2])
-        #                 #print(vision_est[2])
-        #                 #print("Odo Pose: ", self.container.drivetrain.get_state().pose, "Vision Est Pose", vision_est[0])
+                quest_pose = frame.quest_pose_3d.toPose2d()
+                newPose = quest_pose.transformBy((constants.Robot_To_Quest2D.inverse()))
+                self.questnav_field.setRobotPose(newPose)
+                # print("QuestNavPose", newPose)
+                custom_std_devs = tuple([0.01, 0.01, 0.02]) # TUNE SMALL NUMBERS MEAN MORE TRUST IN QuestNav
+                # print(frame.data_timestamp- self.time_start)
+                if newPose is not None:
+                    self.container.drivetrain.reset_pose(newPose)
+                # self.container.drivetrain.add_vision_measurement(
+                #     newPose,
+                #     frame.data_timestamp- self.time_start,
+                #     custom_std_devs) # Standard deviations
         
     def resetPoseBasedOnVision(self):
         vision_est = self.container._vision_est.get_estimated_robot_pose()
         if vision_est is not None:
             self.container.drivetrain.reset_pose(vision_est[0])
             self.questnav.set_pose(Pose3d(vision_est[0]))
+            self.questnav_field.setRobotPose(Pose3d(vision_est[0]).toPose2d())
+
+    def resetQuestNavPoseforAutoStart(self):
+        current_pose = self.container.drivetrain.get_state().pose
+
+        questNavpose = current_pose.transformBy(constants.Robot_To_Quest2D)
+
+        self.questnav.set_pose(Pose3d(questNavpose))
+        # self.questnav_field.setRobotPose(questNavpose)
 
 
 

@@ -1,9 +1,14 @@
+from math import fabs
+
 import commands2
+
 import config
 import phoenix6
-from phoenix6 import hardware, controls, configs, StatusCode
+from phoenix6 import hardware, controls, configs, StatusCode,CANBus
 from wpilib import DriverStation, SmartDashboard, Mechanism2d, MechanismLigament2d
 from ntcore import NetworkTableInstance
+
+
 
 class Climber(commands2.SubsystemBase):
 
@@ -18,75 +23,57 @@ class Climber(commands2.SubsystemBase):
         SmartDashboard.putData("Mech2d", self.mech)
 
         # climber Magic Motion and talon definition
-        self.talonfx = self.getTalon()
+        # self.talonfx = self.getTalon()
+        self.m_climber = hardware.TalonFX(54,CANBus("573CANivore"))
         self.motion_magic = controls.MotionMagicVoltage(0)
         
         # Retry config apply up to 5 times, report if failure
         status: StatusCode = StatusCode.STATUS_CODE_NOT_INITIALIZED
         for _ in range(0, 5):
-            status = self.talonfx.configurator.apply(config.Climber.cfg)
+            status = self.m_climber.configurator.apply(config.Climber.cfg)
             if status.is_ok():
                 break
         if not status.is_ok():
             print(f"Could not apply configs, error code: {status.name}")
 
-        #Output for logging
-        self._inst = NetworkTableInstance.getDefault()
-        self._table = self._inst.getTable("Climber")
-        self._field1_pub = self._table.getDoubleTopic("Current Position").publish()
-        self._field2_pub = self._table.getDoubleTopic("Current Setpoint").publish()
-
-    def setClimberPosition(self,position:float):
-        if config.Climber.climberMode:
-            print("Set climber Position")
-            self.talonfx.set_control(self.motion_magic.with_position(position).with_slot(0))
-            SmartDashboard.putNumber("Climber / Actual Set Climber Position", position)
-
+    def setClimberPosition(self, position:float):
+        if config.Climber.climberMode and config.Intake.Deployed == False:
+            # print("Set climber Position")
+            if self.m_climber.get_position().value_as_double > config.Climber.deploy_threshold:
+                config.Climber.Deployed = True
+            else:
+                config.Climber.Deployed = False
+            self.m_climber.set_control(self.motion_magic.with_position(position).with_slot(0))
 
     def stopClimber(self):
-        self.talonfx.set(0)
+        self.m_climber.set(0)
 
     def extendClimber(self):
         
-        if config.Climber.climberMode:
-         self.talonfx.set(1.0)
+        if config.Climber.climberMode and config.Climber.Deployed == False:
+         self.m_climber.set(0.5)
 
     def retractClimber(self):
         
         if config.Climber.climberMode:
-         self.talonfx.set(-1.0)
-    
+         self.m_climber.set(-0.5)
 
+    def retractClimberToCertainPos(self, position: float):
+        if config.Climber.climberMode:
+            self.m_climber.set(position)
+    
     def getClimberPosition(self):
-        return self.talonfx.get_position().value_as_double
+        # print(self.m_climber)
+        return self.m_climber.get_position().value_as_double
 
-    def getTalon(self) -> hardware.TalonFX:
-        self.talonfx = hardware.TalonFX(64)
-        return self.talonfx
-    
-    def getClimberDSOutput(self):
-        current_rot = self.talonfx.get_position().value_as_double
-        self._field1_pub.set(current_rot)
-        self._field2_pub.set(self.motion_magic.position)
-        self.Climber.setLength(config.Climber.MinLength + (current_rot * config.Climber.Rot_to_Dist))
-        
-    def getMotorOutputStatus(self):
-        climberPosition = self.talonfx.get_position().value_as_double
-        SmartDashboard.putNumber("Climber / Actual climber Position", climberPosition)
-        return self.talonfx.get_motor_output_status(True)
-       
-        
-       # current_rot = self.talonfx.get_position().value_as_double
-       # self._field1_pub.set(current_rot)
-       # self._field2_pub.set(self.motion_magic.position)
-       # self.Climber.setLength(config.Climber.MinLength + (current_rot * config.Climber.Rot_to_Dist))
+    def getClimberInfo(self):
+        try:
 
-       # shooterWheelSpeed = self.m_shooter1.get_velocity().value_as_double
-       # shooterWheelSpeed2 = self.m_shooter2.get_velocity().value_as_double
-       # hoodAngle = self.m_hoodMotor1.get_position().value_as_double/config.Shooter.hoodRotationsToAngle
-       # hopperSpeed = self.m_hopperMotor.get_velocity().value_as_double
-       # SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed", shooterWheelSpeed)
-       # SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed 2", shooterWheelSpeed2)
-       # SmartDashboard.putNumber("Shooter / Actual Hood Angle", hoodAngle)
-       # SmartDashboard.putNumber("Shooter / Actual Hopper Speed", hopperSpeed)
-       # SmartDashboard.putNumber("Shooter / Hopper Motor Command", self.m_hopperMotor.get())
+            current_rot = self.m_climber.get_position().value_as_double
+            SmartDashboard.putNumber("Climber / Actual Position", current_rot)
+            SmartDashboard.putNumber("Climber / Setpoint Position", self.motion_magic.position)
+            SmartDashboard.putBoolean("Deploy State / Climber Deployed", config.Climber.Deployed)
+            SmartDashboard.putBoolean("Climber / Climber Mode", config.Climber.climberMode)
+            self.Climber.setLength(config.Climber.MinLength + (current_rot * config.Climber.Rot_to_Dist))
+        except:
+            pass

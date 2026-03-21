@@ -149,10 +149,16 @@ class CommandSwerveDrivetrain(Subsystem, TunerSwerveDrivetrain):
         self._has_applied_operator_perspective = False
         """Keep track if we've ever applied the operator perspective before or not"""
 
+        # Swerve request to apply during path following
+        self._apply_robot_speeds = swerve.requests.ApplyRobotSpeeds()
+
         # Swerve requests to apply during SysId characterization
         self._translation_characterization = swerve.requests.SysIdSwerveTranslation()
         self._steer_characterization = swerve.requests.SysIdSwerveSteerGains()
         self._rotation_characterization = swerve.requests.SysIdSwerveRotation()
+
+        self.rAnglePID = PIDController(config.DrivebasedAngleAlign.p, config.DrivebasedAngleAlign.i, config.DrivebasedAngleAlign.d)
+        self.rAnglePID.setSetpoint(0)
 
         self._sys_id_routine_translation = SysIdRoutine(
             SysIdRoutine.Config(
@@ -235,6 +241,34 @@ class CommandSwerveDrivetrain(Subsystem, TunerSwerveDrivetrain):
         if utils.is_simulation():
             self._start_sim_thread()
 
+        self._configure_auto_builder()
+
+    def _configure_auto_builder(self):
+        config = RobotConfig.fromGUISettings()
+        AutoBuilder.configure(
+            lambda: self.get_state().pose,   # Supplier of current robot pose
+            self.reset_pose,                 # Consumer for seeding pose against auto
+            lambda: self.get_state().speeds, # Supplier of current robot speeds
+            # Consumer of ChassisSpeeds and feedforwards to drive the robot
+            lambda speeds, feedforwards: self.set_control(
+                self._apply_robot_speeds
+                .with_speeds(speeds)
+                .with_wheel_force_feedforwards_x(feedforwards.robotRelativeForcesXNewtons)
+                .with_wheel_force_feedforwards_y(feedforwards.robotRelativeForcesYNewtons)
+            ),
+            PPHolonomicDriveController(
+                # PID constants for translation
+                PIDConstants(10.0, 0.0, 0.0),
+                # PID constants for rotation
+                PIDConstants(7.0, 0.0, 0.0)
+            ),
+            config,
+            # Assume the path needs to be flipped for Red vs Blue, this is normally the case
+            lambda: DriverStation.getAlliance() == DriverStation.Alliance.kRed,
+            self # Subsystem for requirements
+        )
+
+
     def apply_request(
         self, request: Callable[[], swerve.requests.SwerveRequest]
     ) -> Command:
@@ -247,6 +281,7 @@ class CommandSwerveDrivetrain(Subsystem, TunerSwerveDrivetrain):
         :rtype: Command
         """
         return self.run(lambda: self.set_control(request()))
+
 
     def sys_id_quasistatic(self, direction: SysIdRoutine.Direction) -> Command:
         """
@@ -356,7 +391,7 @@ class CommandSwerveDrivetrain(Subsystem, TunerSwerveDrivetrain):
 
         # Prevent the path from being flipped if the coordinates are already correct
         path.preventFlipping = True
-        print(path)
+        # print(path)
 
         return path
     
@@ -365,12 +400,14 @@ class CommandSwerveDrivetrain(Subsystem, TunerSwerveDrivetrain):
 
         finalRelativeAngle = math.atan2(targetRelative.Y(), targetRelative.X())
             
-        output = self.TylersPID.calculate(finalRelativeAngle, 0.0)
+        output = self.rAnglePID.calculate(finalRelativeAngle, 0.0)
         
         # if abs(finalRelativeAngle) <= (config.DrivebasedAngleAlign.angleTolerance):
         #     SmartDashboard.putBoolean("Aligned", True)
         # else:
         #     SmartDashboard.putBoolean("Aligned", False)
+
+        output = utilities.remap(output,config.DrivebasedAngleAlign.max_output)
 
         return -output
 
@@ -380,38 +417,5 @@ class CommandSwerveDrivetrain(Subsystem, TunerSwerveDrivetrain):
         for module in self.modules:
             motors.append(module.drive_motor)
             motors.append(module.steer_motor)
-            print(motors)
+            # print(motors)
         return motors
-    
-    def alignToHoop(self):
-        self._max_speed = (
-            1
-            # TunerConstants.speed_at_12_volts
-        )  # speed_at_12_volts desired top speed
-        self._max_angular_rate = rotationsToRadians(
-            0.75
-        )  # 3/4 of a rotation per second max angular velocity
-        
-
-        self._drive = (
-            swerve.requests.FieldCentric()
-            # .with_deadband(self._max_speed * 0.1)
-            # .with_rotational_deadband(
-            #     self._max_angular_rate * 0.1
-            # )  # Add a 10% deadband
-            .with_drive_request_type(
-                swerve.SwerveModule.DriveRequestType.OPEN_LOOP_VOLTAGE
-            )  # Use open-loop control for drive motors
-        )
-        self._joystick = CommandXboxController(0)
-        lambda: (
-                    self._drive.with_velocity_x(
-                        0
-                    )  # Drive forward with negative Y (forward)
-                    .with_velocity_y(
-                        0
-                    )  # Drive left with negative X (left)
-                    .with_rotational_rate(
-                        self.calculate_relative_angle(self=self, robotPose=config.RobotPoseConfig.pose, targetPose=utilities.getTargetPose(config.RobotPoseConfig.pose))
-                    )  # Drive counterclockwise with negative X (left)
-                )
