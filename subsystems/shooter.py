@@ -6,7 +6,7 @@ import wpilib
 import config
 import utils.utils as Tyler
 from phoenix6 import CANBus, hardware, controls, configs, StatusCode, signals
-from wpilib import AnalogInput, DriverStation, Servo, SmartDashboard, Mechanism2d, MechanismLigament2d
+from wpilib import AnalogInput, DriverStation, SmartDashboard, Mechanism2d, MechanismLigament2d
 from ntcore import NetworkTableInstance
 from wpimath.geometry import Rotation2d, Pose2d
 import constants
@@ -22,8 +22,10 @@ class Shooter(commands2.SubsystemBase):
         self.m_shooter2 = hardware.TalonFX(61,CANBus("573CANivore"))  
         self.m_hoodMotor1 = hardware.TalonFX(55,CANBus("573CANivore"))
 
-        self.s_hoodServo1 = wpilib.Servo(6) #change to match id of servo
-        self.s_hoodServo2 = wpilib.Servo(7) #change to match id of servo
+        
+
+        # self.s_hoodServo1 = wpilib.Servo(6) #change to match id of servo
+        # self.s_hoodServo2 = wpilib.Servo(7) #change to match id of servo
         self.s_hoodSensor1 = AnalogInput(2)
         self.s_hoodSensor2 = AnalogInput(3)
 
@@ -110,8 +112,10 @@ class Shooter(commands2.SubsystemBase):
         #     print(f"Could not apply configs, error code: {status.name}")
 
         # Make sure we start at 0
-        self.s_hoodServo1.setPosition(0)
-        self.s_hoodServo2.setPosition(0)
+        
+        self.m_hoodMotor1.set(0)
+        #self.s_hoodServo1.setPosition(0)
+        #self.s_hoodServo2.setPosition(0)
 
     def setShooterSpeed(self, speed: float) -> bool:
         '''Sets the speed of the shooter motors based on supplied speed.
@@ -141,12 +145,14 @@ class Shooter(commands2.SubsystemBase):
         config.Shooter.hoodSensorZero2 = self.s_hoodSensor2.getAverageVoltage()
 
     def hoodOff(self):
-        self.s_hoodServo1.set(0.5)
-        self.s_hoodServo2.set(0.5)
+        #self.s_hoodServo1.set(0.5)
+        #self.s_hoodServo2.set(0.5)
+        self.m_HoodMotor1.set(0.5)
 
     def hoodreset(self):
-        self.s_hoodServo1.set(0)
-        self.s_hoodServo2.set(1)
+        #self.s_hoodServo1.set(0)
+        #self.s_hoodServo2.set(1)
+        self.m_HoodMotor1.set(0)
 
     def setHoodAngle(self, hoodExtended: bool) -> bool:
         '''Sets the angle of hood.
@@ -156,11 +162,13 @@ class Shooter(commands2.SubsystemBase):
         '''
 
         if hoodExtended:
-            self.s_hoodServo1.set(1)
-            self.s_hoodServo2.set(0)
+            #self.s_hoodServo1.set(1)
+            #self.s_hoodServo2.set(0)
+            self.m_HoodMotor1.set(1)
         else:
-            self.s_hoodServo1.set(0)
-            self.s_hoodServo2.set(1)
+            #self.s_hoodServo1.set(0)
+            #self.s_hoodServo2.set(1)
+            self.m_HoodMotor1.set(0)
 
         
 
@@ -311,12 +319,12 @@ class Shooter(commands2.SubsystemBase):
             SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed", shooterWheelSpeed)
             SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed 2", shooterWheelSpeed2)
 
-            SmartDashboard.putNumber("Shooter / Commanded Hood Angle 1", self.s_hoodServo1.getPosition())
+            SmartDashboard.putNumber("Shooter / Commanded Hood Angle 1", self.m_hoodMotor1.getPosition())
             SmartDashboard.putNumber("Shooter / Actual Hood Angle 1", hood1Angle)
             
-            SmartDashboard.putNumber("Shooter / Commanded Hood Angle 2", self.s_hoodServo2.getPosition())
-            SmartDashboard.putNumber("Shooter / Actual Hood Angle 2", hood2Angle)
-            SmartDashboard.putNumber("Shooter / Actual Hopper Speed", hopperSpeed)
-            SmartDashboard.putNumber("Shooter / Hopper Motor Command", self.m_hopperMotor.get())
+            #SmartDashboard.putNumber("Shooter / Commanded Hood Angle 2", self.s_hoodServo2.getPosition())
+            #SmartDashboard.putNumber("Shooter / Actual Hood Angle 2", hood2Angle)
+            #SmartDashboard.putNumber("Shooter / Actual Hopper Speed", hopperSpeed)
+            #SmartDashboard.putNumber("Shooter / Hopper Motor Command", self.m_hopperMotor.get())
         except:
             pass
