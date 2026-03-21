@@ -152,10 +152,10 @@ class Shooter(commands2.SubsystemBase):
         else:
            return False
 
-        # return True
+
+              # return True
 
         # return Tyler.max_min_check(float(self.s_hoodServ.getPosition()) / config.Shooter.hoodRotationsToAngle, angle, config.Shooter.hoodAngleTolerance)
-
 
 
 
@@ -250,3 +250,13 @@ class Shooter(commands2.SubsystemBase):
         SmartDashboard.putNumber("Shooter / Actual Hood Angle 2", hood2Angle)
         SmartDashboard.putNumber("Shooter / Actual Hopper Speed", hopperSpeed)
         SmartDashboard.putNumber("Shooter / Hopper Motor Command", self.m_hopperMotor.get())
+
+
+    def autoTrackHoodAngle(self):
+        '''Automatically adjusts hood angle based on whether the robot is in the scoring zone or not.'''
+        robotPosition = config.RobotPoseConfig.pose
+        if not self.inScoringZone(robotPosition):
+            self.setHoodAngle(config.Shooter.passingHoodAngle)
+        else:
+            #adjust the hood angle based on distance to target and rotation.
+            pass
