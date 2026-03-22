@@ -12,7 +12,7 @@
         "y": 5.97520098702282
       },
       "isLocked": false,
-      "linkedName": "k1"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -28,7 +28,7 @@
         "y": 4.551879753149553
       },
       "isLocked": false,
-      "linkedName": "almost climb L1"
+      "linkedName": "PreClimbLeft"
     },
     {
       "anchor": {
@@ -41,7 +41,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "climb L1"
+      "linkedName": null
     }
   ],
   "rotationTargets": [

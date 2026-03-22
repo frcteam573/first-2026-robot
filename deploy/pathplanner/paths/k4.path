@@ -8,11 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.4053474491489253,
+        "x": 0.40534744914892523,
         "y": 5.918026847692626
       },
       "isLocked": false,
-      "linkedName": "intake from depot"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -28,7 +28,7 @@
         "y": 5.8113239067808315
       },
       "isLocked": false,
-      "linkedName": "almost intake from depot"
+      "linkedName": null
     },
     {
       "anchor": {

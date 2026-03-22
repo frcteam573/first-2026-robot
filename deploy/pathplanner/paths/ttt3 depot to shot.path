@@ -8,11 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.8422882303190694,
+        "x": 0.8422882303190695,
         "y": 5.960730645710635
       },
       "isLocked": false,
-      "linkedName": "depotPickup"
+      "linkedName": "Depot"
     },
     {
       "anchor": {
@@ -28,7 +28,7 @@
         "y": 5.958811970030279
       },
       "isLocked": false,
-      "linkedName": "almostDepotPickup"
+      "linkedName": "PreDepot"
     },
     {
       "anchor": {

@@ -28,7 +28,7 @@
         "y": 5.965352419084775
       },
       "isLocked": false,
-      "linkedName": "almostDepotPickup"
+      "linkedName": "PreDepot"
     },
     {
       "anchor": {
@@ -41,7 +41,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "depotPickup"
+      "linkedName": "Depot"
     }
   ],
   "rotationTargets": [

@@ -4,15 +4,15 @@
     {
       "anchor": {
         "x": 3.816585897537636,
-        "y": 0.8095280229316801
+        "y": 0.7706260174825059
       },
       "prevControl": null,
       "nextControl": {
         "x": 2.5839961539478917,
-        "y": 0.7048741767778344
+        "y": 0.6659721713286602
       },
       "isLocked": false,
-      "linkedName": "bottomTrench"
+      "linkedName": "TrenchRight"
     },
     {
       "anchor": {

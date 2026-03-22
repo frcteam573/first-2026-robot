@@ -12,7 +12,7 @@
         "y": 0.7202832265180925
       },
       "isLocked": false,
-      "linkedName": "shootPos433245"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -25,15 +25,10 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "HP_station"
+      "linkedName": "HPStation"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": 0.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],

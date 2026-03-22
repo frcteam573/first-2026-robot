@@ -121,7 +121,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "d1"
+      "linkedName": null
     }
   ],
   "rotationTargets": [

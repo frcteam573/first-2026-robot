@@ -57,7 +57,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "climb2"
+      "linkedName": "ClimbRight"
     }
   ],
   "rotationTargets": [

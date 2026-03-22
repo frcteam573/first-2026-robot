@@ -3,53 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6644892339093502,
-        "y": 1.8289013238403764
+        "x": 3.816585897537636,
+        "y": 0.7706260174825059
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.2902549204203746,
-        "y": 2.0963107249370534
+        "x": 4.816585897537636,
+        "y": 0.7706260174825059
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.074,
-        "y": 2.5942583900071736
+        "x": 3.816585897537636,
+        "y": 7.286918842319639
       },
       "prevControl": {
-        "x": 1.0682758907730543,
-        "y": 2.3415702168685737
-      },
-      "nextControl": {
-        "x": 1.0796617619375717,
-        "y": 2.844194270688124
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 1.0742035407205106,
-        "y": 2.9282197991580916
-      },
-      "prevControl": {
-        "x": 1.0733063701979022,
-        "y": 2.678221408993168
+        "x": 4.816585897537636,
+        "y": 7.286918842319639
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "ClimbRight"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.8105263157894718,
-      "rotationDegrees": 0.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -69,7 +48,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 36.645649164620295
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

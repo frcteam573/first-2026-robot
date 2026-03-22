@@ -12,7 +12,7 @@
         "y": 5.93832864584132
       },
       "isLocked": false,
-      "linkedName": "intake from depot"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -28,7 +28,7 @@
         "y": 5.934862474811069
       },
       "isLocked": false,
-      "linkedName": "almost intake from depot"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -41,7 +41,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "shootPos1"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
