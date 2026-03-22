@@ -22,12 +22,20 @@ class Shooter(commands2.SubsystemBase):
         self.m_shooter2 = hardware.TalonFX(61,CANBus("573CANivore"))  
         self.m_hoodMotor1 = hardware.TalonFX(55,CANBus("573CANivore"))
 
+        #Set soft limits for hood motor
+        hoodcfg = configs.SoftwareLimitSwitchConfigs()
+        hoodcfg.forward_soft_limit_threshold = config.Shooter.hoodmaxRot
+        hoodcfg.reverse_soft_limit_threshold = config.Shooter.hoodminRot
+        hoodcfg.forward_soft_limit_enable = True
+        hoodcfg.reverse_soft_limit_enable = True
         
+        print("Applying hood configs...")
+        print("Hood Config Set Code:", self.m_hoodMotor1.configurator.apply(hoodcfg))
 
         # self.s_hoodServo1 = wpilib.Servo(6) #change to match id of servo
         # self.s_hoodServo2 = wpilib.Servo(7) #change to match id of servo
-        self.s_hoodSensor1 = AnalogInput(2)
-        self.s_hoodSensor2 = AnalogInput(3)
+        # self.s_hoodSensor1 = AnalogInput(2)
+        # self.s_hoodSensor2 = AnalogInput(3)
 
         self.m_hopperMotor = hardware.TalonFX(58,CANBus("573CANivore"))
         self.m_shooterFeedMotor = hardware.TalonFX(59,CANBus("573CANivore"))
@@ -79,11 +87,11 @@ class Shooter(commands2.SubsystemBase):
 
         # Be able to switch which control request to use based on a button press
         # Start at position 0, use slot 0
-        self.position_voltage = controls.VelocityVoltage(0).with_slot(0)
+        self.position_voltage = controls.PositionVoltage(0).with_slot(0)
         # Start at position 0, use slot 1
-        self.position_torque = controls.PositionTorqueCurrentFOC(0).with_slot(1)
+       
         # Keep a brake request so we can disable the motor
-        self.brake = controls.NeutralOut()
+        self.brake = controls.StaticBrake()
 
         cfg = configs.TalonFXConfiguration()
         cfg.slot0.k_p = 0.109999; # An error of 1 rotation results in 2.4 V output
@@ -94,13 +102,14 @@ class Shooter(commands2.SubsystemBase):
         # Peak output of 8 V
         cfg.voltage.peak_forward_voltage = 12
         cfg.voltage.peak_reverse_voltage = -12
+        
 
         cfg.slot1.k_p = 60; # An error of 1 rotation results in 60 A output
         cfg.slot1.k_i = 0; # No output for integrated error
         cfg.slot1.k_d = 6; # A velocity of 1 rps results in 6 A output
         # Peak output of 120 A
-        cfg.torque_current.peak_forward_torque_current = 120
-        cfg.torque_current.peak_reverse_torque_current = -120
+        cfg.torque_current.peak_forward_torque_current = 40
+        cfg.torque_current.peak_reverse_torque_current = -40
 
         # # Retry config apply up to 5 times, report if failure
         # status: StatusCode = StatusCode.STATUS_CODE_NOT_INITIALIZED
@@ -136,89 +145,28 @@ class Shooter(commands2.SubsystemBase):
         self.m_shooter1.set(0)
         SmartDashboard.putNumber("Shooter / Shooter Wheel Speed Command", 0)
 
-    def hoodVoltageToAngle(self, voltage) -> float:
-        '''Converts voltage from hood sensor to angle in degrees.'''
-        return 10*voltage - 40 # NEED TO BE CHANGED
-    
-    def hoodInitialize(self):
-        config.Shooter.hoodSensorZero1 = self.s_hoodSensor1.getAverageVoltage()
-        config.Shooter.hoodSensorZero2 = self.s_hoodSensor2.getAverageVoltage()
-
     def hoodOff(self):
-        #self.s_hoodServo1.set(0.5)
-        #self.s_hoodServo2.set(0.5)
-        self.m_HoodMotor1.set(0.5)
+        self.m_hoodMotor1.set(0)
+
+    def hoodUp(self):
+        self.m_hoodMotor1.set(.3)
+
+    def hoodDown(self):
+        self.m_hoodMotor1.set(-.3)
 
     def hoodreset(self):
-        #self.s_hoodServo1.set(0)
-        #self.s_hoodServo2.set(1)
-        self.m_HoodMotor1.set(0)
+        self.m_hoodMotor1.set_control(self.position_voltage.with_position(0))
+        SmartDashboard.putNumber("Shooter / Shooter Hood Angle Command", 0)
 
-    def setHoodAngle(self, hoodExtended: bool) -> bool:
-        '''Sets the angle of hood.
+    def setHoodAngle(self, angleIn: float) -> bool:
+        self.m_hoodMotor1.set_control(self.position_voltage.with_position(angleIn))
+        SmartDashboard.putNumber("Shooter / Shooter Hood Angle Command", angleIn)
+
+
+
+        # print("Shooter out Speed:", angleIn)
+        return Tyler.max_min_check(self.m_hoodMotor1.get_position().value_as_double, angleIn, config.Shooter.hoodAngleTolerance)
         
-        Args:
-            angle: The desired angle of the hood in degrees.
-        '''
-
-        if hoodExtended:
-            #self.s_hoodServo1.set(1)
-            #self.s_hoodServo2.set(0)
-            self.m_HoodMotor1.set(1)
-        else:
-            #self.s_hoodServo1.set(0)
-            #self.s_hoodServo2.set(1)
-            self.m_HoodMotor1.set(0)
-
-        
-
-
-
-        # setpoint1 = 0
-        # setpoint2 = 0
-
-        # if hoodExtended:
-        #     setpoint1 = config.Shooter.fullHoodOffset1 + config.Shooter.hoodSensorZero1
-        #     setpoint2 = -config.Shooter.fullHoodOffset2 + config.Shooter.hoodSensorZero2
-        # else:
-        #     setpoint1 = config.Shooter.hoodSensorZero1
-        #     setpoint2 = config.Shooter.hoodSensorZero2
-
-        # hood1Voltage = self.s_hoodSensor1.getAverageVoltage()
-        # hood2Voltage = self.s_hoodSensor2.getAverageVoltage()
-        # rail_curr = wpilib.RobotController.getCurrent6V()
-        # setpoint1InPosition = False
-        # setpoint2InPosition = False
-        # hood1_diff = setpoint1-hood1Voltage
-        # hood2_diff = setpoint2-hood2Voltage
-        # SmartDashboard.putNumber("Shooter / Rail Curr", rail_curr)
-        # SmartDashboard.putNumber("Shooter / Hood1 Diff", hood1_diff)
-        # SmartDashboard.putNumber("Shooter / Hood2 Diff", hood2_diff)
-        # SmartDashboard.putNumber("Shooter / Hood1 Zero", config.Shooter.hoodSensorZero1)
-        # SmartDashboard.putNumber("Shooter / Hood2 Zero", config.Shooter.hoodSensorZero2)
-        # if hood1_diff > 0.05:
-        #     self.s_hoodServo1.set(0)
-        #     self.s_hoodServo1.get
-        #     # print("HERE")
-        # elif hood1_diff < -0.05:
-        #     self.s_hoodServo1.set(1)
-        # else:
-        #     self.s_hoodServo1.set(0.5) # Set to 0.5 to hold position
-        #     setpoint1InPosition = True
-
-        # if hood2_diff > .05:
-        #     self.s_hoodServo2.set(1)
-        # elif hood2_diff< -.05:
-        #     self.s_hoodServo2.set(0)
-        # else:
-        #     self.s_hoodServo2.set(0.5) # Set to 0.5 to hold position
-        #     setpoint2InPosition = True   
-
-        return True
-        
-       
-
-
 
     def inScoringZone(self,pose: Pose2d) -> bool:
         '''changes hood angle when not in alliance's zone
@@ -259,20 +207,18 @@ class Shooter(commands2.SubsystemBase):
         SmartDashboard.putNumber("Shooter / Calculated Shooter Distance", Distance)
         Distance = (Distance/.0254) # convert to inches
 
+        shooterHoodAngle = 0 # Needs to be updated with actual formula, this is just a placeholder
+
         if config.inZone:
-            if Distance > 60:
-                Angle = True
-                shooterWheelSpeed = ((.625 * Distance) + 6.4583)
-            else:
-                shooterWheelSpeed = 60
-                Angle = False
+            shooterHoodAngle = 0 # needs to be updated with actual formula, this is just a placeholder
+            shooterWheelSpeed = ((.625 * Distance) + 6.4583) # Needs to be updated with new formula
         else:
-            Angle = True
-            shooterWheelSpeed = 65 
+            shooterHoodAngle = 0 # Hard code for max distance
+            shooterWheelSpeed = 65 # Need to update with new shooter distance formula
 
         SmartDashboard.putNumber("Shooter / Calculated Wheel Speed", shooterWheelSpeed)
-        SmartDashboard.putBoolean("Shooter / Calculated Angle", Angle)
-        return shooterWheelSpeed, Angle
+        SmartDashboard.putNumber("Shooter / Calculated Angle", shooterHoodAngle)
+        return shooterWheelSpeed, shooterHoodAngle
 
     def hopperMotorOff(self):
         self.m_hopperMotor.set(0)
@@ -308,23 +254,15 @@ class Shooter(commands2.SubsystemBase):
         try:
             shooterWheelSpeed = self.m_shooter1.get_velocity().value_as_double
             shooterWheelSpeed2 = self.m_shooter2.get_velocity().value_as_double
-            hood1Angle = self.s_hoodSensor1.getVoltage()
-            hood2Angle = self.s_hoodSensor2.getVoltage()
+            hoodAngle = self.m_hoodMotor1.get_position().value_as_double
             # hoodAngle = self.m_hoodMotor1.get_position().value_as_double/config.Shooter.hoodRotationsToAngle
             hopperSpeed = self.m_hopperMotor.get_velocity().value_as_double
-
-            current_6v = wpilib.RobotController.getCurrent6V()
-            SmartDashboard.putNumber("Shooter / 6V Current", current_6v)
 
             SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed", shooterWheelSpeed)
             SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed 2", shooterWheelSpeed2)
 
-            SmartDashboard.putNumber("Shooter / Commanded Hood Angle 1", self.m_hoodMotor1.getPosition())
-            SmartDashboard.putNumber("Shooter / Actual Hood Angle 1", hood1Angle)
+            SmartDashboard.putNumber("Shooter / Commanded Hood Angle", self.m_hoodMotor1.get_position().value_as_double)
+            SmartDashboard.putNumber("Shooter / Actual Hood Angle", hoodAngle)
             
-            #SmartDashboard.putNumber("Shooter / Commanded Hood Angle 2", self.s_hoodServo2.getPosition())
-            #SmartDashboard.putNumber("Shooter / Actual Hood Angle 2", hood2Angle)
-            #SmartDashboard.putNumber("Shooter / Actual Hopper Speed", hopperSpeed)
-            #SmartDashboard.putNumber("Shooter / Hopper Motor Command", self.m_hopperMotor.get())
         except:
             pass

@@ -37,12 +37,14 @@ class Keymap:
         shoot = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.B)
         hopperMotorReverse = JoystickAxis(Controllers.OPERATOR, controllerDRIVER.RT)
         hoodReset = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER,controllerOPERATOR.X)
-
-    class Intake:
+    
+        hoodUP = commands2.button.POVButton(Controllers.OPERATOR_CONTROLLER, 0)
+        hoodDown = commands2.button.POVButton(Controllers.OPERATOR_CONTROLLER, 180)
+        
         #intakeIn = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.LB)
         # intakeOut = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.X)
         # intakeRetract = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.B)  
-
+    class Intake:
         testroller = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.LB)  
         testextin = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.Y)
         testextout = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.A)

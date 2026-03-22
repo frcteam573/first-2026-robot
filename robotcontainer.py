@@ -79,9 +79,10 @@ class RobotContainer:
 
         self.drivetrain = TunerConstants.create_drivetrain()
         # self._elevator = subsystems.Elevator()
-        # self.climber = subsystems.Climber()
+        self.climber = subsystems.Climber()
         self.shooter = subsystems.Shooter()
         self.intake = subsystems.Intake()
+        self.led = subsystems.LED()
         
         #Name Commands for Autos these must be done before building the autobuilder
 
@@ -227,6 +228,10 @@ class RobotContainer:
         commands2.button.Trigger(lambda: Keymap.Shooter.hopperMotorReverse.value > 0.5).whileTrue(commands.shooter.revHopper(self.shooter))
         Keymap.Shooter.hoodReset.whileTrue(commands.shooter.hoodReset(self.shooter))
         Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(self.shooter))
+
+        Keymap.Shooter.hoodUP.whileTrue(commands.shooter.testHoodUP(self.shooter))
+        Keymap.Shooter.hoodDown.whileTrue(commands.shooter.testHoodDown(self.shooter))
+
         # Keymap.Shooter.hopperMotorReverse.whileTrue(commands.shooter.revHopper(self.shooter))
         # Keymap.Intake.intakeIn.whileTrue(commands.intake.IntakeIn(self.intake))
         # Keymap.Intake.intakeOut.whileTrue(commands.intake.IntakeOut(self.intake))

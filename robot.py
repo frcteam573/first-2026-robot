@@ -81,7 +81,6 @@ class MyRobot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData('PhotonVisionField',self.photonvision_field)
         self.resetQuestNavPoseforAutoStart()
         self.container.shooter.hoodOff()
-        self.container.shooter.hoodInitialize() #Initialize hood sensor zero values
         
 
         # oi.oi.OI.map_controls() #Map controls
@@ -116,6 +115,7 @@ class MyRobot(commands2.TimedCommandRobot):
         # #Run QuestNav command every loop
         self.questnav.command_periodic()
 
+        self.container.led.ModeManager() #Update LED mode based on conditions
         # #Only run during SIM
         # if wpilib.RobotBase.isSimulation():
             

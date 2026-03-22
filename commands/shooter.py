@@ -31,22 +31,9 @@ class Shoot(commands2.Command):
     def execute(self) -> None:
         wheelSpeed, hoodAngle = self.app.calcTarget(config.RobotPoseConfig.pose, utils.utils.getTargetPose(config.RobotPoseConfig.pose))
         # wheelSpeed = SmartDashboard.getNumber("Shooter / TEST Wheel Speed", 0)
-        self.app.setShooterSpeed(wheelSpeed)
-        # print('Hodd Timer', self.hoodattimer)
-        if self.hoodattimer < 35:
-            self.app.setHoodAngle(hoodAngle)
-        else:
-
-            self.app.hoodOff()
-
-        self.hoodattimer = self.hoodattimer + 1
-
         
-
-        # MAYBE WE TRY THIS TO PREVENT HOOD DAMAGE
-        
-        # if current_6v > 5.5:
-        #     self.hoodatlimit = True
+        SmartDashboard.putBoolean("Shooter / Hood at Position", self.app.setHoodAngle(hoodAngle))
+        SmartDashboard.putBoolean("Shooter / Wheel at Speed", self.app.setShooterSpeed(wheelSpeed))    
         
         if Keymap.Shooter.shoot.getAsBoolean() or self.shootOut:
             if wpilib.SmartDashboard.getBoolean("Aligned", False):
@@ -66,29 +53,6 @@ class Shoot(commands2.Command):
         SmartDashboard.putBoolean("Shooter / Hood at Position", False)
         SmartDashboard.putBoolean("Shooter / Wheel at Speed", False)
 
-class TestHood2(commands2.Command):
-    #This command used to run shooter motor
-    def __init__(
-        self, 
-        app: Shooter, 
-    ) -> None:
-        super().__init__()
-
-        self.app = app
-        self.addRequirements(app)
-        
-    def initialize(self) -> None:
-        print('INIT')
-        pass
-
-    def execute(self) -> None:
-        print("ext")
-        self.app.setHoodAngle(True)
-
-    def end(self, interrupted=False) -> None:
-
-        self.app.setHoodAngle(False)
-
 
 class testHoodDown(commands2.Command):
     def __init__(
@@ -104,8 +68,8 @@ class testHoodDown(commands2.Command):
         pass
 
     def execute(self) -> None:
-        self.app.setHoodAngle(False)
-        print('hood')
+        self.app.hoodDown()
+        print('hood down')
 
     def end(self, interrupted=False) -> None:
         self.app.hoodOff()
@@ -124,8 +88,8 @@ class testHoodUP(commands2.Command):
         pass
 
     def execute(self) -> None:
-        self.app.setHoodAngle(True)
-        print('hood')
+        self.app.hoodUp()
+        print('hood up')
 
     def end(self, interrupted=False) -> None:
         self.app.hoodOff()
@@ -147,13 +111,8 @@ class hoodReset(commands2.Command):
 
     def execute(self) -> None:
 
-        if self.hoodattimer < 40:
-            self.app.setHoodAngle(False)
-        else:
-
-            self.app.hoodOff()
-
-        self.hoodattimer = self.hoodattimer + 1
+        self.app.hoodreset()
+        print('hood reset')
 
 
     def end(self, interrupted=False) -> None:
