@@ -50,13 +50,13 @@ class Climber(commands2.SubsystemBase):
 
     def extendClimber(self):
         
-        if config.Climber.climberMode and config.Climber.Deployed == False:
-         self.m_climber.set(0.5)
+        #if config.Climber.climberMode and config.Climber.Deployed == False:
+        self.m_climber.set(1)
 
     def retractClimber(self):
         
-        if config.Climber.climberMode:
-         self.m_climber.set(-0.5)
+        # if config.Climber.climberMode:
+        self.m_climber.set(-1)
 
     def retractClimberToCertainPos(self, position: float):
         if config.Climber.climberMode:
