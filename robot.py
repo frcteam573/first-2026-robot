@@ -91,6 +91,7 @@ class MyRobot(commands2.TimedCommandRobot):
 
         #For TESTING
         SmartDashboard.putNumber("Shooter / TEST Wheel Speed", 0)
+        SmartDashboard.putNumber("Shooter / TEST Hood Pos", 0)
         self.logDelay = 0
 
         # if wpilib.RobotBase.isSimulation(): #Only run is in SIM

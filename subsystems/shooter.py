@@ -1,4 +1,5 @@
 from re import S
+from signal import Signals
 
 import commands2
 from numpy import double
@@ -29,6 +30,7 @@ class Shooter(commands2.SubsystemBase):
         hoodcfg.forward_soft_limit_enable = True
         hoodcfg.reverse_soft_limit_enable = True
         
+        
         print("Applying hood configs...")
         print("Hood Config Set Code:", self.m_hoodMotor1.configurator.apply(hoodcfg))
 
@@ -53,9 +55,9 @@ class Shooter(commands2.SubsystemBase):
         # Voltage-based velocity requires a velocity feed forward to account for the back-emf of the motor
         cfg.slot0.k_s = 0.1 # To account for friction, add 0.1 V of static feedforward
         cfg.slot0.k_v = 0.12 # Kraken X60 is a 500 kV motor, 500 rpm per V = 8.333 rps per V, 1/8.33 = 0.12 volts / rotation per second
-        cfg.slot0.k_p = 0.11 # An error of 1 rotation per second results in 2V output
+        cfg.slot0.k_p = 0.15 # An error of 1 rotation per second results in 2V output
         cfg.slot0.k_i = 0 # No output for integrated error
-        cfg.slot0.k_d = 0 # No output for error derivative
+        cfg.slot0.k_d = 0.02 # No output for error derivative
         # Peak output of 8 volts
         cfg.voltage.peak_forward_voltage = 8
         cfg.voltage.peak_reverse_voltage = -8
@@ -89,38 +91,38 @@ class Shooter(commands2.SubsystemBase):
         # Start at position 0, use slot 0
         self.position_voltage = controls.PositionVoltage(0).with_slot(0)
         # Start at position 0, use slot 1
+        self.m_hoodMotor1.setNeutralMode(neutralMode=signals.NeutralModeValue.BRAKE)
        
         # Keep a brake request so we can disable the motor
         self.brake = controls.StaticBrake()
 
-        cfg = configs.TalonFXConfiguration()
-        cfg.slot0.k_p = 0.109999; # An error of 1 rotation results in 2.4 V output
-        cfg.slot0.k_i = 0; # No output for integrated error
-        cfg.slot0.k_d = 0; # A velocity of 1 rps results in 0.1 V output
-        cfg.slot0.k_s = 0.0996
-        cfg.slot0.k_v = 0.1199
+        cfg1 = configs.TalonFXConfiguration()
+        cfg1.motor_output.inverted = signals.InvertedValue.CLOCKWISE_POSITIVE
+        
+        cfg1.slot0.k_p = 5; # An error of 1 rotation results in 2.4 V output
+        cfg1.slot0.k_i = 0; # No output for integrated error
+        cfg1.slot0.k_d = 0; # A velocity of 1 rps results in 0.1 V output
+        cfg1.slot0.k_s = 0.00
+        cfg1.slot0.k_v = 0.0
         # Peak output of 8 V
-        cfg.voltage.peak_forward_voltage = 12
-        cfg.voltage.peak_reverse_voltage = -12
+        cfg1.voltage.peak_forward_voltage = 8
+        cfg1.voltage.peak_reverse_voltage = -8
         
 
-        cfg.slot1.k_p = 60; # An error of 1 rotation results in 60 A output
-        cfg.slot1.k_i = 0; # No output for integrated error
-        cfg.slot1.k_d = 6; # A velocity of 1 rps results in 6 A output
+        cfg1.slot1.k_p = 60; # An error of 1 rotation results in 60 A output
+        cfg1.slot1.k_i = 0; # No output for integrated error
+        cfg1.slot1.k_d = 6; # A velocity of 1 rps results in 6 A output
         # Peak output of 120 A
-        cfg.torque_current.peak_forward_torque_current = 40
-        cfg.torque_current.peak_reverse_torque_current = -40
+        cfg1.torque_current.peak_forward_torque_current = 40
+        cfg1.torque_current.peak_reverse_torque_current = -40
 
-        # # Retry config apply up to 5 times, report if failure
-        # status: StatusCode = StatusCode.STATUS_CODE_NOT_INITIALIZED
-        # for _ in range(0, 5):
-        #     status = self.m_hoodMotor1.configurator.apply(cfg)
-        #     if status.is_ok():
-        #         break
-        # if not status.is_ok():
-        #     print(f"Could not apply configs, error code: {status.name}")
-
-        # Make sure we start at 0
+        status: StatusCode = StatusCode.STATUS_CODE_NOT_INITIALIZED
+        for _ in range(0, 5):
+            status = self.m_hoodMotor1.configurator.apply(cfg1)
+            if status.is_ok():
+                break
+        if not status.is_ok():
+            print(f"Could not apply configs, error code: {status.name}")
         
         self.m_hoodMotor1.set(0)
         #self.s_hoodServo1.setPosition(0)
@@ -149,18 +151,21 @@ class Shooter(commands2.SubsystemBase):
         self.m_hoodMotor1.set(0)
 
     def hoodUp(self):
-        self.m_hoodMotor1.set(.3)
+        self.m_hoodMotor1.set(.15)
 
     def hoodDown(self):
-        self.m_hoodMotor1.set(-.3)
+        self.m_hoodMotor1.set(-.15)
 
     def hoodreset(self):
         self.m_hoodMotor1.set_control(self.position_voltage.with_position(0))
         SmartDashboard.putNumber("Shooter / Shooter Hood Angle Command", 0)
 
     def setHoodAngle(self, angleIn: float) -> bool:
+        # print("Setting Hood to:", angleIn)
         self.m_hoodMotor1.set_control(self.position_voltage.with_position(angleIn))
+        SmartDashboard.putNumber("Shooter / Hood Output", self.m_hoodMotor1.get())
         SmartDashboard.putNumber("Shooter / Shooter Hood Angle Command", angleIn)
+        
 
 
 
@@ -261,7 +266,7 @@ class Shooter(commands2.SubsystemBase):
             SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed", shooterWheelSpeed)
             SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed 2", shooterWheelSpeed2)
 
-            SmartDashboard.putNumber("Shooter / Commanded Hood Angle", self.m_hoodMotor1.get_position().value_as_double)
+            # SmartDashboard.putNumber("Shooter / Commanded Hood Angle", self.m_hoodMotor1.get_position().value_as_double)
             SmartDashboard.putNumber("Shooter / Actual Hood Angle", hoodAngle)
             
         except:
