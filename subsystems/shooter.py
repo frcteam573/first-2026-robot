@@ -4,6 +4,7 @@ from signal import Signals
 import commands2
 from numpy import double
 import wpilib
+# from commands import shooter
 import config
 import utils.utils as Tyler
 from phoenix6 import CANBus, hardware, controls, configs, StatusCode, signals
@@ -209,17 +210,56 @@ class Shooter(commands2.SubsystemBase):
         # wheel speed, hood angle, 
         IntermediatePose = pose.relativeTo(goalPose)
         Distance = (IntermediatePose.X()**2 + IntermediatePose.Y()**2)**.5  #pythagoream theorum
-        SmartDashboard.putNumber("Shooter / Calculated Shooter Distance", Distance)
+        
         Distance = (Distance/.0254) # convert to inches
+        SmartDashboard.putNumber("Shooter / Calculated Shooter Distance", Distance)
 
         shooterHoodAngle = 0 # Needs to be updated with actual formula, this is just a placeholder
 
         if config.inZone:
             shooterHoodAngle = 0 # needs to be updated with actual formula, this is just a placeholder
-            shooterWheelSpeed = ((.625 * Distance) + 6.4583) # Needs to be updated with new formula
+            shooterWheelSpeed = 0
+
+            if Distance < 78.5:
+                shooterWheelSpeed = 47
+                shooterHoodAngle = (0.141818182 * Distance) - 4.652727273
+            elif Distance < 119:
+                shooterWheelSpeed = (0.44444444 * Distance) + 12.111111
+                shooterHoodAngle = (0.02617284 * Distance) + 4.425432099
+            elif Distance < 180.5:
+                shooterWheelSpeed = (0.162602 * Distance) + 45.65041
+                shooterHoodAngle = (0.036097561 * Distance) + 3.244390244
+            elif Distance < 207:
+                shooterWheelSpeed = 75
+                shooterHoodAngle = (0.064528302 * Distance) - 1.887358491
+            else:
+                shooterWheelSpeed = 75
+                shooterHoodAngle = 11.5
+
         else:
-            shooterHoodAngle = 0 # Hard code for max distance
-            shooterWheelSpeed = 65 # Need to update with new shooter distance formula
+            if Distance < 238:
+                shooterWheelSpeed = 55
+                shooterHoodAngle = 10.7
+            elif Distance < 267:
+                shooterWheelSpeed = 55
+                shooterHoodAngle = (0.087586 * Distance) - 10.1455
+            elif Distance < 319:
+                shooterWheelSpeed = (0.384615 * Distance) - 47
+                shooterHoodAngle = 13.24
+            else:
+                shooterWheelSpeed = 75
+                shooterHoodAngle = 13.24
+                
+
+        
+        if shooterWheelSpeed < 0:
+            shooterWheelSpeed = 0
+        if shooterHoodAngle < 0:
+            shooterHoodAngle = 0
+        if shooterHoodAngle > 13.5:
+            shooterHoodAngle = 13.5
+        if shooterWheelSpeed > 75:
+            shooterWheelSpeed = 75
 
         SmartDashboard.putNumber("Shooter / Calculated Wheel Speed", shooterWheelSpeed)
         SmartDashboard.putNumber("Shooter / Calculated Angle", shooterHoodAngle)

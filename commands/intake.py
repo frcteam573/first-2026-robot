@@ -3,6 +3,7 @@ import typing
 import commands2
 import wpilib
 
+from oi import keymap
 from oi.keymap import Keymap
 
 # from commands.wrist import Wrist
@@ -103,7 +104,16 @@ class intakegeneral(commands2.Command):
         self.jiggleTimer = 0
 
     def execute(self) -> None:
-        if self.intakeIn == 1:
+        if self.autoJiggle:
+            if self.jiggleTimer < 25:
+                self.app.intakeMotorIn()
+            elif self.jiggleTimer < 50:
+                self.app.intakeMotorOff()
+            elif self.jiggleTimer >= 50:
+                self.app.intakeMotorOff()
+                self.jiggleTimer = 0
+            self.jiggleTimer += 1
+        elif self.intakeIn == 1:
             self.app.intakeMotorIn()
         elif self.intakeIn == 0:
             self.app.intakeMotorOut()
@@ -112,17 +122,17 @@ class intakegeneral(commands2.Command):
 
         if Keymap.Intake.testextin.getAsBoolean():
             self.app.intakeExtIn()
-        elif Keymap.Shooter.shoot.getAsBoolean() or self.autoJiggle:
-            if self.jiggleTimer > 30 and self.jiggleTimer < 55:
-                self.app.intakeExtIn()
-            elif self.jiggleTimer >= 55 and self.jiggleTimer < 60:
-                self.app.intakeExtOut()
-            elif self.jiggleTimer >=60:
-                self.app.stopIntakeExtension()
-                self.jiggleTimer = 0
-            else:
-                self.app.stopIntakeExtension()
-            self.jiggleTimer += 1
+        # elif Keymap.Shooter.shoot.getAsBoolean() or self.autoJiggle:
+        #     if self.jiggleTimer > 30 and self.jiggleTimer < 55:
+        #         self.app.intakeExtIn()
+        #     elif self.jiggleTimer >= 55 and self.jiggleTimer < 60:
+        #         self.app.intakeExtOut()
+        #     elif self.jiggleTimer >=60:
+        #         self.app.stopIntakeExtension()
+        #         self.jiggleTimer = 0
+            # else:
+            #     self.app.stopIntakeExtension()
+            # self.jiggleTimer += 1
         elif Keymap.Intake.testextout.getAsBoolean() or self.autolower:
             self.app.intakeExtOut()
         else:

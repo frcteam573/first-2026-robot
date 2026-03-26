@@ -49,7 +49,7 @@ class Shoot(commands2.Command):
         
     def end(self, interrupted=False) -> None:
         self.app.shooterMotorOff()
-        self.app.hoodOff()
+        self.app.hoodreset()
         self.app.hopperMotorOff() 
         SmartDashboard.putBoolean("Shooter / Hood at Position", False)
         SmartDashboard.putBoolean("Shooter / Wheel at Speed", False)
