@@ -7,31 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Example Path"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Raise Elevator"
+            "pathName": "p1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Path2"
+            "pathName": "p2"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Intake In"
+            "pathName": "p3"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "tests",
+  "folder": null,
   "choreoAuto": false
 }

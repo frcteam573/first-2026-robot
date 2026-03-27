@@ -5,27 +5,27 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Raise Elevator"
+            "pathName": "k1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "ChoreoPath"
+            "pathName": "k2"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Lower Elevator"
+            "pathName": "k3.1"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "tests",
-  "choreoAuto": true
+  "folder": null,
+  "choreoAuto": false
 }

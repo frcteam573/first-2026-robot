@@ -3,41 +3,57 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.066867707558169,
-        "y": 4.5582692307692305
+        "x": 5.490858974358975,
+        "y": 2.534961538461539
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0668677075581696,
-        "y": 4.5582692307692305
+        "x": 6.490858974358977,
+        "y": 2.534961538461539
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.7453305097850276,
-        "y": 2.482735210742468
+        "x": 7.1769487179487195,
+        "y": 2.534961538461539
       },
       "prevControl": {
-        "x": 2.7250826930827388,
-        "y": 3.145027142942947
+        "x": 6.1769487179487195,
+        "y": 2.534961538461539
       },
       "nextControl": {
-        "x": 4.765578326487315,
-        "y": 1.8204432785419886
+        "x": 8.176948717948719,
+        "y": 2.534961538461539
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.397858974367321,
-        "y": 1.9651794871787103
+        "x": 6.909500000000001,
+        "y": 2.534961538461539
       },
       "prevControl": {
-        "x": 6.397858974367321,
-        "y": 2.2151794871787103
+        "x": 7.875157185741695,
+        "y": 2.560373569665268
+      },
+      "nextControl": {
+        "x": 6.0257564102564105,
+        "y": 2.5117051282051284
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.990794871794873,
+        "y": 2.534961538461539
+      },
+      "prevControl": {
+        "x": 4.502461538461539,
+        "y": 2.5582179487179486
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,8 +65,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.75,
-    "maxAcceleration": 2.75,
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -64,7 +80,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

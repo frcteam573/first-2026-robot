@@ -7,25 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "p1"
+            "pathName": "k1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "p2"
+            "pathName": "k2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "p3"
+            "pathName": "k3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "k4"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "tests",
+  "folder": null,
   "choreoAuto": false
 }
