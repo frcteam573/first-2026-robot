@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 3.816585897537636,
-        "y": 0.7706260174825059
+        "y": 7.229
       },
       "prevControl": null,
       "nextControl": {
         "x": 4.816585897537636,
-        "y": 0.7706260174825061
+        "y": 7.229
       },
       "isLocked": false,
       "linkedName": "TrenchRight"

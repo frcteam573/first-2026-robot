@@ -4,15 +4,15 @@
     {
       "anchor": {
         "x": 3.816585897537636,
-        "y": 0.7706260174825059
+        "y": 0.771
       },
       "prevControl": null,
       "nextControl": {
         "x": 4.520597720679352,
-        "y": 0.7821234550407499
+        "y": 0.7824974375582432
       },
       "isLocked": false,
-      "linkedName": "TrenchRight"
+      "linkedName": "TrenchRightReal"
     },
     {
       "anchor": {
@@ -100,7 +100,7 @@
         "y": 2.643
       },
       "prevControl": {
-        "x": 3.7527565733498514,
+        "x": 3.752756573349852,
         "y": 2.645442272679014
       },
       "nextControl": {
@@ -112,16 +112,16 @@
     },
     {
       "anchor": {
-        "x": 2.6304724196361304,
-        "y": 2.3771529133748595
+        "x": 2.944199288256229,
+        "y": 2.4587781731909844
       },
       "prevControl": {
-        "x": 2.9291670781132964,
-        "y": 2.5682296434301053
+        "x": 3.1680818127188193,
+        "y": 2.5700284102255972
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "testytest"
+      "linkedName": "66666"
     }
   ],
   "rotationTargets": [
@@ -163,7 +163,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 39.743974412387196
+    "rotation": 43.20921272439379
   },
   "reversed": false,
   "folder": null,

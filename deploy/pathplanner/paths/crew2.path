@@ -3,29 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.816585897537636,
-        "y": 7.229
+        "x": 2.799518753632656,
+        "y": 4.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5839961539478917,
-        "y": 7.1243461538461546
+        "x": 1.9731522880537018,
+        "y": 4.0
       },
       "isLocked": false,
-      "linkedName": "TrenchRight"
+      "linkedName": "crew1111"
     },
     {
       "anchor": {
-        "x": 0.4,
-        "y": 0.7
+        "x": 1.348720306135119,
+        "y": 5.955
       },
       "prevControl": {
-        "x": 1.4794975694332502,
-        "y": 0.7310376073650957
+        "x": 1.8904083602888422,
+        "y": 5.947506511793763
+      },
+      "nextControl": {
+        "x": 0.9295874066654704,
+        "y": 5.960798110951383
+      },
+      "isLocked": false,
+      "linkedName": "PreDepot"
+    },
+    {
+      "anchor": {
+        "x": 0.560246443167344,
+        "y": 5.955
+      },
+      "prevControl": {
+        "x": 0.8081366815829207,
+        "y": 5.922589666797941
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Depot"
     }
   ],
   "rotationTargets": [],
@@ -42,7 +58,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -1.4263431585364743
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": null,

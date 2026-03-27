@@ -11,7 +11,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.2
+                  "waitTime": 1.0
                 }
               },
               {
@@ -30,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "f1 trench to center to bump"
+                  "pathName": "TTTT1 trench to center to bump"
                 }
               },
               {
@@ -49,7 +49,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.2
+                  "waitTime": 0.5
                 }
               },
               {
@@ -74,7 +74,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.25
+                  "waitTime": 2.5
                 }
               },
               {
@@ -92,7 +92,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake In"
+                  "name": "Intake Jiggle"
                 }
               }
             ]
@@ -105,7 +105,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "f2 trench to center to bump"
+                  "pathName": "TTTTT2 trench to center to bump"
                 }
               },
               {
@@ -124,7 +124,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.2
+                  "waitTime": 0.5
                 }
               },
               {
@@ -149,7 +149,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.25
+                  "waitTime": 2.5
                 }
               },
               {
@@ -167,7 +167,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake In"
+                  "name": "Intake Jiggle"
                 }
               }
             ]
