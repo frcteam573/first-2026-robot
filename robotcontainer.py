@@ -105,7 +105,7 @@ class RobotContainer:
         except Exception as e:
             print(f"Error building auto chooser: {e}")
 
-        self._vision_est = config.Cameras.vision_controller
+        # self._vision_est = config.Cameras.vision_controller
 
         # Configure the button bindings
         self.configureButtonBindings()

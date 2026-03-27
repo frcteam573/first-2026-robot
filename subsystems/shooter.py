@@ -298,13 +298,13 @@ class Shooter(commands2.SubsystemBase):
         '''
         try:
             shooterWheelSpeed = self.m_shooter1.get_velocity().value_as_double
-            shooterWheelSpeed2 = self.m_shooter2.get_velocity().value_as_double
+            # shooterWheelSpeed2 = self.m_shooter2.get_velocity().value_as_double
             hoodAngle = self.m_hoodMotor1.get_position().value_as_double
             # hoodAngle = self.m_hoodMotor1.get_position().value_as_double/config.Shooter.hoodRotationsToAngle
-            hopperSpeed = self.m_hopperMotor.get_velocity().value_as_double
+            # hopperSpeed = self.m_hopperMotor.get_velocity().value_as_double
 
             SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed", shooterWheelSpeed)
-            SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed 2", shooterWheelSpeed2)
+            # SmartDashboard.putNumber("Shooter / Actual Shooter Wheel Speed 2", shooterWheelSpeed2)
 
             # SmartDashboard.putNumber("Shooter / Commanded Hood Angle", self.m_hoodMotor1.get_position().value_as_double)
             SmartDashboard.putNumber("Shooter / Actual Hood Angle", hoodAngle)

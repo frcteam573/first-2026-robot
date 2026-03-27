@@ -238,7 +238,7 @@ class TunerConstants:
 
         return CommandSwerveDrivetrain(
             cls.drivetrain_constants,
-            units.hertz(100), #Update Here
+            units.hertz(80), #Update Here
             [
                 cls.front_left,
                 cls.front_right,

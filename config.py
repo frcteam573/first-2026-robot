@@ -1,5 +1,5 @@
 #from vision.photon_camera import WrapperedPhotonCamera, PhotonVisionController
-from vision.vision_estimator import VisionEstimator, PhotonCamera
+# from vision.vision_estimator import VisionEstimator, PhotonCamera
 import constants
 from utils.utils import inches_to_meters
 from phoenix6 import configs, controls
@@ -137,7 +137,8 @@ class vision_settings:
     tursttoDist_offset = 1 #This should always be 1
 
 class Cameras:
-    vision_controller = VisionEstimator()
+    pass
+    # vision_controller = VisionEstimator()
 
 class Alliance:
     blue_team = False  # Set to True if the robot is on the blue team, False for red team
