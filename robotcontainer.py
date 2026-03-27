@@ -82,7 +82,7 @@ class RobotContainer:
         self.climber = subsystems.Climber()
         self.shooter = subsystems.Shooter()
         self.intake = subsystems.Intake()
-        self.led = subsystems.LED()
+        # self.led = subsystems.LED()
         
         #Name Commands for Autos these must be done before building the autobuilder
 
@@ -100,7 +100,7 @@ class RobotContainer:
 
         # Auto builder
         try:
-            self._auto_chooser = AutoBuilder.buildAutoChooser("Trench to HP")
+            self._auto_chooser = AutoBuilder.buildAutoChooser("5ft Back")
             SmartDashboard.putData("Auto Chooser", self._auto_chooser)
         except Exception as e:
             print(f"Error building auto chooser: {e}")

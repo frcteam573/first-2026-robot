@@ -116,7 +116,7 @@ class MyRobot(commands2.TimedCommandRobot):
         # #Run QuestNav command every loop
         self.questnav.command_periodic()
 
-        self.container.led.ModeManager() #Update LED mode based on conditions
+        # self.container.led.ModeManager() #Update LED mode based on conditions
         # #Only run during SIM
         # if wpilib.RobotBase.isSimulation():
             
