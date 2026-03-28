@@ -72,7 +72,7 @@ class MyRobot(commands2.TimedCommandRobot):
         self.container.drivetrain.reset_pose(Pose2d(0,0,Rotation2d(0)))
 
         self.questnav = QuestNav()  #Initialize QuestNav
-        
+        # SmartDashboard.putNumber("Shooter / TEST Distance", 0)
 
         #Initialize the items to send vision and questnav pose to dashboard
         self.questnav_field = wpilib.Field2d()
@@ -138,8 +138,8 @@ class MyRobot(commands2.TimedCommandRobot):
         # # subsystems.Shooter.getMotors(self=Robot.shooter)
 
         # if self.logDelay == 3:
-        #     # subsystems.Shooter.getShooterInfo(self.container.shooter)
-        #     # subsystems.Intake.getIntakeInfo(self.container.intake)
+        #     subsystems.Shooter.getShooterInfo(self.container.shooter)
+        #     subsystems.Intake.getIntakeInfo(self.container.intake)
         #     # # subsystems.Climber.getClimberInfo(self.container.climber)
         #     # #Deployed values
         #     self.logDelay = 0

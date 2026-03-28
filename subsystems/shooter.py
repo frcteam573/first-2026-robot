@@ -212,6 +212,7 @@ class Shooter(commands2.SubsystemBase):
         Distance = (IntermediatePose.X()**2 + IntermediatePose.Y()**2)**.5  #pythagoream theorum
         
         Distance = (Distance/.0254) # convert to inches
+        # Distance = SmartDashboard.getNumber("Shooter / TEST Distance", 0)
         SmartDashboard.putNumber("Shooter / Calculated Shooter Distance", Distance)
 
         shooterHoodAngle = 0 # Needs to be updated with actual formula, this is just a placeholder
