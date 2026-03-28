@@ -87,6 +87,7 @@ class RobotContainer:
         #Name Commands for Autos these must be done before building the autobuilder
 
         NamedCommands.registerCommand("Intake In", commands.intake.intakegeneral(self.intake, intakeIn=1,autolower=True))
+        NamedCommands.registerCommand("Intake Down",commands.intake.testIntakeExtensionOut(self.intake))
         NamedCommands.registerCommand("Shooter Prep", commands.shooter.Shoot(self.shooter))
         NamedCommands.registerCommand("Shoot Out", commands.shooter.Shoot(self.shooter, shootOut=True))
         NamedCommands.registerCommand("Intake Jiggle", commands.intake.intakegeneral(self.intake, intakeIn=1, autolower=True, autoJiggle=True))
