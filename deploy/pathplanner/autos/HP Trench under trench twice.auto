@@ -11,7 +11,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.25
+                  "waitTime": 1.0
                 }
               },
               {
@@ -30,7 +30,26 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "f1 trench to center to bump"
+                  "pathName": "HP Trench to center"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake In"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "2 -HP Trench to Center 2"
                 }
               },
               {
@@ -49,7 +68,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.5
+                  "waitTime": 1.2
                 }
               },
               {
@@ -74,7 +93,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 3.5
+                  "waitTime": 2.25
                 }
               },
               {
@@ -92,7 +111,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake Jiggle"
+                  "name": "Intake In"
                 }
               }
             ]
@@ -105,7 +124,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "f2 trench to center to bump"
+                  "pathName": "Hub To Center"
                 }
               },
               {
@@ -113,24 +132,24 @@
                 "data": {
                   "name": "Intake In"
                 }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center Back To Hub"
+                }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 3.5
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Shooter Prep"
-                      }
-                    }
-                  ]
+                  "name": "Intake In"
                 }
               }
             ]
@@ -143,7 +162,63 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 3.5
+                  "waitTime": 1.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AlignDT"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shooter Prep"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.5
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Out"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AlignDT"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake In"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.5
                 }
               },
               {

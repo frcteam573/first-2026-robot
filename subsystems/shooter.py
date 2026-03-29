@@ -228,9 +228,11 @@ class Shooter(commands2.SubsystemBase):
                 shooterWheelSpeed = (0.44444444 * Distance) + 12.111111
                 shooterHoodAngle = (0.02617284 * Distance) + 4.425432099
             elif Distance < 180.5:
+                Distance = Distance - 24
                 shooterWheelSpeed = (0.162602 * Distance) + 45.65041
                 shooterHoodAngle = (0.036097561 * Distance) + 3.244390244
             elif Distance < 207:
+                Distance = Distance - 24
                 shooterWheelSpeed = 75
                 shooterHoodAngle = (0.064528302 * Distance) - 1.887358491
             else:
@@ -312,3 +314,6 @@ class Shooter(commands2.SubsystemBase):
             
         except:
             pass
+
+    def resetHoodZero(self):
+        self.m_hoodMotor1.set_position(0)

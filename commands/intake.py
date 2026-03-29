@@ -105,7 +105,7 @@ class intakegeneral(commands2.Command):
 
     def execute(self) -> None:
         if self.autoJiggle:
-            if self.jiggleTimer < 25:
+            if self.jiggleTimer < 3:
                 self.app.intakeMotorIn()
             elif self.jiggleTimer < 50:
                 self.app.intakeMotorOff()

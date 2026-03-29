@@ -89,7 +89,7 @@ class RobotContainer:
         NamedCommands.registerCommand("Intake In", commands.intake.intakegeneral(self.intake, intakeIn=1,autolower=True))
         NamedCommands.registerCommand("Intake Down",commands.intake.testIntakeExtensionOut(self.intake))
         NamedCommands.registerCommand("Shooter Prep", commands.shooter.Shoot(self.shooter))
-        NamedCommands.registerCommand("Shoot Out", commands.shooter.Shoot(self.shooter, shootOut=True))
+        NamedCommands.registerCommand("Shoot Out", commands.shooter.Shoot(self.shooter, shootOut=True,autoin=True))
         NamedCommands.registerCommand("Intake Jiggle", commands.intake.intakegeneral(self.intake, intakeIn=1, autolower=True, autoJiggle=True))
 
         NamedCommands.registerCommand("AlignDT", self.alignDT(drivetrain=self.drivetrain))
@@ -141,10 +141,10 @@ class RobotContainer:
             self.drivetrain.apply_request(
                 lambda: (
                     self._drive.with_velocity_x(
-                        -self._joystick.getLeftY() * self._max_speed * .5
+                        -self._joystick.getLeftY() * self._max_speed * .75
                     )  # Drive forward with negative Y (forward)
                     .with_velocity_y(
-                        -self._joystick.getLeftX() * self._max_speed * .5
+                        -self._joystick.getLeftX() * self._max_speed * .75
                     )  # Drive left with negative X (left)
                     .with_rotational_rate(
                         -self._joystick.getRightX() * self._max_angular_rate *.75

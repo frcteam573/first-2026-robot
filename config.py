@@ -91,7 +91,7 @@ class Intake:
     Deployed = False
     deploy_threshold = 0.05 # The distance in rotations when the intake should be considered deployed and the climber should not be allowed to move
     MinRot = 0
-    MaxRot = 37 # The max rotation of the intake extension, this should be set to the value where the intake is fully extended
+    MaxRot = 39 # The max rotation of the intake extension, this should be set to the value where the intake is fully extended
 
     cfg = configs.TalonFXConfiguration()
      # Configure gear ratio
@@ -148,12 +148,12 @@ class DrivebasedAngleAlign:
     allowable_errorY = 0.1
     allowable_errorR = 5  # degrees
     
-    p = .75
+    p = .9
     i = 0
     d = 0
     max_output = .8
     alignmentPID = PIDController(p, i, d)
-    angleTolerance = math.radians(10)
+    angleTolerance = math.radians(7.5)
     distanceTolerance = 10 # meters
 
 class RobotPoseConfig:
