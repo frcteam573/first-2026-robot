@@ -176,6 +176,7 @@ class MyRobot(commands2.TimedCommandRobot):
         if self.autonomousCommand:
             self.autonomousCommand.schedule()
 
+        self.container.shooter.resetHoodZero()
         self.resetQuestNavPoseforAutoStart()
 
     def autonomousPeriodic(self) -> None:
@@ -190,6 +191,7 @@ class MyRobot(commands2.TimedCommandRobot):
         config.Alliance.blue_team = wpilib.DriverStation.Alliance.kBlue == self.alliance #Set a config value to this color used in automous selection
         if self.autonomousCommand:
             self.autonomousCommand.cancel()
+        # self.container.shooter.resetHoodZero()
         
 
         # self.resetQuestNavPoseforAutoStart() #TEMP

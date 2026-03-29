@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.019513641755635,
-        "y": 2.643
+        "x": 2.858125741399763,
+        "y": 2.3081494661921704
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7027483704038895,
-        "y": 1.8212038703216171
+        "x": 2.5413604700480175,
+        "y": 1.4863533365137878
       },
       "isLocked": false,
       "linkedName": "66666"
@@ -32,32 +32,32 @@
     },
     {
       "anchor": {
-        "x": 5.7230678462962405,
-        "y": 0.7706260174825059
+        "x": 6.817508896797153,
+        "y": 0.9955278766310789
       },
       "prevControl": {
-        "x": 5.50152286678222,
-        "y": 0.6547906944927878
+        "x": 5.261232541721299,
+        "y": 0.09905532186388244
       },
       "nextControl": {
-        "x": 7.32325110960935,
-        "y": 1.6072856680654937
+        "x": 9.152253855278769,
+        "y": 2.340427046263345
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.4932132716574005,
-        "y": 3.8815565434190047
+        "x": 6.817508896797153,
+        "y": 3.9543060498220637
       },
       "prevControl": {
-        "x": 7.5197837433313826,
-        "y": 3.9485690132499025
+        "x": 7.844079368471135,
+        "y": 4.0213185196529615
       },
       "nextControl": {
-        "x": 5.678653453304405,
-        "y": 3.8283837055486236
+        "x": 6.002949078444158,
+        "y": 3.9011332119516826
       },
       "isLocked": false,
       "linkedName": null
@@ -115,11 +115,11 @@
     },
     {
       "waypointRelativePos": 1.7684210526315716,
-      "rotationDegrees": 0.0
+      "rotationDegrees": 10.385569018723292
     },
     {
       "waypointRelativePos": 2.284210526315791,
-      "rotationDegrees": -97.28590806216276
+      "rotationDegrees": -105.43345654072155
     },
     {
       "waypointRelativePos": 4.136842105263158,
@@ -134,8 +134,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.5,
-    "maxAcceleration": 4.5,
+    "maxVelocity": 3.25,
+    "maxAcceleration": 3.25,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -149,7 +149,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0.0,
-    "rotation": 40.66867257079163
+    "rotation": 44.47436539354238
   },
   "useDefaultConstraints": true
 }
