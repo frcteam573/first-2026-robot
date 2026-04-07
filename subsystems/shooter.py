@@ -218,8 +218,10 @@ class Shooter(commands2.SubsystemBase):
         SmartDashboard.putNumber("Shooter / Calculated Shooter Distance", Distance)
 
         shooterHoodAngle = 0 # Needs to be updated with actual formula, this is just a placeholder
-
-        if config.inZone:
+        if SmartDashboard.getBoolean("Occulus Disconnected", False):
+            shooterHoodAngle = 0  # Hardcode hood angle and wheel speed if oculus is disconnected, this is just a failsafe and should be tuned to something that works well for most of the field
+            shooterWheelSpeed = 0 #UPDATED THESE
+        elif config.inZone:
             shooterHoodAngle = 0 # needs to be updated with actual formula, this is just a placeholder
             shooterWheelSpeed = 0
 

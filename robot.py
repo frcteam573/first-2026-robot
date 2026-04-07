@@ -94,6 +94,7 @@ class MyRobot(commands2.TimedCommandRobot):
         SmartDashboard.putNumber("Shooter / TEST Wheel Speed", 0)
         SmartDashboard.putNumber("Shooter / TEST Hood Pos", 0)
         SmartDashboard.putNumber("Shooter / Shooter Trim Value", 0)
+        SmartDashboard.putBoolean("Oculus Disconnected", False)
         self.logDelay = 0
 
         # if wpilib.RobotBase.isSimulation(): #Only run is in SIM
@@ -261,10 +262,14 @@ class MyRobot(commands2.TimedCommandRobot):
 
                 if newPose is not None:
                     self.container.drivetrain.reset_pose(newPose)
+                    SmartDashboard.putBoolean("Oculus Disconnected", False)
+                else: 
+                    SmartDashboard.putBoolean("Oculus Disconnected", True)
                 # self.container.drivetrain.add_vision_measurement(
                 #     newPose,
                 #     frame.data_timestamp- self.time_start,
                 #     custom_std_devs) # Standard deviations
+        
         
     # def resetPoseBasedOnVision(self):
     #     vision_est = self.container._vision_est.get_estimated_robot_pose()
