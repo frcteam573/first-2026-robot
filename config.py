@@ -29,6 +29,7 @@ class Shooter:
     hoodmaxRot = 18 # Replace with actual maximum rotation value
     fullHoodOffset1 = 2.58-3.01
     fullHoodOffset2 = 3.31-2.95
+    trim = 0
 
 # ------------ Elevator Settings -----------------
 class Elevator:

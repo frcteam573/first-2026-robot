@@ -38,8 +38,8 @@ class Keymap:
         hopperMotorReverse = JoystickAxis(Controllers.OPERATOR, controllerDRIVER.RT)
         hoodReset = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER,controllerOPERATOR.X)
     
-        hoodUP = commands2.button.POVButton(Controllers.OPERATOR_CONTROLLER, 0)
-        hoodDown = commands2.button.POVButton(Controllers.OPERATOR_CONTROLLER, 180)
+        trimFar = commands2.button.POVButton(Controllers.OPERATOR_CONTROLLER, 0)
+        trimClose = commands2.button.POVButton(Controllers.OPERATOR_CONTROLLER, 180)
         
         #intakeIn = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.LB)
         # intakeOut = commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.X)

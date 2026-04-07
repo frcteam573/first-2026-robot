@@ -13,6 +13,7 @@ import typing
 import wpiutil
 import time
 
+from oi.keymap import Keymap
 from robotcontainer import RobotContainer, Robot
 # from vision import vision_sim
 # from vision.vision_estimator import VisionEstimator
@@ -90,8 +91,9 @@ class MyRobot(commands2.TimedCommandRobot):
         self.container.intake.intakeMotorOff()
 
         #For TESTING
-        # SmartDashboard.putNumber("Shooter / TEST Wheel Speed", 0)
-        # SmartDashboard.putNumber("Shooter / TEST Hood Pos", 0)
+        SmartDashboard.putNumber("Shooter / TEST Wheel Speed", 0)
+        SmartDashboard.putNumber("Shooter / TEST Hood Pos", 0)
+        SmartDashboard.putNumber("Shooter / Shooter Trim Value", 0)
         self.logDelay = 0
 
         # if wpilib.RobotBase.isSimulation(): #Only run is in SIM
@@ -171,6 +173,7 @@ class MyRobot(commands2.TimedCommandRobot):
         """This autonomous runs the autonomous command selected by your RobotContainer class."""
         self.alliance = wpilib.DriverStation.getAlliance() #Get Alliance color from DS
         config.Alliance.blue_team = wpilib.DriverStation.Alliance.kBlue == self.alliance #Set a config value to this color used in automous selection 
+        config.Shooter.trim = SmartDashboard.getNumber("Shooter / Shooter Trim Value", 0)
         self.autonomousCommand = self.container.getAutonomousCommand()
 
         if self.autonomousCommand:
@@ -192,8 +195,7 @@ class MyRobot(commands2.TimedCommandRobot):
         if self.autonomousCommand:
             self.autonomousCommand.cancel()
         # self.container.shooter.resetHoodZero()
-        
-
+        self.trimCounter = 0
         # self.resetQuestNavPoseforAutoStart() #TEMP
 
     def teleopPeriodic(self) -> None:
@@ -202,8 +204,22 @@ class MyRobot(commands2.TimedCommandRobot):
         if commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.START) and commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.SELECT):
             self.container.shooter.resetHoodZero()
         #  print("TEST")
-                 
-        pass
+        
+        if Keymap.Shooter.trimFar.getAsBoolean():
+            if self.trimCounter == 0:
+                config.Shooter.trim += 1
+                SmartDashboard.putNumber("Shooter / Shooter Trim Value", config.Shooter.trim)
+            self.trimCounter += 1
+            if self.trimCounter > 10:
+                self.trimCounter = 0
+        elif Keymap.Shooter.trimClose.getAsBoolean():
+            if self.trimCounter == 0:
+                config.Shooter.trim -= 1
+                SmartDashboard.putNumber("Shooter / Shooter Trim Value", config.Shooter.trim)
+            self.trimCounter += 1
+            if self.trimCounter > 10:
+                self.trimCounter = 0
+        else: self.trimCounter = 0
 
     def testInit(self) -> None:
         # Cancels all running commands at the start of test mode
