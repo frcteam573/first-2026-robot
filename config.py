@@ -1,5 +1,9 @@
 #from vision.photon_camera import WrapperedPhotonCamera, PhotonVisionController
 # from vision.vision_estimator import VisionEstimator, PhotonCamera
+from unittest import signals
+
+import phoenix6
+
 import constants
 from utils.utils import inches_to_meters
 from phoenix6 import configs, controls
@@ -95,6 +99,7 @@ class Intake:
     MaxRot = 39 # The max rotation of the intake extension, this should be set to the value where the intake is fully extended
 
     cfg = configs.TalonFXConfiguration()
+    cfg.motor_output.neutral_mode = phoenix6.signals.NeutralModeValue.BRAKE
      # Configure gear ratio
     fdb = cfg.feedback
     fdb.sensor_to_mechanism_ratio = 1 #
