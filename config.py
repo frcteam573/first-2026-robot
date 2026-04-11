@@ -29,8 +29,8 @@ class Shooter:
     hoodRotationsToAngle = 6   ## number of rotations per degree in angle of hood ## NEEDS TO BE CHANGED 
     wheelSpeedShooterTolerance = 10 ##### +- tolerance value in RPS ### change number    
     hoodAngleTolerance = .25 ## change number
-    hoodminRot = 3
-    hoodmaxRot = 18 # Replace with actual maximum rotation value
+    hoodminRot = 0.5
+    hoodmaxRot = 19.2 # Replace with actual maximum rotation value
     fullHoodOffset1 = 2.58-3.01
     fullHoodOffset2 = 3.31-2.95
     trim = 0

@@ -25,11 +25,8 @@ class Shooter(commands2.SubsystemBase):
         self.m_hoodMotor1 = hardware.TalonFX(55,CANBus("573CANivore"))
 
         #Set soft limits for hood motor
-        hoodcfg = configs.SoftwareLimitSwitchConfigs()
-        hoodcfg.forward_soft_limit_threshold = config.Shooter.hoodmaxRot
-        hoodcfg.reverse_soft_limit_threshold = config.Shooter.hoodminRot
-        hoodcfg.forward_soft_limit_enable = True
-        hoodcfg.reverse_soft_limit_enable = True
+       # hoodcfg = configs.SoftwareLimitSwitchConfigs()
+
         
         
         print("Applying hood configs...")
@@ -110,7 +107,10 @@ class Shooter(commands2.SubsystemBase):
         cfg1.voltage.peak_forward_voltage = 8
         cfg1.voltage.peak_reverse_voltage = -8
         
-
+        cfg1.software_limit_switch.forward_soft_limit_threshold = config.Shooter.hoodmaxRot
+        cfg1.software_limit_switch.reverse_soft_limit_threshold = config.Shooter.hoodminRot
+        cfg1.software_limit_switch.forward_soft_limit_enable = True
+        cfg1.software_limit_switch.reverse_soft_limit_enable = True
         cfg1.slot1.k_p = 60; # An error of 1 rotation results in 60 A output
         cfg1.slot1.k_i = 0; # No output for integrated error
         cfg1.slot1.k_d = 6; # A velocity of 1 rps results in 6 A output
