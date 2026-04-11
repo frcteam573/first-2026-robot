@@ -39,7 +39,7 @@ class Intake(commands2.SubsystemBase):
         # Intake Example Section
 
         # Elvator Magic Motion and talon definition
-        self.motion_magic = controls.MotionMagicVoltage(0)
+        # self.motion_magic = controls.MotionMagicVoltage(0)
         
         # Retry config apply up to 5 times, report if failure
         status: StatusCode = StatusCode.STATUS_CODE_NOT_INITIALIZED
@@ -58,7 +58,7 @@ class Intake(commands2.SubsystemBase):
                 config.Intake.Deployed = True
             else:
                 config.Intake.Deployed = False
-            self.m_intakeExtension.set_control(self.motion_magic.with_position(position).with_slot(0))
+            self.m_intakeExtension.set_control(self.position_voltage.with_position(position).with_slot(0))
             
     def stopIntakeExtension(self):
         self.m_intakeExtension.set(0)    

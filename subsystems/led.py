@@ -21,7 +21,7 @@ class LED(commands2.SubsystemBase):
   def __init__(self) -> None:
     super().__init__()
     
-    self.blinkin = wpilib.Spark(0)
+    self.blinkin = wpilib.Spark(9)
     
   # // COLOR FUNCTION LIST \\ #
   

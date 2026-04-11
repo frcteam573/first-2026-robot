@@ -29,7 +29,7 @@ class Shooter:
     hoodRotationsToAngle = 6   ## number of rotations per degree in angle of hood ## NEEDS TO BE CHANGED 
     wheelSpeedShooterTolerance = 10 ##### +- tolerance value in RPS ### change number    
     hoodAngleTolerance = .25 ## change number
-    hoodminRot = 0.5
+    hoodminRot = 1.5
     hoodmaxRot = 19.2 # Replace with actual maximum rotation value
     fullHoodOffset1 = 2.58-3.01
     fullHoodOffset2 = 3.31-2.95
@@ -95,27 +95,26 @@ class Intake:
     
     Deployed = False
     deploy_threshold = 0.05 # The distance in rotations when the intake should be considered deployed and the climber should not be allowed to move
-    MinRot = 0
-    MaxRot = 39 # The max rotation of the intake extension, this should be set to the value where the intake is fully extended
+    MinRot = -1000
+    MaxRot = 1000 # The max rotation of the intake extension, this should be set to the value where the intake is fully extended
 
     cfg = configs.TalonFXConfiguration()
     cfg.motor_output.neutral_mode = phoenix6.signals.NeutralModeValue.BRAKE
+    cfg.software_limit_switch.forward_soft_limit_threshold = MaxRot
+    cfg.software_limit_switch.reverse_soft_limit_threshold = MinRot
+    cfg.software_limit_switch.forward_soft_limit_enable = True
+    cfg.software_limit_switch.reverse_soft_limit_enable = True
+    cfg.current_limits.stator_current_limit = 40
+    cfg.current_limits.stator_current_limit_enable = True
      # Configure gear ratio
     fdb = cfg.feedback
     fdb.sensor_to_mechanism_ratio = 1 #
 
-    # Configure Motion Magic
-    mm = cfg.motion_magic
-    mm.motion_magic_cruise_velocity = 2 # 5 (mechanism) rotations per second cruise
-    mm.motion_magic_acceleration = 5 # Take approximately 0.5 seconds to reach max vel
-    # Take apprximately 0.1 seconds to reach max accel
-    mm.motion_magic_jerk = 100
-
     slot0 = cfg.slot0
     slot0.k_s = 0 # Add 0.25 V output to overcome static friction
-    slot0.k_v = 999999731779099 # A velocity target of 1 rps results in 0.12 V output
-    slot0.k_a = 0.00999999977648 # An acceleration of 1 rps/s requires 0.01 V output
-    slot0.k_p = 1 # A position error of 0.2 rotations results in 12 V output
+    slot0.k_v = 0 # A velocity target of 1 rps results in 0.12 V output
+    slot0.k_a = 0 # An acceleration of 1 rps/s requires 0.01 V output
+    slot0.k_p = 0.10 # A position error of 0.2 rotations results in 12 V output
     slot0.k_i = 0 # No output for integrated error
     slot0.k_d = 0 # A velocity error of 1 rps results in 0.5 V output
 

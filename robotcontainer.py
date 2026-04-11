@@ -82,7 +82,7 @@ class RobotContainer:
         self.climber = subsystems.Climber()
         self.shooter = subsystems.Shooter()
         self.intake = subsystems.Intake()
-        # self.led = subsystems.LED()
+        self.led = subsystems.LED()
         
         #Name Commands for Autos these must be done before building the autobuilder
 

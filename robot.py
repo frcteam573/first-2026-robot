@@ -119,7 +119,7 @@ class MyRobot(commands2.TimedCommandRobot):
         # #Run QuestNav command every loop
         self.questnav.command_periodic()
 
-        # self.container.led.ModeManager() #Update LED mode based on conditions
+        self.container.led.ModeManager() #Update LED mode based on conditions
         # #Only run during SIM
         # if wpilib.RobotBase.isSimulation():
             
@@ -246,31 +246,36 @@ class MyRobot(commands2.TimedCommandRobot):
         # get new pose frames
         # print("QuestNav1")
         frames = self.questnav.get_all_unread_pose_frames()
-        for frame in frames:
-            # print("QuestNav2")
-            if self.questnav.is_connected():# and self.questnav.is_tracking():
-                # Add to pose estimator
-                #print("QN Pose:",frame.quest_pose_3d.toPose2d())
-                # print("QuestNav3")
-                #print("Timestamp:", frame.data_timestamp - self.time_start)
-                quest_pose = frame.quest_pose_3d.toPose2d()
-                newPose = quest_pose.transformBy((constants.Robot_To_Quest2D.inverse()))
-                self.questnav_field.setRobotPose(newPose)
-                # print("QuestNavPose", newPose)
-                custom_std_devs = tuple([0.01, 0.01, 0.02]) # TUNE SMALL NUMBERS MEAN MORE TRUST IN QuestNav
-                # print(frame.data_timestamp- self.time_start)
+        # print(frames)
+        if frames is []: # need to figure out what this is supposed to be when blank
+            SmartDashboard.putBoolean("Oculus Disconnected", True)
+        else:
+            for frame in frames:
+                # print("QuestNav2")
+                if self.questnav.is_connected():# and self.questnav.is_tracking():
+                    # Add to pose estimator
+                    #print("QN Pose:",frame.quest_pose_3d.toPose2d())
+                    # print("QuestNav3")
+                    #print("Timestamp:", frame.data_timestamp - self.time_start)
+                    quest_pose = frame.quest_pose_3d.toPose2d()
+                    newPose = quest_pose.transformBy((constants.Robot_To_Quest2D.inverse()))
+                    self.questnav_field.setRobotPose(newPose)
+                    # print("QuestNavPose", newPose)
+                    custom_std_devs = tuple([0.01, 0.01, 0.02]) # TUNE SMALL NUMBERS MEAN MORE TRUST IN QuestNav
+                    # print(frame.data_timestamp- self.time_start)
 
-                if newPose is not None:
-                    self.container.drivetrain.reset_pose(newPose)
-                    SmartDashboard.putBoolean("Oculus Disconnected", False)
-                else: 
+                    if newPose is not None:
+                        self.container.drivetrain.reset_pose(newPose)
+                        SmartDashboard.putBoolean("Oculus Disconnected", False)
+                    else: 
+                        SmartDashboard.putBoolean("Oculus Disconnected", True)
+                    # self.container.drivetrain.add_vision_measurement(
+                    #     newPose,
+                    #     frame.data_timestamp- self.time_start,
+                    #     custom_std_devs) # Standard deviations
+                else:
+                    #Not Connected
                     SmartDashboard.putBoolean("Oculus Disconnected", True)
-                # self.container.drivetrain.add_vision_measurement(
-                #     newPose,
-                #     frame.data_timestamp- self.time_start,
-                #     custom_std_devs) # Standard deviations
-        
-        
     # def resetPoseBasedOnVision(self):
     #     vision_est = self.container._vision_est.get_estimated_robot_pose()
     #     if vision_est is not None:

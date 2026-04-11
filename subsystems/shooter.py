@@ -29,8 +29,8 @@ class Shooter(commands2.SubsystemBase):
 
         
         
-        print("Applying hood configs...")
-        print("Hood Config Set Code:", self.m_hoodMotor1.configurator.apply(hoodcfg))
+        # print("Applying hood configs...")
+        # print("Hood Config Set Code:", self.m_hoodMotor1.configurator.apply(hoodcfg))
 
         # self.s_hoodServo1 = wpilib.Servo(6) #change to match id of servo
         # self.s_hoodServo2 = wpilib.Servo(7) #change to match id of servo
@@ -98,7 +98,7 @@ class Shooter(commands2.SubsystemBase):
         cfg1.motor_output.inverted = signals.InvertedValue.CLOCKWISE_POSITIVE
         cfg1.motor_output.neutral_mode = signals.NeutralModeValue.BRAKE
         
-        cfg1.slot0.k_p = 5; # An error of 1 rotation results in 2.4 V output
+        cfg1.slot0.k_p = 4; # An error of 1 rotation results in 2.4 V output
         cfg1.slot0.k_i = 0; # No output for integrated error
         cfg1.slot0.k_d = 0; # A velocity of 1 rps results in 0.1 V output
         cfg1.slot0.k_s = 0.00
