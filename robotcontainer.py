@@ -230,8 +230,8 @@ class RobotContainer:
         Keymap.Shooter.hoodReset.whileTrue(commands.shooter.hoodReset(self.shooter))
         Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(self.shooter))
 
-        #Keymap.Shooter.hoodUP.whileTrue(commands.shooter.testHoodUP(self.shooter))
-        #Keymap.Shooter.hoodDown.whileTrue(commands.shooter.testHoodDown(self.shooter))
+        Keymap.Shooter.hoodUP.whileTrue(commands.shooter.testHoodUP(self.shooter))
+        Keymap.Shooter.hoodDown.whileTrue(commands.shooter.testHoodDown(self.shooter))
 
         # Keymap.Shooter.hopperMotorReverse.whileTrue(commands.shooter.revHopper(self.shooter))
         # Keymap.Intake.intakeIn.whileTrue(commands.intake.IntakeIn(self.intake))
