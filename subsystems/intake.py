@@ -21,7 +21,7 @@ class Intake(commands2.SubsystemBase):
     
         self.m_intakeMotor = hardware.TalonFX(53,CANBus("573CANivore"))
         self.m_intakeExtension = hardware.TalonFX(56,CANBus("573CANivore"))
-
+        self.position_voltage = controls.PositionVoltage(0).with_slot(0)
         #Not sure if this is working
         self.m_intakeExtension.setNeutralMode(neutralMode=phoenix6.signals.NeutralModeValue.BRAKE)
         self.m_intakeMotor.set_control(phoenix6.controls.DutyCycleOut(0.25))
@@ -80,7 +80,7 @@ class Intake(commands2.SubsystemBase):
         #print("intake out")
 
     def intakeMotorIn(self):
-        self.m_intakeMotor.set(.85)  
+        self.m_intakeMotor.set(.75)  
         #print("intake in")     
 
     def intakeMotorOff(self):

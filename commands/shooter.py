@@ -23,11 +23,11 @@ class Shoot(commands2.Command):
         self.app = app
         self.addRequirements(app)
         self.shootOut = shootOut
-        self.hoodattimer = 0
+        self.hopperTimer = 0
         self.autoin = autoin
         
     def initialize(self) -> None:
-        self.hoodattimer = 0
+        self.hopperTimer = 0
 
 
     def execute(self) -> None:
@@ -39,13 +39,22 @@ class Shoot(commands2.Command):
         SmartDashboard.putBoolean("Shooter / Hood at Position", self.app.setHoodAngle(hoodAngle))
         SmartDashboard.putBoolean("Shooter / Wheel at Speed", self.app.setShooterSpeed(wheelSpeed))    
         
-        if Keymap.Shooter.shoot.getAsBoolean() or self.shootOut:
+        if Keymap.Shooter.shoot.getAsBoolean() or self.shootOut or (Keymap.Shooter.hopperMotorReverse.value > .5):
             if (not wpilib.SmartDashboard.getBoolean("Drivetrain / Aligned", False)) and self.autoin: #Missing Drivetrain / and only do in auto for now
                 self.app.hopperMotorOff()
                 # print('Aligned And Shot')
+            elif (Keymap.Shooter.hopperMotorReverse.value > .5):
+                self.app.hopperMotorReverse()
             else:
+                print("Hopper Timer:", self.hopperTimer)
                 # print('Not Aligned')
-                self.app.hopperMotorOn()
+                if self.hopperTimer < 100:
+                    self.app.hopperMotorOn()
+                elif self.hopperTimer < 106:
+                    self.app.hopperMotorReverse()
+                else: 
+                    self.hopperTimer = 0
+                self.hopperTimer += 1
         else:
             # print('Didnt pass first check')
             self.app.hopperMotorOff()    

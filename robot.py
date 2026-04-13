@@ -247,7 +247,7 @@ class MyRobot(commands2.TimedCommandRobot):
         # print("QuestNav1")
         frames = self.questnav.get_all_unread_pose_frames()
         # print(frames)
-        if frames is []: # need to figure out what this is supposed to be when blank
+        if not frames: # need to figure out what this is supposed to be when blank
             SmartDashboard.putBoolean("Oculus Disconnected", True)
         else:
             for frame in frames:

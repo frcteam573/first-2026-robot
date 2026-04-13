@@ -172,7 +172,7 @@ class RobotContainer:
                     )  # Drive counterclockwise with negative X (left)
                 )
             )) 
-        self._joystick.x().whileTrue(self.drivetrain.apply_request(
+        self._joystick.rightBumper().whileTrue(self.drivetrain.apply_request(
                 lambda: (
                     self._drive.with_velocity_x(
                         -self._joystick.getLeftY() * self._max_speed
@@ -226,7 +226,7 @@ class RobotContainer:
         #Appendage Controls
         # Keymap.Shooter.setupShooter.whileTrue(commands.shooter.testHoodUP(self.shooter))
         # Keymap.Shooter.shoot.whileTrue(commands.shooter.testHoodDown(self.shooter))
-        commands2.button.Trigger(lambda: Keymap.Shooter.hopperMotorReverse.value > 0.5).whileTrue(commands.shooter.revHopper(self.shooter))
+        # commands2.button.Trigger(lambda: Keymap.Shooter.hopperMotorReverse.value > 0.5).whileTrue(commands.shooter.revHopper(self.shooter))
         Keymap.Shooter.hoodReset.whileTrue(commands.shooter.hoodReset(self.shooter))
         Keymap.Shooter.setupShooter.whileTrue(commands.shooter.Shoot(self.shooter))
 
@@ -240,8 +240,8 @@ class RobotContainer:
 
         Keymap.Intake.testroller.whileTrue(commands.intake.intakegeneral(self.intake,1))
         commands2.button.Trigger(lambda: Keymap.Intake.rollerbackwards.value > 0.5).whileTrue(commands.intake.intakegeneral(self.intake,0))
-        Keymap.Intake.testextin.whileTrue(commands.intake.testIntakeExtensionIn(self.intake))
-        Keymap.Intake.testextout.whileTrue(commands.intake.testIntakeExtensionOut(self.intake))
+        # Keymap.Intake.testextin.whileTrue(commands.intake.testIntakeExtensionIn(self.intake))
+        # Keymap.Intake.testextout.whileTrue(commands.intake.testIntakeExtensionOut(self.intake))
 
 
 

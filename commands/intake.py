@@ -101,6 +101,7 @@ class intakegeneral(commands2.Command):
         
     def initialize(self) -> None:
         self.jiggleTimer = 0
+        self.app.setIntakePosition(config.Intake.extendedPos)
 
     def execute(self) -> None:
 

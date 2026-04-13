@@ -218,67 +218,41 @@ class Shooter(commands2.SubsystemBase):
         SmartDashboard.putNumber("Shooter / Calculated Shooter Distance", Distance)
 
         shooterHoodAngle = 0 # Needs to be updated with actual formula, this is just a placeholder
-        if SmartDashboard.getBoolean("Occulus Disconnected", False):
-            shooterHoodAngle = 0  # Hardcode hood angle and wheel speed if oculus is disconnected, this is just a failsafe and should be tuned to something that works well for most of the field
-            shooterWheelSpeed = 0 #UPDATED THESE
-        elif config.inZone:
+        # if SmartDashboard.getBoolean("Occulus Disconnected", False):
+        #     shooterHoodAngle = 0  # Hardcode hood angle and wheel speed if oculus is disconnected, this is just a failsafe and should be tuned to something that works well for most of the field
+        #     shooterWheelSpeed = 0 #UPDATED THESE
+        if config.inZone:
+            
             shooterHoodAngle = 0 # needs to be updated with actual formula, this is just a placeholder
             shooterWheelSpeed = 0
 
             if Distance < 51:
-                shooterHoodAngle = 4.7
+                shooterHoodAngle = 3.5
                 shooterWheelSpeed = 47
-            elif Distance < 161:
-                shooterWheelSpeed = -0.00129*(Distance**2) + 0.40431*Distance + 32.52545
-                shooterHoodAngle = 0.00000958*(Distance**2) + 0.04021995*Distance + 2.68452440
-            elif Distance < 207:
-                Distance = Distance 
-                shooterWheelSpeed = 0.2391*Distance + 25.5000
-                shooterHoodAngle = 0.0428*Distance + 2.6050
+            elif Distance < 208:
+                shooterWheelSpeed = 0.133*Distance + 39.5
+                shooterHoodAngle = 0.0259*Distance + 0.986
             else:
                 shooterWheelSpeed = 75
                 shooterHoodAngle = 11.5
-            
-            # if Distance < 78.5:
-            #     shooterWheelSpeed = 47
-            #     shooterHoodAngle = (0.141818182 * Distance) - 4.652727273
-            # elif Distance < 119:
-            #     shooterWheelSpeed = (0.44444444 * Distance) + 12.111111
-            #     shooterHoodAngle = (0.02617284 * Distance) + 4.425432099
-            # elif Distance < 180.5:
-            #     Distance = Distance - 24
-            #     shooterWheelSpeed = (0.162602 * Distance) + 45.65041
-            #     shooterHoodAngle = (0.036097561 * Distance) + 3.244390244
-            # elif Distance < 207:
-            #     Distance = Distance - 24
-            #     shooterWheelSpeed = 75
-            #     shooterHoodAngle = (0.064528302 * Distance) - 1.887358491
-            # else:
-            #     shooterWheelSpeed = 75
-            #     shooterHoodAngle = 11.5
 
         else:
-            if Distance < 238:
-                shooterWheelSpeed = 55
-                shooterHoodAngle = 10.7
-            elif Distance < 267:
-                shooterWheelSpeed = 55
-                shooterHoodAngle = (0.087586 * Distance) - 10.1455
-            elif Distance < 319:
-                shooterWheelSpeed = (0.384615 * Distance) - 47
-                shooterHoodAngle = 13.24
+            if Distance < 242:
+                shooterWheelSpeed = 67
+                shooterHoodAngle = 7
+            elif Distance < 360:
+                shooterWheelSpeed = 67
+                shooterHoodAngle = (1.49 * Distance) - 0.426
             else:
                 shooterWheelSpeed = 75
-                shooterHoodAngle = 13.24
+                shooterHoodAngle = 10
                 
-
-        
         if shooterWheelSpeed < 0:
             shooterWheelSpeed = 0
         if shooterHoodAngle < 0:
             shooterHoodAngle = 0
-        if shooterHoodAngle > 13.5:
-            shooterHoodAngle = 13.5
+        if shooterHoodAngle > 12:
+            shooterHoodAngle = 12
         if shooterWheelSpeed > 75:
             shooterWheelSpeed = 75
 
