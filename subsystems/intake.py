@@ -53,12 +53,12 @@ class Intake(commands2.SubsystemBase):
 
     def setIntakePosition(self, position:float):
         #print("Set Intake Position")
-        if config.Climber.Deployed == False:
-            if self.m_intakeExtension.get_position().value_as_double > config.Intake.deploy_threshold:
-                config.Intake.Deployed = True
-            else:
-                config.Intake.Deployed = False
-            self.m_intakeExtension.set_control(self.position_voltage.with_position(position).with_slot(0))
+        # if config.Climber.Deployed == False:
+        #     if self.m_intakeExtension.get_position().value_as_double > config.Intake.deploy_threshold:
+        #         config.Intake.Deployed = True
+        #     else:
+        #         config.Intake.Deployed = False
+        self.m_intakeExtension.set_control(self.position_voltage.with_position(position).with_slot(0))
             
     def stopIntakeExtension(self):
         self.m_intakeExtension.set(0)    
@@ -100,7 +100,7 @@ class Intake(commands2.SubsystemBase):
         try:
             intakeWheelSpeed = self.m_intakeMotor.get_velocity().value_as_double
             intakeExtension = self.m_intakeExtension.get_position().value_as_double
-            intakeExtensionSetpoint = self.motion_magic.position
+            intakeExtensionSetpoint = self.m_intakeExtension.get_position().value_as_double
             SmartDashboard.putNumber("Intake / Actual Intake Motor Value", intakeWheelSpeed)
             SmartDashboard.putNumber("Intake / Actual Intake Extension Position", intakeExtension)
             SmartDashboard.putNumber("Intake / Commanded Intake Extension Position", intakeExtensionSetpoint)

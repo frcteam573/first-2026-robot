@@ -97,50 +97,30 @@ class intakegeneral(commands2.Command):
         self.addRequirements(app)
         self.intakeIn = intakeIn
         self.autolower = autolower
-        self.autoJiggle = autoJiggle
-        
+        self.autoJiggle = autoJiggle 
         
     def initialize(self) -> None:
         self.jiggleTimer = 0
 
     def execute(self) -> None:
-        if self.autoJiggle:
-            if self.jiggleTimer < 3:
-                self.app.intakeMotorIn()
-            elif self.jiggleTimer < 50:
-                self.app.intakeMotorOff()
-            elif self.jiggleTimer >= 50:
-                self.app.intakeMotorOff()
-                self.jiggleTimer = 0
+
+        if self.autoJiggle or keymap.Keymap.Shooter.shoot.getAsBoolean():
+            if self.jiggleTimer < 20:
+                self.app.setIntakePosition(config.Intake.extendedPos)
+            else:
+                self.app.setIntakePosition(config.Intake.jigglePos)
             self.jiggleTimer += 1
-        elif self.intakeIn == 1:
+
+        if self.intakeIn == 1:
             self.app.intakeMotorIn()
         elif self.intakeIn == 0:
             self.app.intakeMotorOut()
         else:
             self.app.intakeMotorOff()
-
-        if Keymap.Intake.testextin.getAsBoolean():
-            self.app.intakeExtIn()
-        # elif Keymap.Shooter.shoot.getAsBoolean() or self.autoJiggle:
-        #     if self.jiggleTimer > 30 and self.jiggleTimer < 55:
-        #         self.app.intakeExtIn()
-        #     elif self.jiggleTimer >= 55 and self.jiggleTimer < 60:
-        #         self.app.intakeExtOut()
-        #     elif self.jiggleTimer >=60:
-        #         self.app.stopIntakeExtension()
-        #         self.jiggleTimer = 0
-            # else:
-            #     self.app.stopIntakeExtension()
-            # self.jiggleTimer += 1
-        elif Keymap.Intake.testextout.getAsBoolean() or self.autolower:
-            self.app.intakeExtOut()
-        else:
-            self.app.stopIntakeExtension()
-                
+      
     def end(self, interrupted=False) -> None:
         self.app.intakeMotorOff()
-        self.app.stopIntakeExtension()
+        self.app.setIntakePosition(config.Intake.extendedPos)
 
 class testIntakeRoller(commands2.Command):
     def __init__(
