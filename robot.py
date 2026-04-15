@@ -75,6 +75,11 @@ class MyRobot(commands2.TimedCommandRobot):
         self.questnav = QuestNav()  #Initialize QuestNav
         # SmartDashboard.putNumber("Shooter / TEST Distance", 0)
 
+        self.questnav_missed_frame_count = 0
+        self.questnav_dtap_count = 0
+        self.questnav_dtap_reset_limit = 14 #Allows for 0.2 s at 50 Hz
+        wpilib.SmartDashboard.putBoolean("Occulus DTap Reset", False)
+
         #Initialize the items to send vision and questnav pose to dashboard
         self.questnav_field = wpilib.Field2d()
         # self.photonvision_field = wpilib.Field2d()
@@ -245,12 +250,23 @@ class MyRobot(commands2.TimedCommandRobot):
     def add_questnav_to_pose_estimate(self):
         # get new pose frames
         # print("QuestNav1")
+
         frames = self.questnav.get_all_unread_pose_frames()
         # print(frames)
         if not frames: # need to figure out what this is supposed to be when blank
             SmartDashboard.putBoolean("Oculus Disconnected", True)
+            if self.questnav.is_connected():
+                self.questnav_dtap_count += 1
+                if self.questnav_dtap_count > self.questnav_dtap_reset_limit:
+                    wpilib.SmartDashboard.putBoolean("Occulus DTap Reset", True)
+                    self.questnav_dtap_count = 0
+                    self.questnav_missed_frame_count += 1 
+
+
         else:
             for frame in frames:
+                self.questnav_dtap_count = 0
+                wpilib.SmartDashboard.putBoolean("Occulus DTap Reset", False)
                 # print("QuestNav2")
                 if self.questnav.is_connected():# and self.questnav.is_tracking():
                     # Add to pose estimator
