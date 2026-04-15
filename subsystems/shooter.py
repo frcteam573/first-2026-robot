@@ -13,6 +13,7 @@ from ntcore import NetworkTableInstance
 from wpimath.geometry import Rotation2d, Pose2d
 import constants
 
+
 class Shooter(commands2.SubsystemBase):
 
     def __init__(self) -> None:
@@ -23,6 +24,10 @@ class Shooter(commands2.SubsystemBase):
         self.m_shooter1 = hardware.TalonFX(60,CANBus("573CANivore"))
         self.m_shooter2 = hardware.TalonFX(61,CANBus("573CANivore"))  
         self.m_hoodMotor1 = hardware.TalonFX(55,CANBus("573CANivore"))
+        self.s_hoodEncoder = wpilib.Encoder(0, 1) #change to match id of encoder
+
+        self.s_hoodEncoder.setDistancePerPulse(1.0 / 2048.0) # Assuming 2048 pulses per revolution, adjust if different
+
 
         #Set soft limits for hood motor
        # hoodcfg = configs.SoftwareLimitSwitchConfigs()
@@ -109,8 +114,8 @@ class Shooter(commands2.SubsystemBase):
         
         cfg1.software_limit_switch.forward_soft_limit_threshold = config.Shooter.hoodmaxRot
         cfg1.software_limit_switch.reverse_soft_limit_threshold = config.Shooter.hoodminRot
-        cfg1.software_limit_switch.forward_soft_limit_enable = True
-        cfg1.software_limit_switch.reverse_soft_limit_enable = True
+        cfg1.software_limit_switch.forward_soft_limit_enable = False
+        cfg1.software_limit_switch.reverse_soft_limit_enable = False
         cfg1.slot1.k_p = 60; # An error of 1 rotation results in 60 A output
         cfg1.slot1.k_i = 0; # No output for integrated error
         cfg1.slot1.k_d = 6; # A velocity of 1 rps results in 6 A output
@@ -161,6 +166,22 @@ class Shooter(commands2.SubsystemBase):
     def hoodreset(self):
         self.m_hoodMotor1.set_control(self.position_voltage.with_position(0))
         SmartDashboard.putNumber("Shooter / Shooter Hood Angle Command", 0)
+
+    def setHoodAngleExtEncoder(self, angleIn: float) -> bool:
+        # print("Setting Hood to:", angleIn)
+        #Basic P loop
+
+        kp = 0.15 # Need to tune
+        output = kp*(self.s_hoodEncoder.getDistance() - angleIn)
+        output = Tyler.remap(output, .5)
+        output = Tyler.deadband(output, .05)
+
+        self.m_hoodMotor1.set(output)
+        SmartDashboard.putNumber("Shooter / Hood Output", self.m_hoodMotor1.get())
+        SmartDashboard.putNumber("Shooter / Shooter Hood Angle Command", angleIn)
+        
+        # print("Shooter out Speed:", angleIn)
+        return Tyler.max_min_check(self.s_hoodEncoder.getDistance(), angleIn, config.Shooter.hoodAngleTolerance)
 
     def setHoodAngle(self, angleIn: float) -> bool:
         # print("Setting Hood to:", angleIn)
@@ -307,6 +328,7 @@ class Shooter(commands2.SubsystemBase):
 
             # SmartDashboard.putNumber("Shooter / Commanded Hood Angle", self.m_hoodMotor1.get_position().value_as_double)
             SmartDashboard.putNumber("Shooter / Actual Hood Angle", hoodAngle)
+            SmartDashboard.putNumber("Shooter / Hood External Encoder", self.s_hoodEncoder.getDistance())
             
         except:
             pass
