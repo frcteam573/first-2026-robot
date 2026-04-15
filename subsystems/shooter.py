@@ -213,7 +213,7 @@ class Shooter(commands2.SubsystemBase):
         Distance = (IntermediatePose.X()**2 + IntermediatePose.Y()**2)**.5  #pythagoream theorum
         
         Distance = (Distance/.0254) # convert to inches
-        Distance = Distance + (config.Shooter.trim * 12)
+        Distance_trim = Distance + (config.Shooter.trim * 12)
         # Distance = SmartDashboard.getNumber("Shooter / TEST Distance", 0)
         SmartDashboard.putNumber("Shooter / Calculated Shooter Distance", Distance)
 
@@ -226,15 +226,19 @@ class Shooter(commands2.SubsystemBase):
             shooterHoodAngle = 0 # needs to be updated with actual formula, this is just a placeholder
             shooterWheelSpeed = 0
 
-            if Distance < 51:
+            if Distance_trim < 51:
                 shooterHoodAngle = 3.5
+            elif Distance_trim < 208:
+                shooterHoodAngle = 0.0259*Distance_trim + 0.986
+            else:
+                shooterHoodAngle = 6.8
+            
+            if Distance < 51:
                 shooterWheelSpeed = 47
             elif Distance < 208:
                 shooterWheelSpeed = 0.133*Distance + 39.5
-                shooterHoodAngle = 0.0259*Distance + 0.986
             else:
                 shooterWheelSpeed = 75
-                shooterHoodAngle = 11.5
 
         else:
             if Distance < 242:

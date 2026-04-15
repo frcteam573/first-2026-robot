@@ -29,7 +29,7 @@ class Shooter:
     hoodRotationsToAngle = 6   ## number of rotations per degree in angle of hood ## NEEDS TO BE CHANGED 
     wheelSpeedShooterTolerance = 10 ##### +- tolerance value in RPS ### change number    
     hoodAngleTolerance = .25 ## change number
-    hoodminRot = 1.5
+    hoodminRot = 1.2
     hoodmaxRot = 19.2 # Replace with actual maximum rotation value
     fullHoodOffset1 = 2.58-3.01
     fullHoodOffset2 = 3.31-2.95
@@ -96,8 +96,8 @@ class Intake:
     Deployed = False
     deploy_threshold = 0.05 # The distance in rotations when the intake should be considered deployed and the climber should not be allowed to move
     MinRot = 0
-    MaxRot = 35 # The max rotation of the intake extension, this should be set to the value where the intake is fully extended
-    extendedPos = 33
+    MaxRot = 42 # The max rotation of the intake extension, this should be set to the value where the intake is fully extended
+    extendedPos = 42
     jigglePos = 20
 
     cfg = configs.TalonFXConfiguration()
