@@ -1,3 +1,4 @@
+
 import time
 import subprocess
 import ntcore
@@ -12,9 +13,26 @@ inst.setServerTeam(573)
 
 print(inst.getTopics())
 
-def trigger_adb_command():
+def setup_QN():
+
+    #Look for QN
+    for i in range(200,209):
+        cmd2 = "adb connect 10.5.73."+str(i)+':5802'
+        # cmd = "adb shell ping 10.5.73."+str(i)
+        try:
+            subprocess.run(cmd2, shell=True, check=True)
+            print("Found QN at 10.5.73."+str(i))
+            # subprocess.run(cmd2, shell=True, check=True)
+            return i
+        except subprocess.CalledProcessError as e:
+            print(f"Error executing ADB command: {e}")
+            continue
+    
+    return 0
+
+def trigger_adb_command(port):
     """Execute the adb command to start the app"""
-    cmd = 'adb.exe shell am start -n gg.QuestNav.QuestNav/com.unity3d.player.UnityPlayerGameActivity'
+    cmd = 'adb.exe -s 10.5.73.'+str(port)+':5802 shell am start -n gg.QuestNav.QuestNav/com.unity3d.player.UnityPlayerGameActivity'
     try:
         subprocess.run(cmd, shell=True, check=True)
         print("ADB command executed successfully")
@@ -24,12 +42,16 @@ def trigger_adb_command():
 def main():
 
     """Monitor SmartDashboard for Occulus DTap Reset"""
-    print("Monitoring SmartDashboard for 'Occulus DTap Reset'...")
+   
     previous_state = False
+    setup = 0
+    #Ensure QN is setup
+    while setup == 0:
+        setup = setup_QN()
+        time.sleep(.5)
 
-    topics = table.getTopics()
-    for topic in topics:
-        print(topic.getName())
+
+    print("Monitoring SmartDashboard for 'Occulus DTap Reset'...")
     
     while True:
         try:
@@ -38,7 +60,7 @@ def main():
             # Trigger only on transition from False to True
             if reset_value and not previous_state:
                 print("Occulus DTap Reset triggered!")
-                trigger_adb_command()
+                trigger_adb_command(setup)
             
             previous_state = reset_value
             time.sleep(0.1)  # Check every 100ms
