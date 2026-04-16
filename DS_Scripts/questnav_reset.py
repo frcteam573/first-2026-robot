@@ -15,20 +15,35 @@ print(inst.getTopics())
 
 def setup_QN():
 
-    #Look for QN
-    for i in range(200,209):
-        cmd2 = "adb connect 10.5.73."+str(i)+':5802'
-        # cmd = "adb shell ping 10.5.73."+str(i)
-        try:
-            subprocess.run(cmd2, shell=True, check=True)
-            print("Found QN at 10.5.73."+str(i))
-            # subprocess.run(cmd2, shell=True, check=True)
-            return i
-        except subprocess.CalledProcessError as e:
-            print(f"Error executing ADB command: {e}")
-            continue
+    while True:
+        for i in range(200, 209):
+            cmd = "adb connect 10.5.73."+str(i)+':5802'
+            try:
+                print("Trying 10.5.73."+str(i))
+                result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=5)
+                if "connected" in result.stdout and result.returncode == 0:
+                    print("Found QN at 10.5.73."+str(i))
+                    return i
+            except subprocess.TimeoutExpired:
+                continue
+        time.sleep(0.5)
+
+    # #Look for QN
+    # for i in range(200,209):
+    #     cmd2 = "adb connect 10.5.73."+str(i)+':5802'
+    #     # cmd = "adb shell ping 10.5.73."+str(i)
+    #     try:
+    #         result = subprocess.run(cmd2, shell=True, capture_output=True, text=True)
+    #         if "unreachable" in result.stdout or "unreachable" in result.stderr or result.returncode != 0:
+    #             raise subprocess.CalledProcessError(result.returncode, cmd2, result.stdout)
+    #         print("Found QN at 10.5.73."+str(i))
+    #         # subprocess.run(cmd2, shell=True, check=True)
+    #         return i
+    #     except subprocess.CalledProcessError as e:
+    #         print(f"Error executing ADB command: {e}")
+    #         continue
     
-    return 0
+    # return 0
 
 def trigger_adb_command(port):
     """Execute the adb command to start the app"""
@@ -46,9 +61,9 @@ def main():
     previous_state = False
     setup = 0
     #Ensure QN is setup
-    while setup == 0:
-        setup = setup_QN()
-        time.sleep(.5)
+ 
+    setup = setup_QN()
+
 
 
     print("Monitoring SmartDashboard for 'Occulus DTap Reset'...")
