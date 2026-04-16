@@ -13,6 +13,7 @@ from ntcore import NetworkTableInstance
 from wpimath.geometry import Rotation2d, Pose2d
 import constants
 
+
 class Shooter(commands2.SubsystemBase):
 
     def __init__(self) -> None:
@@ -23,6 +24,10 @@ class Shooter(commands2.SubsystemBase):
         self.m_shooter1 = hardware.TalonFX(60,CANBus("573CANivore"))
         self.m_shooter2 = hardware.TalonFX(61,CANBus("573CANivore"))  
         self.m_hoodMotor1 = hardware.TalonFX(55,CANBus("573CANivore"))
+        self.s_hoodEncoder = wpilib.Encoder(8, 9) #change to match id of encoder
+
+        self.s_hoodEncoder.setDistancePerPulse(100.0 / 2048.0) # Assuming 2048 pulses per revolution, adjust if different
+
 
         #Set soft limits for hood motor
        # hoodcfg = configs.SoftwareLimitSwitchConfigs()
@@ -109,8 +114,8 @@ class Shooter(commands2.SubsystemBase):
         
         cfg1.software_limit_switch.forward_soft_limit_threshold = config.Shooter.hoodmaxRot
         cfg1.software_limit_switch.reverse_soft_limit_threshold = config.Shooter.hoodminRot
-        cfg1.software_limit_switch.forward_soft_limit_enable = True
-        cfg1.software_limit_switch.reverse_soft_limit_enable = True
+        cfg1.software_limit_switch.forward_soft_limit_enable = False
+        cfg1.software_limit_switch.reverse_soft_limit_enable = False
         cfg1.slot1.k_p = 60; # An error of 1 rotation results in 60 A output
         cfg1.slot1.k_i = 0; # No output for integrated error
         cfg1.slot1.k_d = 6; # A velocity of 1 rps results in 6 A output
@@ -161,6 +166,27 @@ class Shooter(commands2.SubsystemBase):
     def hoodreset(self):
         self.m_hoodMotor1.set_control(self.position_voltage.with_position(0))
         SmartDashboard.putNumber("Shooter / Shooter Hood Angle Command", 0)
+
+    def setHoodAngleExtEncoder(self, angleIn: float) -> bool:
+        # print("Setting Hood to:", angleIn)
+        #Basic P loop
+
+        #P loop keep getting stuck 1.5 rotation short of target, so we are going to add 1.5 to target unless its zero
+        angleInAdjust = angleIn
+        if angleInAdjust != 0:
+            angleInAdjust += 1.5
+
+        kp = -0.025 # Tuned at shop on 4/15
+        output = kp*(self.s_hoodEncoder.getDistance() - angleInAdjust)
+        output = Tyler.remap(output, .5)
+        output = Tyler.deadband(output, .05)
+
+        self.m_hoodMotor1.set(output)
+        SmartDashboard.putNumber("Shooter / Hood Output", self.m_hoodMotor1.get())
+        SmartDashboard.putNumber("Shooter / Shooter Hood Angle Command", angleIn)
+        
+        # print("Shooter out Speed:", angleIn)
+        return Tyler.max_min_check(self.s_hoodEncoder.getDistance(), angleIn, config.Shooter.hoodAngleTolerance)
 
     def setHoodAngle(self, angleIn: float) -> bool:
         # print("Setting Hood to:", angleIn)
@@ -226,37 +252,50 @@ class Shooter(commands2.SubsystemBase):
             shooterHoodAngle = 0 # needs to be updated with actual formula, this is just a placeholder
             shooterWheelSpeed = 0
 
-            if Distance_trim < 51:
-                shooterHoodAngle = 3.5
-            elif Distance_trim < 208:
-                shooterHoodAngle = 0.0259*Distance_trim + 0.986
+
+            # Motor EXTERNAL in Encoder Formula
+            if Distance_trim < 83:
+                shooterHoodAngle = 15
+            elif Distance_trim < 183:
+                shooterHoodAngle = 0.11283215*Distance_trim + 8.16378689
             else:
-                shooterHoodAngle = 6.8
+                shooterHoodAngle = 30
+
+
+            # Motor Built in Encoder Formula
+            # if Distance_trim < 83:
+            #     shooterHoodAngle = 3.5
+            # elif Distance_trim < 183:
+            #     shooterHoodAngle = 0.00001825*Distance_trim**2 + 0.01882283*Distance_trim + 2.32214382
+            # else:
+            #     shooterHoodAngle = 6.4
             
-            if Distance < 51:
+            if Distance < 83:
                 shooterWheelSpeed = 47
-            elif Distance < 208:
-                shooterWheelSpeed = 0.133*Distance + 39.5
+            elif Distance < 183:
+                shooterWheelSpeed = 0.00118*Distance**2 - 0.14229*Distance + 56.59067
             else:
                 shooterWheelSpeed = 75
 
         else:
-            if Distance < 242:
-                shooterWheelSpeed = 67
-                shooterHoodAngle = 7
-            elif Distance < 360:
-                shooterWheelSpeed = 67
-                shooterHoodAngle = (1.49 * Distance) - 0.426
-            else:
-                shooterWheelSpeed = 75
-                shooterHoodAngle = 10
-                
+            shooterWheelSpeed = 70
+            shooterHoodAngle = 42 #EXternal Encoder Formula
+            # shooterHoodAngle = 9  #Motor built in encoder value
+
+
         if shooterWheelSpeed < 0:
             shooterWheelSpeed = 0
         if shooterHoodAngle < 0:
             shooterHoodAngle = 0
-        if shooterHoodAngle > 12:
-            shooterHoodAngle = 12
+
+        #Motor built in encoder formula
+        # if shooterHoodAngle > 10:
+        #     shooterHoodAngle = 10
+
+        #EXternal Encoder Formula
+        if shooterHoodAngle > 42:
+            shooterHoodAngle = 42
+
         if shooterWheelSpeed > 75:
             shooterWheelSpeed = 75
 
@@ -307,6 +346,7 @@ class Shooter(commands2.SubsystemBase):
 
             # SmartDashboard.putNumber("Shooter / Commanded Hood Angle", self.m_hoodMotor1.get_position().value_as_double)
             SmartDashboard.putNumber("Shooter / Actual Hood Angle", hoodAngle)
+            SmartDashboard.putNumber("Shooter / Hood External Encoder", self.s_hoodEncoder.getDistance())
             
         except:
             pass

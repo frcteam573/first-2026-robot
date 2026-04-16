@@ -36,7 +36,7 @@ class Shoot(commands2.Command):
         # wheelSpeed = SmartDashboard.getNumber("Shooter / TEST Wheel Speed", 0)
         # hoodAngle = SmartDashboard.getNumber("Shooter / TEST Hood Pos", 0)
         
-        SmartDashboard.putBoolean("Shooter / Hood at Position", self.app.setHoodAngle(hoodAngle))
+        SmartDashboard.putBoolean("Shooter / Hood at Position", self.app.setHoodAngleExtEncoder(hoodAngle))
         SmartDashboard.putBoolean("Shooter / Wheel at Speed", self.app.setShooterSpeed(wheelSpeed))    
         
         if Keymap.Shooter.shoot.getAsBoolean() or self.shootOut or (Keymap.Shooter.hopperMotorReverse.value > .5):
