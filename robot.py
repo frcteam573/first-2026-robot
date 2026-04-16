@@ -5,7 +5,8 @@
 # the WPILib BSD license file in the root directory of this project.
 #
 
-from calendar import c
+from math import radians
+
 
 import wpilib
 import commands2
@@ -211,8 +212,9 @@ class MyRobot(commands2.TimedCommandRobot):
     def teleopPeriodic(self) -> None:
         """This function is called periodically during operator control"""
 
-        if commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.START) and commands2.button.JoystickButton(Controllers.OPERATOR_CONTROLLER, controllerOPERATOR.SELECT):
-            self.container.shooter.resetHoodZero()
+        if commands2.button.JoystickButton(Controllers.DRIVER_CONTROLLER, controllerDRIVER.START) and commands2.button.JoystickButton(Controllers.DRIVER_CONTROLLER, controllerDRIVER.SELECT):
+            #Reset questnav pose if its really messed up, only if both start and select are pressed to avoid accidental resets
+            self.resetQuestNavPoseforEmergency()
         #  print("TEST")
         
         if Keymap.Shooter.trimFar.getAsBoolean():
@@ -316,6 +318,23 @@ class MyRobot(commands2.TimedCommandRobot):
         questNavpose = current_pose.transformBy(constants.Robot_To_Quest2D)
 
         self.questnav.set_pose(Pose3d(questNavpose))
+        self.questnav_field.setRobotPose(questNavpose)
+
+    def resetQuestNavPoseforEmergency(self):
+
+        #Find pose location 
+        pose_to_use = Pose2d(0,0,Rotation2d(0))
+        if config.Alliance.blue_team:
+            pose_to_use = Pose2d(3.53,4.050,Rotation2d(0))
+        else:
+            pose_to_use = Pose2d(12.99,4.050,Rotation2d(radians(180)))
+
+        current_pose = pose_to_use
+
+        questNavpose = current_pose.transformBy(constants.Robot_To_Quest2D)
+
+        self.questnav.set_pose(Pose3d(questNavpose))
+        self.container.drivetrain.reset_pose(current_pose)
         self.questnav_field.setRobotPose(questNavpose)
 
 
