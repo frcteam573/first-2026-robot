@@ -47,6 +47,11 @@ def setup_QN():
 
 def trigger_adb_command(port):
     """Execute the adb command to start the app"""
+
+    cmd_1 = "adb connect 10.5.73."+str(port)+':5802'
+
+    result = subprocess.run(cmd_1, shell=True, capture_output=True, text=True, timeout=5)
+    print(result)
     cmd = 'adb.exe -s 10.5.73.'+str(port)+':5802 shell am start -n gg.QuestNav.QuestNav/com.unity3d.player.UnityPlayerGameActivity'
     try:
         subprocess.run(cmd, shell=True, check=True)
