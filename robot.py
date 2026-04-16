@@ -78,6 +78,8 @@ class MyRobot(commands2.TimedCommandRobot):
         self.questnav_missed_frame_count = 0
         self.questnav_dtap_count = 0
         self.questnav_dtap_reset_limit = 14 #Allows for 0.2 s at 50 Hz
+        self.questnav_non_track_count = 0
+        self.questnav_non_track_count_limit = 100
         wpilib.SmartDashboard.putBoolean("Occulus DTap Reset", False)
         wpilib.SmartDashboard.putBoolean("Occulus Tracking", False)
         wpilib.SmartDashboard.putBoolean("Occulus Connected", False)
@@ -259,15 +261,10 @@ class MyRobot(commands2.TimedCommandRobot):
         frames = self.questnav.get_all_unread_pose_frames()
 
         # print(frames) #See what it does when paused
-
-
-
         if not frames: 
-            print("EMPTYFRAMES")
             SmartDashboard.putBoolean("Oculus Disconnected", True)
             if not connected:
                 self.questnav_dtap_count += 1
-                print("tap count", self.questnav_dtap_count)
 
                 if self.questnav_dtap_count > self.questnav_dtap_reset_limit:
                     wpilib.SmartDashboard.putBoolean("Occulus DTap Reset", True)
@@ -280,8 +277,10 @@ class MyRobot(commands2.TimedCommandRobot):
                 self.questnav_dtap_count = 0
                 wpilib.SmartDashboard.putBoolean("Occulus DTap Reset", False)
                 # print("QuestNav2")
-                if self.questnav.is_connected():# and self.questnav.is_tracking():
+                if self.questnav.is_connected() and self.questnav.is_tracking():
                     # Add to pose estimator
+                    self.questnav_non_track_count = 0
+                    SmartDashboard.putBoolean("Oculus Disconnected", False)
                     #print("QN Pose:",frame.quest_pose_3d.toPose2d())
                     # print("QuestNav3")
                     #print("Timestamp:", frame.data_timestamp - self.time_start)
@@ -293,17 +292,17 @@ class MyRobot(commands2.TimedCommandRobot):
                     # print(frame.data_timestamp- self.time_start)
 
                     if newPose is not None:
+                        # print("QN4")
                         self.container.drivetrain.reset_pose(newPose)
-                        SmartDashboard.putBoolean("Oculus Disconnected", False)
-                    else: 
-                        SmartDashboard.putBoolean("Oculus Disconnected", True)
+
                     # self.container.drivetrain.add_vision_measurement(
                     #     newPose,
                     #     frame.data_timestamp- self.time_start,
                     #     custom_std_devs) # Standard deviations
                 else:
-                    #Not Connected
-                    SmartDashboard.putBoolean("Oculus Disconnected", True)
+                    self.questnav_non_track_count += 0
+                    if self.questnav_non_track_count > self.questnav_non_track_count_limit:
+                        SmartDashboard.putBoolean("Oculus Disconnected", True)
     # def resetPoseBasedOnVision(self):
     #     vision_est = self.container._vision_est.get_estimated_robot_pose()
     #     if vision_est is not None:
@@ -317,7 +316,7 @@ class MyRobot(commands2.TimedCommandRobot):
         questNavpose = current_pose.transformBy(constants.Robot_To_Quest2D)
 
         self.questnav.set_pose(Pose3d(questNavpose))
-        # self.questnav_field.setRobotPose(questNavpose)
+        self.questnav_field.setRobotPose(questNavpose)
 
 
 

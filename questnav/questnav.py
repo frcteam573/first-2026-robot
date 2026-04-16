@@ -18,13 +18,9 @@ import ntcore
 from wpimath.geometry import Pose3d, Translation3d, Rotation3d, Quaternion
 
 # Import generated protobuf classes
-import questnav.data_pb2 as data_pb2
-#import data_pb2
-import questnav.commands_pb2 as commands_pb2
-#import commands_pb2
-import questnav.geometry3d_pb2 as geometry3d_pb2
-#import geometry3d_pb2
-from wpilib import SmartDashboard
+import questnav.protos.generated.data_pb2 as data_pb2
+import questnav.protos.generated.commands_pb2 as commands_pb2
+import questnav.protos.generated.geometry3d_pb2 as geometry3d_pb2
 
 
 @dataclass
@@ -148,82 +144,78 @@ class QuestNav:
         """
         # Process all new events
         events = self.data_listener.readQueue()
-        event = None
-        try:
-            
-            event = events[len(events)-1]
-
-            current_time = time.time()
+        current_time = time.time()
         
-        # for event in events:
-        #print(event)
+        for event in events:
+            try:
+                topic_name = event.data.topic.getName()
+                value = event.data.value
+                # Get timestamp - check which attribute exists
+                if hasattr(event.data, 'time'):
+                    server_timestamp = event.data.time / 1_000_000.0
+                elif hasattr(event.data, 'timestamp'):
+                    server_timestamp = event.data.timestamp
+                else:
+                    server_timestamp = current_time
+                
+                # Parse frameData
+                if "frameData" in topic_name:
+                    raw_data = value.getRaw() if hasattr(value, 'getRaw') else bytes()
+                    
+                    if raw_data:
+                        frame_data = data_pb2.ProtobufQuestNavFrameData()
+                        frame_data.ParseFromString(raw_data)
+                        
+                        self._frame_count = frame_data.frame_count
+                        self._last_frame_timestamp = current_time
+                        self._tracking = frame_data.isTracking # This was changed in ver. 2025.2.2.0 beta
+                        
+                        # Extract Pose3d
+                        pose_proto = frame_data.pose3d
+                        trans = pose_proto.translation
+                        rot_quat = pose_proto.rotation.q
+                        
+                        translation = Translation3d(trans.x, trans.y, trans.z)
+                        quaternion = Quaternion(rot_quat.w, rot_quat.x, rot_quat.y, rot_quat.z)
+                        rotation = Rotation3d(quaternion)
+                        pose = Pose3d(translation, rotation)
+                        
+                        # Create PoseFrame
+                        pose_frame = PoseFrame(
+                            quest_pose_3d=pose,
+                            data_timestamp=server_timestamp,
+                            app_timestamp=frame_data.timestamp,
+                            frame_count=frame_data.frame_count
+                        )
+                        
+                        self._unread_frames.append(pose_frame)
+                
+                # Parse deviceData
+                elif "deviceData" in topic_name:
+                    raw_data = value.getRaw() if hasattr(value, 'getRaw') else bytes()
+                    
+                    if raw_data:
+                        device_data = data_pb2.ProtobufQuestNavDeviceData()
+                        device_data.ParseFromString(raw_data)
+                        
+                        self._battery_percent = device_data.battery_percent
+                        # self._tracking = device_data.currently_tracking  # This worked for ver. 2025.2.1.0 beta
+                        self._tracking_lost_counter = device_data.tracking_lost_counter
+                
+                # Parse command responses
+                elif "response" in topic_name:
+                    raw_data = value.getRaw() if hasattr(value, 'getRaw') else bytes()
+                    
+                    if raw_data:
+                        response = commands_pb2.ProtobufQuestNavCommandResponse()
+                        response.ParseFromString(raw_data)
+                        
+                        if not response.success:
+                            print(f"QuestNav command {response.command_id} failed: {response.error_message}")
+                        
+            except Exception as e:
+                print(f"QuestNav error processing data: {e}")
         
-            topic_name = event.data.topic.getName()
-            value = event.data.value
-            # Get timestamp - check which attribute exists
-            if hasattr(event.data, 'time'):
-                server_timestamp = event.data.time / 1_000_000.0
-            elif hasattr(event.data, 'timestamp'):
-                server_timestamp = event.data.timestamp
-            else:
-                server_timestamp = current_time
-            
-            # Parse frameData
-            if "frameData" in topic_name:
-                raw_data = value.getRaw() if hasattr(value, 'getRaw') else bytes()
-                if raw_data:
-                    frame_data = data_pb2.ProtobufQuestNavFrameData()
-                    frame_data.ParseFromString(raw_data)
-                    
-                    self._frame_count = frame_data.frame_count
-                    self._last_frame_timestamp = current_time
-                    
-                    # Extract Pose3d
-                    pose_proto = frame_data.pose3d
-                    trans = pose_proto.translation
-                    rot_quat = pose_proto.rotation.q
-                    
-                    translation = Translation3d(trans.x, trans.y, trans.z)
-                    quaternion = Quaternion(rot_quat.w, rot_quat.x, rot_quat.y, rot_quat.z)
-                    rotation = Rotation3d(quaternion)
-                    pose = Pose3d(translation, rotation)
-                    
-                    # Create PoseFrame
-                    pose_frame = PoseFrame(
-                        quest_pose_3d=pose,
-                        data_timestamp=server_timestamp,
-                        app_timestamp=frame_data.timestamp,
-                        frame_count=frame_data.frame_count
-                    )
-                    
-                    self._unread_frames.append(pose_frame)
-            
-            # Parse deviceData
-            elif "deviceData" in topic_name:
-                raw_data = value.getRaw() if hasattr(value, 'getRaw') else bytes()
-                
-                if raw_data:
-                    device_data = data_pb2.ProtobufQuestNavDeviceData()
-                    device_data.ParseFromString(raw_data)
-                    
-                    self._battery_percent = device_data.battery_percent
-                    self._tracking = device_data.currently_tracking
-                    self._tracking_lost_counter = device_data.tracking_lost_counter
-            
-            # Parse command responses
-            elif "response" in topic_name:
-                raw_data = value.getRaw() if hasattr(value, 'getRaw') else bytes()
-                
-                if raw_data:
-                    response = commands_pb2.ProtobufQuestNavCommandResponse()
-                    response.ParseFromString(raw_data)
-                    
-                    if not response.success:
-                        print(f"QuestNav command {response.command_id} failed: {response.error_message}")
-                    
-        except Exception as e:
-            pass
-    
         # Return all unread frames and clear queue
         frames = self._unread_frames.copy()
         self._unread_frames.clear()
@@ -291,14 +283,14 @@ class QuestNav:
         except Exception as e:
             print(f"QuestNav error sending pose reset: {e}")
     
-    def get_battery_percent(self) -> Optional[int]:
+    def get_battery_percent(self) -> int:  # was Optional[int]:
         """
         Returns the Quest headset's current battery level as a percentage.
         
         Returns:
             Battery percentage (0-100), or None if no data available
         """
-        return self._battery_percent if self._battery_percent > 0 else None
+        return self._battery_percent if self._battery_percent > 0 else 0  # was None
     
     def is_tracking(self) -> bool:
         """
@@ -326,20 +318,18 @@ class QuestNav:
             True if Quest is connected and sending data, False otherwise
         """
         current_time = time.time()
-        if (current_time - self._last_frame_timestamp) > .1: #only logs number if the questnav is delayed, for debugging purposes.
-            SmartDashboard.putNumber("Questnav Overrun", current_time - self._last_frame_timestamp)
-        return (current_time - self._last_frame_timestamp) < 0.1  # 100ms timeout
+        return (current_time - self._last_frame_timestamp) < 0.2  # 100ms timeout, relaxed to 200ms
     
-    def get_frame_count(self) -> Optional[int]:
+    def get_frame_count(self) -> int:  #was Optional[int]:
         """
         Gets the current frame count from the Quest headset.
         
         Returns:
             Frame count value, or None if no data available
         """
-        return self._frame_count if self._frame_count > 0 else None
+        return self._frame_count if self._frame_count > 0 else 0  # was None
     
-    def get_tracking_lost_counter(self) -> Optional[int]:
+    def get_tracking_lost_counter(self) -> int: # was Optional[int]:
         """
         Gets the number of tracking lost events since Quest connected.
         
@@ -360,7 +350,7 @@ class QuestNav:
         current_time = time.time()
         return (current_time - self._last_frame_timestamp) * 1000.0
     
-    def get_app_timestamp(self) -> Optional[float]:
+    def get_app_timestamp(self) -> float: # was Optional[float]:
         """
         Returns the Quest app's uptime timestamp.
         
@@ -373,7 +363,7 @@ class QuestNav:
         """
         # This would need to be tracked from frame data
         # For now, return None
-        return None
+        return 0 # was None
     
     def command_periodic(self):
         """
