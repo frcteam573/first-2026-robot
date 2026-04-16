@@ -171,8 +171,13 @@ class Shooter(commands2.SubsystemBase):
         # print("Setting Hood to:", angleIn)
         #Basic P loop
 
-        kp = -0.025 # Need to tune
-        output = kp*(self.s_hoodEncoder.getDistance() - angleIn)
+        #P loop keep getting stuck 1.5 rotation short of target, so we are going to add 1.5 to target unless its zero
+        angleInAdjust = angleIn
+        if angleInAdjust != 0:
+            angleInAdjust += 1.5
+
+        kp = -0.025 # Tuned at shop on 4/15
+        output = kp*(self.s_hoodEncoder.getDistance() - angleInAdjust)
         output = Tyler.remap(output, .5)
         output = Tyler.deadband(output, .05)
 
@@ -247,37 +252,50 @@ class Shooter(commands2.SubsystemBase):
             shooterHoodAngle = 0 # needs to be updated with actual formula, this is just a placeholder
             shooterWheelSpeed = 0
 
-            if Distance_trim < 51:
-                shooterHoodAngle = 3.5
-            elif Distance_trim < 208:
-                shooterHoodAngle = 0.0259*Distance_trim + 0.986
+
+            # Motor EXTERNAL in Encoder Formula
+            if Distance_trim < 83:
+                shooterHoodAngle = 15
+            elif Distance_trim < 183:
+                shooterHoodAngle = 0.11283215*Distance_trim + 8.16378689
             else:
-                shooterHoodAngle = 6.8
+                shooterHoodAngle = 30
+
+
+            # Motor Built in Encoder Formula
+            # if Distance_trim < 83:
+            #     shooterHoodAngle = 3.5
+            # elif Distance_trim < 183:
+            #     shooterHoodAngle = 0.00001825*Distance_trim**2 + 0.01882283*Distance_trim + 2.32214382
+            # else:
+            #     shooterHoodAngle = 6.4
             
-            if Distance < 51:
+            if Distance < 83:
                 shooterWheelSpeed = 47
-            elif Distance < 208:
-                shooterWheelSpeed = 0.133*Distance + 39.5
+            elif Distance < 183:
+                shooterWheelSpeed = 0.00118*Distance**2 - 0.14229*Distance + 56.59067
             else:
                 shooterWheelSpeed = 75
 
         else:
-            if Distance < 242:
-                shooterWheelSpeed = 67
-                shooterHoodAngle = 7
-            elif Distance < 360:
-                shooterWheelSpeed = 67
-                shooterHoodAngle = (1.49 * Distance) - 0.426
-            else:
-                shooterWheelSpeed = 75
-                shooterHoodAngle = 10
-                
+            shooterWheelSpeed = 70
+            shooterHoodAngle = 42 #EXternal Encoder Formula
+            # shooterHoodAngle = 9  #Motor built in encoder value
+
+
         if shooterWheelSpeed < 0:
             shooterWheelSpeed = 0
         if shooterHoodAngle < 0:
             shooterHoodAngle = 0
-        if shooterHoodAngle > 12:
-            shooterHoodAngle = 12
+
+        #Motor built in encoder formula
+        # if shooterHoodAngle > 10:
+        #     shooterHoodAngle = 10
+
+        #EXternal Encoder Formula
+        if shooterHoodAngle > 42:
+            shooterHoodAngle = 42
+
         if shooterWheelSpeed > 75:
             shooterWheelSpeed = 75
 
