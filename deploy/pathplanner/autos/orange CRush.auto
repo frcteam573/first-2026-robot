@@ -5,9 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "2crush"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "2crush"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake In"
+                }
+              }
+            ]
           }
         },
         {
@@ -30,9 +43,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "4crush"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "4crush"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake In"
+                }
+              }
+            ]
           }
         },
         {
@@ -80,6 +106,12 @@
                 "type": "named",
                 "data": {
                   "name": "AlignDT"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Jiggle"
                 }
               }
             ]
@@ -149,6 +181,12 @@
                 "type": "named",
                 "data": {
                   "name": "AlignDT"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Jiggle"
                 }
               }
             ]
