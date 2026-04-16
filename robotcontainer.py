@@ -23,7 +23,7 @@ from phoenix6 import hardware, controls, configs, StatusCode
 import config
 from ntcore import NetworkTableInstance
 import subsystems
-import commands.climber
+# import commands.climber
 import commands.drivetrain
 import commands.shooter
 import commands.intake
@@ -79,7 +79,7 @@ class RobotContainer:
 
         self.drivetrain = TunerConstants.create_drivetrain()
         # self._elevator = subsystems.Elevator()
-        self.climber = subsystems.Climber()
+        # self.climber = subsystems.Climber()
         self.shooter = subsystems.Shooter()
         self.intake = subsystems.Intake()
         self.led = subsystems.LED()
@@ -246,8 +246,8 @@ class RobotContainer:
 
 
 
-        commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.extendclimber(self.climber))
-        commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.retractclimber(self.climber))
+        # commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.extendclimber(self.climber))
+        # commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.retractclimber(self.climber))
 
         # commands2.button.Trigger(lambda: Keymap.Climber.climbUp.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, position = config.Climber.climberSetPos))
         # commands2.button.Trigger(lambda: Keymap.Climber.climbDown.value > 0.5).whileTrue(commands.climber.setClimberPosition(Robot.climber, 0))

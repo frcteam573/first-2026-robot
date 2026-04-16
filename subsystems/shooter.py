@@ -24,9 +24,9 @@ class Shooter(commands2.SubsystemBase):
         self.m_shooter1 = hardware.TalonFX(60,CANBus("573CANivore"))
         self.m_shooter2 = hardware.TalonFX(61,CANBus("573CANivore"))  
         self.m_hoodMotor1 = hardware.TalonFX(55,CANBus("573CANivore"))
-        self.s_hoodEncoder = wpilib.Encoder(0, 1) #change to match id of encoder
+        self.s_hoodEncoder = wpilib.Encoder(8, 9) #change to match id of encoder
 
-        self.s_hoodEncoder.setDistancePerPulse(1.0 / 2048.0) # Assuming 2048 pulses per revolution, adjust if different
+        self.s_hoodEncoder.setDistancePerPulse(100.0 / 2048.0) # Assuming 2048 pulses per revolution, adjust if different
 
 
         #Set soft limits for hood motor
@@ -171,7 +171,7 @@ class Shooter(commands2.SubsystemBase):
         # print("Setting Hood to:", angleIn)
         #Basic P loop
 
-        kp = 0.15 # Need to tune
+        kp = -0.025 # Need to tune
         output = kp*(self.s_hoodEncoder.getDistance() - angleIn)
         output = Tyler.remap(output, .5)
         output = Tyler.deadband(output, .05)
