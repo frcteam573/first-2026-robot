@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6797509486352182,
-        "y": 2.6069963965746035
+        "x": 1.706892052194544,
+        "y": 5.600462633451957
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.1185597084495682,
-        "y": 2.5353549616572857
+        "x": 1.145700812008894,
+        "y": 5.528821198534639
       },
       "isLocked": false,
       "linkedName": "4crush"
@@ -89,7 +89,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 25.929572384520082
+    "rotation": -18.232491080703817
   },
   "useDefaultConstraints": true
 }
