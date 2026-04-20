@@ -217,7 +217,8 @@ class QuestNav:
                         print(f"QuestNav command {response.command_id} failed: {response.error_message}")
                     
         except Exception as e:
-            print(f"QuestNav error processing data: {e}")
+            # print(f"QuestNav error processing data: {e}")
+            pass
     
         # Return all unread frames and clear queue
         frames = self._unread_frames.copy()

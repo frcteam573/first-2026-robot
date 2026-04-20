@@ -46,7 +46,7 @@ class Shoot(commands2.Command):
             elif (Keymap.Shooter.hopperMotorReverse.value > .5):
                 self.app.hopperMotorReverse()
             else:
-                print("Hopper Timer:", self.hopperTimer)
+                # print("Hopper Timer:", self.hopperTimer)
                 # print('Not Aligned')
                 if self.hopperTimer < 100:
                     self.app.hopperMotorOn()
