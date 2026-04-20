@@ -157,7 +157,7 @@ class DrivebasedAngleAlign:
     allowable_errorY = 0.1
     allowable_errorR = 5  # degrees
     
-    p = .9
+    p = 1
     i = 0
     d = 0
     max_output = .8

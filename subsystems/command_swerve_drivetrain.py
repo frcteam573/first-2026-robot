@@ -409,6 +409,11 @@ class CommandSwerveDrivetrain(Subsystem, TunerSwerveDrivetrain):
 
         output = utilities.remap(output,config.DrivebasedAngleAlign.max_output)
 
+        n_normal = SmartDashboard.getBoolean("Occulus Use Default Pos", False)
+
+        if  n_normal:
+            output = 0
+
         return -output
 
     

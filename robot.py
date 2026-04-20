@@ -81,9 +81,11 @@ class MyRobot(commands2.TimedCommandRobot):
         self.questnav_dtap_reset_limit = 14 #Allows for 0.2 s at 50 Hz
         self.questnav_non_track_count = 0
         self.questnav_non_track_count_limit = 100
+        self.questnav_dis_count = 0
         wpilib.SmartDashboard.putBoolean("Occulus DTap Reset", False)
         wpilib.SmartDashboard.putBoolean("Occulus Tracking", False)
         wpilib.SmartDashboard.putBoolean("Occulus Connected", False)
+        wpilib.SmartDashboard.putBoolean("Occulus Use Default Pos", False)
 
         #Initialize the items to send vision and questnav pose to dashboard
         self.questnav_field = wpilib.Field2d()
@@ -150,18 +152,18 @@ class MyRobot(commands2.TimedCommandRobot):
         # # subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
         # # subsystems.Shooter.getMotors(self=Robot.shooter)
 
-        if self.logDelay == 3:
-            subsystems.Shooter.getShooterInfo(self.container.shooter)
-            subsystems.Intake.getIntakeInfo(self.container.intake)
-            # # subsystems.Climber.getClimberInfo(self.container.climber)
-            # #Deployed values
-            self.logDelay = 0
-            # robotToOculus = config.RobotPoseConfig.pose.relativeTo(self.questnav_field.getRobotPose())
-            # oculusErrorDistance = ((robotToOculus.X()**2 + robotToOculus.Y()**2)**0.5)
+        # if self.logDelay == 3:
+        #     subsystems.Shooter.getShooterInfo(self.container.shooter)
+        #     subsystems.Intake.getIntakeInfo(self.container.intake)
+        #     # # subsystems.Climber.getClimberInfo(self.container.climber)
+        #     # #Deployed values
+        #     self.logDelay = 0
+        #     # robotToOculus = config.RobotPoseConfig.pose.relativeTo(self.questnav_field.getRobotPose())
+        #     # oculusErrorDistance = ((robotToOculus.X()**2 + robotToOculus.Y()**2)**0.5)
             
-            # SmartDashboard.putBoolean("Robot/Oculus Aligned ", oculusErrorDistance >= 1)
-        else:
-            self.logDelay += 1
+        #     # SmartDashboard.putBoolean("Robot/Oculus Aligned ", oculusErrorDistance >= 1)
+        # else:
+        #     self.logDelay += 1
 
 
         commands2.CommandScheduler.getInstance().run()
@@ -259,12 +261,15 @@ class MyRobot(commands2.TimedCommandRobot):
         connected = self.questnav.is_connected()
         wpilib.SmartDashboard.putBoolean("Occulus Tracking", self.questnav.is_tracking())
         wpilib.SmartDashboard.putBoolean("Occulus Connected", connected)
-
+        dis_cout_inc = False
+        
         frames = self.questnav.get_all_unread_pose_frames()
 
         # print(frames) #See what it does when paused
         if not frames: 
             SmartDashboard.putBoolean("Oculus Disconnected", True)
+            # print("No Frames")
+            dis_cout_inc = True
             if not connected:
                 self.questnav_dtap_count += 1
 
@@ -282,7 +287,9 @@ class MyRobot(commands2.TimedCommandRobot):
                 if self.questnav.is_connected() and self.questnav.is_tracking():
                     # Add to pose estimator
                     self.questnav_non_track_count = 0
+                    self.questnav_dis_count = 0
                     SmartDashboard.putBoolean("Oculus Disconnected", False)
+                    wpilib.SmartDashboard.putBoolean("Occulus Use Default Pos", False)
                     #print("QN Pose:",frame.quest_pose_3d.toPose2d())
                     # print("QuestNav3")
                     #print("Timestamp:", frame.data_timestamp - self.time_start)
@@ -305,6 +312,14 @@ class MyRobot(commands2.TimedCommandRobot):
                     self.questnav_non_track_count += 0
                     if self.questnav_non_track_count > self.questnav_non_track_count_limit:
                         SmartDashboard.putBoolean("Oculus Disconnected", True)
+                        dis_cout_inc = True
+
+        if dis_cout_inc:
+            # print(self.questnav_dis_count)
+            self.questnav_dis_count += 1
+        
+        if self.questnav_dis_count > 20:
+            wpilib.SmartDashboard.putBoolean("Occulus Use Default Pos", True)
     # def resetPoseBasedOnVision(self):
     #     vision_est = self.container._vision_est.get_estimated_robot_pose()
     #     if vision_est is not None:

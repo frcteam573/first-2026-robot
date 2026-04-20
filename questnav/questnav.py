@@ -145,77 +145,81 @@ class QuestNav:
         # Process all new events
         events = self.data_listener.readQueue()
         current_time = time.time()
+        event = None
         
-        for event in events:
-            try:
-                topic_name = event.data.topic.getName()
-                value = event.data.value
-                # Get timestamp - check which attribute exists
-                if hasattr(event.data, 'time'):
-                    server_timestamp = event.data.time / 1_000_000.0
-                elif hasattr(event.data, 'timestamp'):
-                    server_timestamp = event.data.timestamp
-                else:
-                    server_timestamp = current_time
-                
-                # Parse frameData
-                if "frameData" in topic_name:
-                    raw_data = value.getRaw() if hasattr(value, 'getRaw') else bytes()
-                    
-                    if raw_data:
-                        frame_data = data_pb2.ProtobufQuestNavFrameData()
-                        frame_data.ParseFromString(raw_data)
-                        
-                        self._frame_count = frame_data.frame_count
-                        self._last_frame_timestamp = current_time
-                        self._tracking = frame_data.isTracking # This was changed in ver. 2025.2.2.0 beta
-                        
-                        # Extract Pose3d
-                        pose_proto = frame_data.pose3d
-                        trans = pose_proto.translation
-                        rot_quat = pose_proto.rotation.q
-                        
-                        translation = Translation3d(trans.x, trans.y, trans.z)
-                        quaternion = Quaternion(rot_quat.w, rot_quat.x, rot_quat.y, rot_quat.z)
-                        rotation = Rotation3d(quaternion)
-                        pose = Pose3d(translation, rotation)
-                        
-                        # Create PoseFrame
-                        pose_frame = PoseFrame(
-                            quest_pose_3d=pose,
-                            data_timestamp=server_timestamp,
-                            app_timestamp=frame_data.timestamp,
-                            frame_count=frame_data.frame_count
-                        )
-                        
-                        self._unread_frames.append(pose_frame)
-                
-                # Parse deviceData
-                elif "deviceData" in topic_name:
-                    raw_data = value.getRaw() if hasattr(value, 'getRaw') else bytes()
-                    
-                    if raw_data:
-                        device_data = data_pb2.ProtobufQuestNavDeviceData()
-                        device_data.ParseFromString(raw_data)
-                        
-                        self._battery_percent = device_data.battery_percent
-                        # self._tracking = device_data.currently_tracking  # This worked for ver. 2025.2.1.0 beta
-                        self._tracking_lost_counter = device_data.tracking_lost_counter
-                
-                # Parse command responses
-                elif "response" in topic_name:
-                    raw_data = value.getRaw() if hasattr(value, 'getRaw') else bytes()
-                    
-                    if raw_data:
-                        response = commands_pb2.ProtobufQuestNavCommandResponse()
-                        response.ParseFromString(raw_data)
-                        
-                        if not response.success:
-                            print(f"QuestNav command {response.command_id} failed: {response.error_message}")
-                        
-            except Exception as e:
-                print(f"QuestNav error processing data: {e}")
         
+        # for event in events:
+        try:
+            event = events[len(events)-1]
+            topic_name = event.data.topic.getName()
+            value = event.data.value
+            # Get timestamp - check which attribute exists
+            if hasattr(event.data, 'time'):
+                server_timestamp = event.data.time / 1_000_000.0
+            elif hasattr(event.data, 'timestamp'):
+                server_timestamp = event.data.timestamp
+            else:
+                server_timestamp = current_time
+            
+            # Parse frameData
+            if "frameData" in topic_name:
+                raw_data = value.getRaw() if hasattr(value, 'getRaw') else bytes()
+                
+                if raw_data:
+                    frame_data = data_pb2.ProtobufQuestNavFrameData()
+                    frame_data.ParseFromString(raw_data)
+                    
+                    self._frame_count = frame_data.frame_count
+                    self._last_frame_timestamp = current_time
+                    self._tracking = frame_data.isTracking # This was changed in ver. 2025.2.2.0 beta
+                    
+                    # Extract Pose3d
+                    pose_proto = frame_data.pose3d
+                    trans = pose_proto.translation
+                    rot_quat = pose_proto.rotation.q
+                    
+                    translation = Translation3d(trans.x, trans.y, trans.z)
+                    quaternion = Quaternion(rot_quat.w, rot_quat.x, rot_quat.y, rot_quat.z)
+                    rotation = Rotation3d(quaternion)
+                    pose = Pose3d(translation, rotation)
+                    
+                    # Create PoseFrame
+                    pose_frame = PoseFrame(
+                        quest_pose_3d=pose,
+                        data_timestamp=server_timestamp,
+                        app_timestamp=frame_data.timestamp,
+                        frame_count=frame_data.frame_count
+                    )
+                    
+                    self._unread_frames.append(pose_frame)
+            
+            # Parse deviceData
+            elif "deviceData" in topic_name:
+                raw_data = value.getRaw() if hasattr(value, 'getRaw') else bytes()
+                
+                if raw_data:
+                    device_data = data_pb2.ProtobufQuestNavDeviceData()
+                    device_data.ParseFromString(raw_data)
+                    
+                    self._battery_percent = device_data.battery_percent
+                    # self._tracking = device_data.currently_tracking  # This worked for ver. 2025.2.1.0 beta
+                    self._tracking_lost_counter = device_data.tracking_lost_counter
+            
+            # Parse command responses
+            elif "response" in topic_name:
+                raw_data = value.getRaw() if hasattr(value, 'getRaw') else bytes()
+                
+                if raw_data:
+                    response = commands_pb2.ProtobufQuestNavCommandResponse()
+                    response.ParseFromString(raw_data)
+                    
+                    if not response.success:
+                        print(f"QuestNav command {response.command_id} failed: {response.error_message}")
+                    
+        except Exception as e:
+            # print(f"QuestNav error processing data: {e}")
+            pass
+    
         # Return all unread frames and clear queue
         frames = self._unread_frames.copy()
         self._unread_frames.clear()

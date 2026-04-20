@@ -12,6 +12,7 @@ from wpilib import AnalogInput, DriverStation, SmartDashboard, Mechanism2d, Mech
 from ntcore import NetworkTableInstance
 from wpimath.geometry import Rotation2d, Pose2d
 import constants
+from oi.keymap import Keymap
 
 
 class Shooter(commands2.SubsystemBase):
@@ -244,10 +245,15 @@ class Shooter(commands2.SubsystemBase):
         SmartDashboard.putNumber("Shooter / Calculated Shooter Distance", Distance)
 
         shooterHoodAngle = 0 # Needs to be updated with actual formula, this is just a placeholder
-        # if SmartDashboard.getBoolean("Occulus Disconnected", False):
-        #     shooterHoodAngle = 0  # Hardcode hood angle and wheel speed if oculus is disconnected, this is just a failsafe and should be tuned to something that works well for most of the field
-        #     shooterWheelSpeed = 0 #UPDATED THESE
-        if config.inZone:
+        if SmartDashboard.getBoolean("Occulus Use Default Pos", False) and config.inZone:
+            shooterHoodAngle = 21.8  # Hardcode hood angle and wheel speed if oculus is disconnected, this is just a failsafe and should be tuned to something that works well for most of the field
+            shooterWheelSpeed = 55.1 #UPDATED THESE
+            if Keymap.Intake.testextin.getAsBoolean():
+                shooterWheelSpeed = 70
+                shooterHoodAngle = 42
+
+
+        elif config.inZone:
             
             shooterHoodAngle = 0 # needs to be updated with actual formula, this is just a placeholder
             shooterWheelSpeed = 0

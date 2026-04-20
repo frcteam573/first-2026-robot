@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "2crush"
+                  "pathName": "2crush Depot Only"
                 }
               },
               {
@@ -30,26 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "3crush"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake In"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "4crush"
+                  "pathName": "4crushDepotOnly"
                 }
               },
               {
@@ -93,7 +74,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 3.5
+                  "waitTime": 4.0
                 }
               },
               {
@@ -124,7 +105,26 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "5crush"
+                  "pathName": "5crushDepotOnly"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake In"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "6crushDepotOnly"
                 }
               },
               {
@@ -168,7 +168,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 3.5
+                  "waitTime": 6.0
                 }
               },
               {
