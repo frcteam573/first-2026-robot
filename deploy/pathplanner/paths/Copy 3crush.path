@@ -41,7 +41,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "rrshoot"
+      "linkedName": "yyy"
     }
   ],
   "rotationTargets": [],
@@ -58,7 +58,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -16.7
+    "rotation": -15.677604862649202
   },
   "reversed": false,
   "folder": null,
