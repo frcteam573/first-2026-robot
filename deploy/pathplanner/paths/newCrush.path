@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5706752265417743,
-        "y": 4.940264448592952
+        "x": 1.5750324502640591,
+        "y": 6.3262898323052
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5706752265417743,
-        "y": 5.771790069216536
+        "x": 1.3692544121717785,
+        "y": 6.468259544000659
       },
       "isLocked": false,
-      "linkedName": "rrshoot"
+      "linkedName": "plll"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 7.4
       },
       "prevControl": {
-        "x": 1.2157722054858553,
-        "y": 7.4
+        "x": 1.1168231651131222,
+        "y": 6.841895103075083
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -16.7
+    "rotation": -36.790651361139716
   },
   "useDefaultConstraints": true
 }
