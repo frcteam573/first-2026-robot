@@ -1,0 +1,95 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.690436018277342,
+        "y": 6.932477619390897
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.694541147773109,
+        "y": 5.560971749139364
+      },
+      "isLocked": false,
+      "linkedName": "yyy"
+    },
+    {
+      "anchor": {
+        "x": 7.690436018277342,
+        "y": 5.373742107436062
+      },
+      "prevControl": {
+        "x": 7.700498203703219,
+        "y": 5.655469040579178
+      },
+      "nextControl": {
+        "x": 7.663250623911314,
+        "y": 4.6125895886869035
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.850736413064676,
+        "y": 4.693575468337892
+      },
+      "prevControl": {
+        "x": 7.074512153351229,
+        "y": 4.539640564191728
+      },
+      "nextControl": {
+        "x": 6.17912532917529,
+        "y": 5.15557544961212
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.350236433350928,
+        "y": 5.989742082468366
+      },
+      "prevControl": {
+        "x": 6.380180876581665,
+        "y": 5.733075426204906
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.968421052631579,
+      "rotationDegrees": 89.0
+    },
+    {
+      "waypointRelativePos": 2.5473684210526386,
+      "rotationDegrees": -90.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -88.9488192504561
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "useDefaultConstraints": true
+}
