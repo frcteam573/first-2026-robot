@@ -152,18 +152,18 @@ class MyRobot(commands2.TimedCommandRobot):
         # # subsystems.Elevator.getElevatorDSOutput(Robot.elevator)
         # # subsystems.Shooter.getMotors(self=Robot.shooter)
 
-        # if self.logDelay == 3:
-        #     subsystems.Shooter.getShooterInfo(self.container.shooter)
-        #     subsystems.Intake.getIntakeInfo(self.container.intake)
-        #     # # subsystems.Climber.getClimberInfo(self.container.climber)
-        #     # #Deployed values
-        #     self.logDelay = 0
-        #     # robotToOculus = config.RobotPoseConfig.pose.relativeTo(self.questnav_field.getRobotPose())
-        #     # oculusErrorDistance = ((robotToOculus.X()**2 + robotToOculus.Y()**2)**0.5)
+        if self.logDelay == 3:
+            subsystems.Shooter.getShooterInfo(self.container.shooter)
+            subsystems.Intake.getIntakeInfo(self.container.intake)
+            # # subsystems.Climber.getClimberInfo(self.container.climber)
+            # #Deployed values
+            self.logDelay = 0
+            # robotToOculus = config.RobotPoseConfig.pose.relativeTo(self.questnav_field.getRobotPose())
+            # oculusErrorDistance = ((robotToOculus.X()**2 + robotToOculus.Y()**2)**0.5)
             
-        #     # SmartDashboard.putBoolean("Robot/Oculus Aligned ", oculusErrorDistance >= 1)
-        # else:
-        #     self.logDelay += 1
+            # SmartDashboard.putBoolean("Robot/Oculus Aligned ", oculusErrorDistance >= 1)
+        else:
+            self.logDelay += 1
 
 
         commands2.CommandScheduler.getInstance().run()

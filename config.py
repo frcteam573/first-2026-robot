@@ -96,9 +96,9 @@ class Intake:
     Deployed = False
     deploy_threshold = 0.05 # The distance in rotations when the intake should be considered deployed and the climber should not be allowed to move
     MinRot = 0
-    MaxRot = 42 # The max rotation of the intake extension, this should be set to the value where the intake is fully extended
-    extendedPos = 42
-    jigglePos = 20
+    MaxRot = 65 # The max rotation of the intake extension, this should be set to the value where the intake is fully extended
+    extendedPos = 65
+    jigglePos = 25
 
     cfg = configs.TalonFXConfiguration()
     cfg.motor_output.neutral_mode = phoenix6.signals.NeutralModeValue.BRAKE
