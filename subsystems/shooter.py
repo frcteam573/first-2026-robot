@@ -240,12 +240,15 @@ class Shooter(commands2.SubsystemBase):
         Distance = (IntermediatePose.X()**2 + IntermediatePose.Y()**2)**.5  #pythagoream theorum
         
         Distance = (Distance/.0254) # convert to inches
+        Distance = 75 #Demo Only
         Distance_trim = Distance + (config.Shooter.trim * 12)
+        config.inZone = True #Demo Only
         # Distance = SmartDashboard.getNumber("Shooter / TEST Distance", 0)
         SmartDashboard.putNumber("Shooter / Calculated Shooter Distance", Distance)
 
         shooterHoodAngle = 0 # Needs to be updated with actual formula, this is just a placeholder
-        if SmartDashboard.getBoolean("Occulus Use Default Pos", False) and config.inZone:
+
+        if False:# SmartDashboard.getBoolean("Occulus Use Default Pos", False) and config.inZone:
             shooterHoodAngle = 21.8  # Hardcode hood angle and wheel speed if oculus is disconnected, this is just a failsafe and should be tuned to something that works well for most of the field
             shooterWheelSpeed = 55.1 #UPDATED THESE
             if Keymap.Intake.testextin.getAsBoolean():

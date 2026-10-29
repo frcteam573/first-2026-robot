@@ -27,7 +27,7 @@ class IntakeIn(commands2.Command):
 
     def execute(self) -> None:
         self.app.intakeMotorIn()  
-        self.app.setIntakePosition(config.Intake.MaxRot)  
+        # self.app.setIntakePosition(config.Intake.MaxRot)  
         # print('intake ran in')
         
     def end(self, interrupted=False) -> None:
@@ -49,7 +49,7 @@ class IntakeOut(commands2.Command):
 
     def execute(self) -> None:
         self.app.intakeMotorOut()  
-        self.app.setIntakePosition(config.Intake.MaxRot)  
+        # self.app.setIntakePosition(config.Intake.MaxRot)  
         # print('intake ran out')
         
     def end(self, interrupted=False) -> None:
@@ -71,7 +71,7 @@ class IntakeRetract(commands2.Command):
 
     def execute(self) -> None:
         self.app.intakeMotorOff()  
-        self.app.setIntakePosition(config.Intake.MinRot)  
+        # self.app.setIntakePosition(config.Intake.MinRot)  
         
     def end(self, interrupted=False) -> None:
         self.app.intakeMotorOff()
@@ -101,16 +101,17 @@ class intakegeneral(commands2.Command):
         
     def initialize(self) -> None:
         self.jiggleTimer = 0
-        self.app.setIntakePosition(config.Intake.extendedPos)
+        # self.app.setIntakePosition(config.Intake.extendedPos)
+        self.app.m_intakeExtension.set(0)
 
     def execute(self) -> None:
 
-        if self.autoJiggle or keymap.Keymap.Shooter.shoot.getAsBoolean():
-            if self.jiggleTimer < 20:
-                self.app.setIntakePosition(config.Intake.extendedPos)
-            else:
-                self.app.setIntakePosition(config.Intake.jigglePos)
-            self.jiggleTimer += 1
+        # if self.autoJiggle or keymap.Keymap.Shooter.shoot.getAsBoolean():
+        #     if self.jiggleTimer < 20:
+        #         # self.app.setIntakePosition(config.Intake.extendedPos)
+        #     else:
+        #         # self.app.setIntakePosition(config.Intake.jigglePos)
+        #     self.jiggleTimer += 1
 
         if self.intakeIn == 1:
             self.app.intakeMotorIn()
@@ -121,7 +122,7 @@ class intakegeneral(commands2.Command):
       
     def end(self, interrupted=False) -> None:
         self.app.intakeMotorOff()
-        self.app.setIntakePosition(config.Intake.extendedPos)
+        # self.app.setIntakePosition(config.Intake.extendedPos)
 
 class testIntakeRoller(commands2.Command):
     def __init__(

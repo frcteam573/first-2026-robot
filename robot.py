@@ -235,6 +235,11 @@ class MyRobot(commands2.TimedCommandRobot):
                 self.trimCounter = 0
         else: self.trimCounter = 0
 
+        if config.Shooter.trim < 0:
+            config.Shooter.trim = 0
+        if config.Shooter.trim >8:
+            config.Shooter.trim = 8
+
     def testInit(self) -> None:
         # Cancels all running commands at the start of test mode
         commands2.CommandScheduler.getInstance().cancelAll()
