@@ -142,7 +142,7 @@ class Shooter(commands2.SubsystemBase):
         Args:
             speed: The desired speed of the wheels in RPS.
         '''
-        
+        speed = speed * 0.3
         self.m_shooter1.set_control(self.velocity_voltage.with_velocity(speed))
         SmartDashboard.putNumber("Shooter / Shooter Wheel Speed Command", speed)
         # print("Shooter out Speed:", speed)
